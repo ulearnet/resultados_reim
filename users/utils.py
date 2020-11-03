@@ -3606,4 +3606,1207 @@ def get_Construir_total(request):
     #print(hi)
     return hi
 
+#INICIO QUERYS Toy's Colection---------------
 
+def get_cantidad_sesiones_por_curso(request):
+
+    query_params = ''
+    date = ''
+
+    if request.GET.get('reim') and request.GET.get('reim') != '0':
+        query_params = ' AND a.id_reim=' + request.GET.get('reim')
+    if request.GET.get('course') and request.GET.get('course') != '0':
+        query_params += " AND b.curso_id = " + request.GET.get('course')
+    if request.GET.get('school') and request.GET.get('school') != '0':
+        query_params += " AND b.colegio_id = " + request.GET.get('school')
+
+    if request.GET.get('start') and (request.GET.get('start') != 'dd/mm/aaaa') and request.GET.get('end') and (request.GET.get('end') != 'dd/mm/aaaa'):
+        start = str(datetime.strptime(request.GET.get('start'), '%d/%m/%Y').date())
+        end = str(datetime.strptime(request.GET.get('end'), '%d/%m/%Y').date())
+        start += " 00:00:00.000000"
+        end += " 23:59:59.000000"
+        date = ' (a.datetime_touch >= TIMESTAMP("'+ start + '") && a.datetime_touch <= TIMESTAMP("' + end  + '")) &&'
+
+    start_base = ' SELECT  concat(u.nombres ," ", u.apellido_paterno ," ", u.apellido_materno) as nombre, concat(day(datetime_touch),"/",month(datetime_touch),"/", year(datetime_touch)) AS fecha, COALESCE(round(count((if(a.id_elemento=2128,1,null)))/count((if (a.id_elemento=2031,1,null)))),0) AS CantidadTouch, b.colegio_id, b.curso_id '
+    start_base += ' FROM asigna_reim_alumno a'
+    start_base += ' INNER JOIN usuario u on (u.id=a.usuario_id)' 
+    start_base += ' INNER JOIN pertenece b on (b.usuario_id = a.usuario_id)'
+    start_base += ' WHERE ' + date
+    final_base = ' a.id_user = u.id && b.usuario_id = a.id_user ' + query_params + ' GROUP BY day(a.datetime_touch) ORDER BY a.datetime_touch ASC'
+
+    return start_base + final_base  
+
+#Sesiones del curso
+def get_sesiones(request):
+    cursor = get_from_db()
+    query_params = ''
+
+    if request.GET.get('reim') and request.GET.get('reim') != '0':
+        query_params += " AND a.reim_id = " + request.GET.get('reim')
+    if request.GET.get('course') and request.GET.get('course') != '0':
+        query_params += " AND b.curso_id = " + request.GET.get('course')
+    if request.GET.get('school') and request.GET.get('school') != '0':
+        query_params += " AND b.colegio_id = " + request.GET.get('school')
+    if request.GET.get('student') and request.GET.get('student') != '0':
+        query_params += " AND u.id = " + request.GET.get('student')
+
+    date = get_date_param(request)
+
+    start_base = 'SELECT "Sesiones Totales" as nombre, count(a.usuario_id) AS Cantidad FROM asigna_reim_alumno a INNER JOIN usuario u on (u.id=a.usuario_id) INNER JOIN pertenece b on (b.usuario_id = a.usuario_id) WHERE ' + date
+    final_base = ' b.colegio_id IN (SELECT colegio_id from pertenece p INNER JOIN usuario u1 ON (p.usuario_id = u1.id) WHERE username="' + request.user.username + '") AND b.curso_id IN (SELECT curso_id FROM pertenece WHERE usuario_id = (SELECT id FROM usuario WHERE username = "' + request.user.username + '"))' + query_params + ' GROUP BY b.colegio_id'
+    return start_base + final_base
+
+#Tiempo del curso
+def get_tiempo_total(request):
+    cursor = get_from_db()
+    query_params = ''
+
+    if request.GET.get('reim') and request.GET.get('reim') != '0':
+        query_params += " AND a.reim_id = " + request.GET.get('reim')
+    if request.GET.get('course') and request.GET.get('course') != '0':
+        query_params += " AND b.curso_id = " + request.GET.get('course')
+    if request.GET.get('school') and request.GET.get('school') != '0':
+        query_params += " AND b.colegio_id = " + request.GET.get('school')
+    if request.GET.get('student') and request.GET.get('student') != '0':
+        query_params += " AND u.id = " + request.GET.get('student')
+
+    date = get_date_param(request)
+
+    start_base = 'SELECT  "Tiempo Total" as nombre, round(sum(TO_SECONDS(datetime_termino)-TO_SECONDS(datetime_inicio))/60,0) as Tiempo FROM asigna_reim_alumno a INNER JOIN usuario u on (u.id=a.usuario_id) INNER JOIN pertenece b on (b.usuario_id = a.usuario_id) WHERE ' + date
+    final_base = ' b.colegio_id IN (SELECT colegio_id from pertenece p INNER JOIN usuario u1 ON (p.usuario_id = u1.id) WHERE username="' + request.user.username + '") AND b.curso_id IN (SELECT curso_id FROM pertenece WHERE usuario_id = (SELECT id FROM usuario WHERE username = "' + request.user.username + '"))' + query_params + ' GROUP BY b.colegio_id'
+    return start_base + final_base
+
+#Tiempo Promedio del curso
+def get_tiempo_promedio(request):
+    cursor = get_from_db()
+    query_params = ''
+
+    if request.GET.get('reim') and request.GET.get('reim') != '0':
+        query_params += " AND a.reim_id = " + request.GET.get('reim')
+    if request.GET.get('course') and request.GET.get('course') != '0':
+        query_params += " AND b.curso_id = " + request.GET.get('course')
+    if request.GET.get('school') and request.GET.get('school') != '0':
+        query_params += " AND b.colegio_id = " + request.GET.get('school')
+    if request.GET.get('student') and request.GET.get('student') != '0':
+        query_params += " AND u.id = " + request.GET.get('student')
+
+    date = get_date_param(request)
+
+    start_base = 'SELECT u.id, concat(u.nombres ," ", u.apellido_paterno ," ", u.apellido_materno) as nombre, round((sum(TO_SECONDS(datetime_termino)-TO_SECONDS(datetime_inicio))/60)/count(a.usuario_id),0) as Tiempo_promedio'
+    start_base += ' FROM asigna_reim_alumno a'
+    start_base += ' INNER JOIN usuario u on (u.id=a.usuario_id)' 
+    start_base += ' INNER JOIN pertenece b on (b.usuario_id = a.usuario_id)'
+    start_base += ' WHERE ' + date
+    final_base = ' b.colegio_id IN (SELECT colegio_id from pertenece p INNER JOIN usuario u1 ON (p.usuario_id = u1.id) WHERE username="' + request.user.username + '")' 
+    final_base += ' AND b.curso_id IN (SELECT curso_id FROM pertenece WHERE usuario_id = (SELECT id FROM usuario WHERE username = "' + request.user.username + '"))' + query_params + ' GROUP BY u.id'
+
+    return start_base + final_base
+
+#Solicitudes Realizadas
+def get_solicitudes(request):
+    cursor = get_from_db()
+    query_params = ''
+
+    if request.GET.get('reim') and request.GET.get('reim') != '0':
+        query_params += " AND a.reim_id = " + request.GET.get('reim')
+    if request.GET.get('course') and request.GET.get('course') != '0':
+        query_params += " AND b.curso_id = " + request.GET.get('course')
+    if request.GET.get('school') and request.GET.get('school') != '0':
+        query_params += " AND b.colegio_id = " + request.GET.get('school')
+    if request.GET.get('student') and request.GET.get('student') != '0':
+        query_params += " AND u.id = " + request.GET.get('student')
+
+    date = get_date_param(request)
+
+    sql ='SELECT concat(u.nombres ," ", u.apellido_paterno ," ", u.apellido_materno) as nombre, count(datetime_touch) as Solicitudes'
+    sql +=' FROM  asigna_reim_alumno a'
+    sql +=' INNER JOIN alumno_respuesta_actividad are on(are.id_user=a.usuario_id and id_per=periodo_id and id_reim=reim_id and datetime_touch between datetime_inicio and datetime_termino)'
+    sql +=' INNER JOIN elemento e on (e.id=are.id_elemento)'
+    sql +=' INNER JOIN usuario u on (u.id=are.id_user)'
+    sql +=' INNER JOIN pertenece b on (b.usuario_id = are.id_user)'
+    sql +=' WHERE '  + date
+    sql +=' b.colegio_id IN (SELECT colegio_id from pertenece p INNER JOIN usuario u1 ON (p.usuario_id = u1.id) WHERE username="' + request.user.username + '")'
+    sql +=' AND b.curso_id IN (SELECT curso_id FROM pertenece WHERE usuario_id = (SELECT id FROM usuario WHERE username = "' + request.user.username + '"))'
+    sql +=' AND id_actividad=9041'
+    sql +=' AND are.id_elemento in (290050)'  + query_params
+    sql +=' GROUP BY u.id;'
+
+    return sql
+
+def get_colaboraciones(request):
+    cursor = get_from_db()
+    query_params = ''
+
+    if request.GET.get('reim') and request.GET.get('reim') != '0':
+        query_params += " AND a.reim_id = " + request.GET.get('reim')
+    if request.GET.get('course') and request.GET.get('course') != '0':
+        query_params += " AND b.curso_id = " + request.GET.get('course')
+    if request.GET.get('school') and request.GET.get('school') != '0':
+        query_params += " AND b.colegio_id = " + request.GET.get('school')
+    if request.GET.get('student') and request.GET.get('student') != '0':
+        query_params += " AND u.id = " + request.GET.get('student')
+
+    date = get_date_param(request)
+
+    sql ='SELECT concat(u.nombres ," ", u.apellido_paterno ," ", u.apellido_materno) as nombre, count(datetime_touch) as Solicitudes'
+    sql +=' FROM  asigna_reim_alumno a'
+    sql +=' INNER JOIN alumno_respuesta_actividad are on(are.id_user=a.usuario_id and id_per=periodo_id and id_reim=reim_id and datetime_touch between datetime_inicio and datetime_termino)'
+    sql +=' INNER JOIN elemento e on (e.id=are.id_elemento)'
+    sql +=' INNER JOIN usuario u on (u.id=are.id_user)'
+    sql +=' INNER JOIN pertenece b on (b.usuario_id = are.id_user)'
+    sql +=' WHERE '  + date
+    sql +=' b.colegio_id IN (SELECT colegio_id from pertenece p INNER JOIN usuario u1 ON (p.usuario_id = u1.id) WHERE username="' + request.user.username + '")'
+    sql +=' AND b.curso_id IN (SELECT curso_id FROM pertenece WHERE usuario_id = (SELECT id FROM usuario WHERE username = "' + request.user.username + '"))'
+    sql +=' AND id_actividad=9041'
+    sql +=' AND id_elemento in (290615)'  + query_params
+    sql +=' GROUP BY u.id;'
+
+    return sql
+
+
+def get_colaboraciones_rec(request):
+    cursor = get_from_db()
+    query_params = ''
+
+    if request.GET.get('reim') and request.GET.get('reim') != '0':
+        query_params += " AND a.reim_id = " + request.GET.get('reim')
+    if request.GET.get('course') and request.GET.get('course') != '0':
+        query_params += " AND b.curso_id = " + request.GET.get('course')
+    if request.GET.get('school') and request.GET.get('school') != '0':
+        query_params += " AND b.colegio_id = " + request.GET.get('school')
+    if request.GET.get('student') and request.GET.get('student') != '0':
+        query_params += " AND u.id = " + request.GET.get('student')
+
+    date = get_date_param(request)
+
+    sql ='SELECT usuariorecibe_id, concat(usu.nombres ," ", usu.apellido_paterno ," ", usu.apellido_materno) as nombre, count(1)'
+    sql +=' FROM transaccion_reim t'
+    sql +=' INNER JOIN usuario usu on (usu.id=t.usuariorecibe_id)'
+    sql +=' WHERE session_id in ('
+    sql +=' SELECT distinct(sesion_id)'
+    sql +=' FROM  asigna_reim_alumno a'
+    sql +=' INNER JOIN alumno_respuesta_actividad are on(are.id_user=a.usuario_id and id_per=periodo_id and id_reim=reim_id and datetime_touch between datetime_inicio and datetime_termino)'
+    sql +=' INNER JOIN detalle_elemento d on (d.id_elemento=are.id_elemento)'
+    sql +=' INNER JOIN actividad act on (act.id=id_actividad)'
+    sql +=' INNER JOIN usuario u on (u.id=are.id_user)'
+    sql +=' INNER JOIN pertenece b on (b.usuario_id = are.id_user)'
+    sql +=' WHERE '  + date
+    sql +=' b.colegio_id IN (SELECT colegio_id from pertenece p INNER JOIN usuario u1 ON (p.usuario_id = u1.id) WHERE username="' + request.user.username + '")'
+    sql +=' AND b.curso_id IN (SELECT curso_id FROM pertenece WHERE usuario_id = (SELECT id FROM usuario WHERE username = "' + request.user.username + '"))'
+    sql +=' and are.id_Actividad=9041'
+    sql +=' and are.id_elemento in(290615)'  + query_params + ')'
+    sql +=' AND t.elemento_id in (290614)'
+    sql +=' group by usuariorecibe_id;'
+
+    return sql
+
+
+#Preferencias de búsqueda
+def get_Lugar_Buscado(request):
+    cursor = get_from_db()
+    query_params = ''
+
+    if request.GET.get('reim') and request.GET.get('reim') != '0':
+        query_params += " AND are.id_reim = " + request.GET.get('reim')
+    if request.GET.get('course') and request.GET.get('course') != '0':
+        query_params += " AND b.curso_id = " + request.GET.get('course')
+    if request.GET.get('school') and request.GET.get('school') != '0':
+        query_params += " AND b.colegio_id = " + request.GET.get('school')
+    if request.GET.get('student') and request.GET.get('student') != '0':
+        query_params += " AND u.id = " + request.GET.get('student')
+    date = get_date_param(request)
+    
+
+    sql ='SELECT concat(u.nombres ," ", u.apellido_paterno ," ", u.apellido_materno) as nombre, round(sum(if(id_elemento=290164,1,0)),0) as Casa, round(sum(if(id_elemento=290165,1,0)),0) as Parque, round(sum(if(id_elemento=290166,1,0)),0) as Colegio'
+    sql +=' FROM  asigna_reim_alumno a'
+    sql +=' right JOIN alumno_respuesta_actividad are on(are.id_user=a.usuario_id and id_per=periodo_id and id_reim=reim_id and datetime_touch between datetime_inicio and datetime_termino)'
+    sql +=' INNER JOIN elemento e on (e.id=are.id_elemento)'
+    sql +=' INNER JOIN usuario u on (u.id=are.id_user)'
+    sql +=' INNER JOIN pertenece b on (b.usuario_id = are.id_user)'
+    sql +=' WHERE '  + date
+    sql +=' b.colegio_id IN (SELECT colegio_id from pertenece p INNER JOIN usuario u1 ON (p.usuario_id = u1.id) WHERE username="' + request.user.username + '")'
+    sql +=' AND b.curso_id IN (SELECT curso_id FROM pertenece WHERE usuario_id = (SELECT id FROM usuario WHERE username = "' + request.user.username + '"))'
+    sql +=' AND id_elemento in (290164, 290165, 290166)'  + query_params
+    sql +=' GROUP BY u.id;'
+
+    return sql
+
+#Preferencias de búsqueda
+def get_Habitacion_Buscado1(request):
+    cursor = get_from_db()
+    query_params = ''
+
+    if request.GET.get('reim') and request.GET.get('reim') != '0':
+        query_params += " AND are.id_reim = " + request.GET.get('reim')
+    if request.GET.get('course') and request.GET.get('course') != '0':
+        query_params += " AND b.curso_id = " + request.GET.get('course')
+    if request.GET.get('school') and request.GET.get('school') != '0':
+        query_params += " AND b.colegio_id = " + request.GET.get('school')
+    if request.GET.get('student') and request.GET.get('student') != '0':
+        query_params += " AND u.id = " + request.GET.get('student')
+ 
+    date = get_date_param(request)
+    
+    sql ='SELECT concat(u.nombres ," ", u.apellido_paterno ," ", u.apellido_materno) as nombre,' 
+    sql +=' round(sum(if(id_elemento=290167,1,0))*100/Count(id_elemento),0) as Dormitorio,'
+    sql +=' round(sum(if(id_elemento=290168,1,0))*100/Count(id_elemento),0) as Cocina,'
+    sql +=' round(sum(if(id_elemento=290169,1,0))*100/Count(id_elemento),0) as Baño,'
+    sql +=' round(sum(if(id_elemento=290170,1,0))*100/Count(id_elemento),0) as Living,'
+    sql +=' round(sum(if(id_elemento=290171,1,0))*100/Count(id_elemento),0) as Comedor'
+    sql +=' FROM  asigna_reim_alumno a'
+    sql +=' right JOIN alumno_respuesta_actividad are on(are.id_user=a.usuario_id and id_per=periodo_id and id_reim=reim_id and datetime_touch between datetime_inicio and datetime_termino)'
+    sql +=' INNER JOIN elemento e on (e.id=are.id_elemento)'
+    sql +=' INNER JOIN usuario u on (u.id=are.id_user)'
+    sql +=' INNER JOIN pertenece b on (b.usuario_id = are.id_user)'
+    sql +=' WHERE '  + date
+    sql +=' b.colegio_id IN (SELECT colegio_id from pertenece p INNER JOIN usuario u1 ON (p.usuario_id = u1.id) WHERE username="' + request.user.username + '")'
+    sql +=' AND b.curso_id IN (SELECT curso_id FROM pertenece WHERE usuario_id = (SELECT id FROM usuario WHERE username = "' + request.user.username + '"))'
+    sql +=' AND id_elemento in (290167, 290168, 290169, 290170, 290171, 290172, 290173, 290174)'  + query_params
+    sql +=' GROUP BY u.id;'
+
+    return sql
+
+def get_Habitacion_Buscado2(request):
+    cursor = get_from_db()
+    query_params = ''
+
+    if request.GET.get('reim') and request.GET.get('reim') != '0':
+        query_params += " AND are.id_reim = " + request.GET.get('reim')
+    if request.GET.get('course') and request.GET.get('course') != '0':
+        query_params += " AND b.curso_id = " + request.GET.get('course')
+    if request.GET.get('school') and request.GET.get('school') != '0':
+        query_params += " AND b.colegio_id = " + request.GET.get('school')
+    if request.GET.get('student') and request.GET.get('student') != '0':
+        query_params += " AND u.id = " + request.GET.get('student')
+    date = get_date_param(request)
+    
+    sql ='SELECT concat(u.nombres ," ", u.apellido_paterno ," ", u.apellido_materno) as nombre,' 
+    sql +=' round(sum(if(id_elemento=290172,1,0))*100/Count(id_elemento),0) as Pasillo'
+    sql +=' FROM  asigna_reim_alumno a'
+    sql +=' RIGHT JOIN alumno_respuesta_actividad are on(are.id_user=a.usuario_id and id_per=periodo_id and id_reim=reim_id and datetime_touch between datetime_inicio and datetime_termino)'
+    sql +=' INNER JOIN elemento e on (e.id=are.id_elemento)'
+    sql +=' INNER JOIN usuario u on (u.id=are.id_user)'
+    sql +=' INNER JOIN pertenece b on (b.usuario_id = are.id_user)'
+    sql +=' WHERE '  + date
+    sql +=' b.colegio_id IN (SELECT colegio_id from pertenece p INNER JOIN usuario u1 ON (p.usuario_id = u1.id) WHERE username="' + request.user.username + '")'
+    sql +=' AND b.curso_id IN (SELECT curso_id FROM pertenece WHERE usuario_id = (SELECT id FROM usuario WHERE username = "' + request.user.username + '"))'
+    sql +=' AND id_elemento in (290167, 290168, 290169, 290170, 290171, 290172, 290173, 290174)'  + query_params
+    sql +=' GROUP BY u.id;'
+
+    return sql
+
+def get_Habitacion_Buscado3(request):
+    cursor = get_from_db()
+    query_params = ''
+
+    if request.GET.get('reim') and request.GET.get('reim') != '0':
+        query_params += " AND are.id_reim = " + request.GET.get('reim')
+    if request.GET.get('course') and request.GET.get('course') != '0':
+        query_params += " AND b.curso_id = " + request.GET.get('course')
+    if request.GET.get('school') and request.GET.get('school') != '0':
+        query_params += " AND b.colegio_id = " + request.GET.get('school')
+    if request.GET.get('student') and request.GET.get('student') != '0':
+        query_params += " AND u.id = " + request.GET.get('student')
+
+    date = get_date_param(request)
+    
+    sql ='SELECT concat(u.nombres ," ", u.apellido_paterno ," ", u.apellido_materno) as nombre,' 
+    sql +=' round(sum(if(id_elemento=290173,1,0))*100/Count(id_elemento),0) as Sala_de_Clases,'
+    sql +=' round(sum(if(id_elemento=290174,1,0))*100/Count(id_elemento),0) as Parque'
+    sql +=' FROM  asigna_reim_alumno a'
+    sql +=' RIGHT JOIN alumno_respuesta_actividad are on(are.id_user=a.usuario_id and id_per=periodo_id and id_reim=reim_id and datetime_touch between datetime_inicio and datetime_termino)'
+    sql +=' INNER JOIN elemento e on (e.id=are.id_elemento)'
+    sql +=' INNER JOIN usuario u on (u.id=are.id_user)'
+    sql +=' INNER JOIN pertenece b on (b.usuario_id = are.id_user)'
+    sql +=' WHERE '  + date
+    sql +=' b.colegio_id IN (SELECT colegio_id from pertenece p INNER JOIN usuario u1 ON (p.usuario_id = u1.id) WHERE username="' + request.user.username + '")'
+    sql +=' AND b.curso_id IN (SELECT curso_id FROM pertenece WHERE usuario_id = (SELECT id FROM usuario WHERE username = "' + request.user.username + '"))'
+    sql +=' AND id_elemento in (290167, 290168, 290169, 290170, 290171, 290172, 290173, 290174)'  + query_params
+    sql +=' GROUP BY u.id;'
+
+    return sql
+
+def get_desafios(request):
+
+    cursor = get_from_db()
+    query_params = ''
+
+    if request.GET.get('reim') and request.GET.get('reim') != '0':
+        query_params += " AND a.reim_id = " + request.GET.get('reim')
+    if request.GET.get('course') and request.GET.get('course') != '0':
+        query_params += " AND b.curso_id = " + request.GET.get('course')
+    if request.GET.get('school') and request.GET.get('school') != '0':
+        query_params += " AND b.colegio_id = " + request.GET.get('school')
+    if request.GET.get('student') and request.GET.get('student') != '0':
+        query_params += " AND u.id = " + request.GET.get('student')
+
+    date = get_date_param(request)
+
+    sql='SELECT concat(u.nombres ," ", u.apellido_paterno ," ", u.apellido_materno) as nombre,if(id_Actividad=9016,"Colores",if(id_Actividad=9017,"Formas",if(id_Actividad=9018,"Vocales",if(id_Actividad=9019,"Números","Otra")))) as actividad, sum(if(id_elemento=290048,1,0))as no_realizado, sum(if(id_elemento=290048,0,if(correcta=1,1,0))) as correctas,sum(if(id_elemento=290048,0,if(correcta=0,1,0))) as incorrectas'
+    sql +=' FROM asigna_reim_alumno a'
+    sql +=' INNER JOIN alumno_respuesta_actividad are on(are.id_user=a.usuario_id and id_per=periodo_id and id_reim=reim_id and datetime_touch between datetime_inicio and datetime_termino)'
+    sql +=' INNER JOIN actividad act on (act.id=id_actividad)'
+    sql +=' INNER JOIN usuario u on (u.id=a.usuario_id)'
+    sql +=' INNER JOIN pertenece b on (b.usuario_id = a.usuario_id)'
+    sql +=' WHERE '  + date
+    sql +=' b.colegio_id IN (SELECT colegio_id from pertenece p INNER JOIN usuario u1 ON (p.usuario_id = u1.id) WHERE username="' + request.user.username + '")'
+    sql +=' AND b.curso_id IN (SELECT curso_id FROM pertenece WHERE usuario_id = (SELECT id FROM usuario WHERE username = "' + request.user.username + '"))'
+    sql +=' and id_elemento not in(290045)' + query_params
+    sql +=' Group by id_actividad;'
+    return sql
+
+def get_desafios_porcentual_colores(request):
+
+    cursor = get_from_db()
+    query_params = ''
+
+    if request.GET.get('reim') and request.GET.get('reim') != '0':
+        query_params += " AND are.id_reim = " + request.GET.get('reim')
+    if request.GET.get('course') and request.GET.get('course') != '0':
+        query_params += " AND b.curso_id = " + request.GET.get('course')
+    if request.GET.get('school') and request.GET.get('school') != '0':
+        query_params += " AND b.colegio_id = " + request.GET.get('school')
+    if request.GET.get('student') and request.GET.get('student') != '0':
+        query_params += " AND u.id = " + request.GET.get('student')
+
+    date = get_date_param(request)
+
+    sql='SELECT DATE_FORMAT(date(datetime_touch), "%d/%m/%Y"), sum(if(correcta=1,1,0)) as corectas, sum(if(correcta=0,1,0)) as corectas'
+    sql +=' FROM asigna_reim_alumno a'
+    sql +=' right JOIN alumno_respuesta_actividad are on(are.id_user=a.usuario_id and id_per=periodo_id and id_reim=reim_id and datetime_touch between datetime_inicio and datetime_termino)'
+    sql +=' INNER JOIN actividad act on (act.id=id_actividad)'
+    sql +=' INNER JOIN usuario u on (u.id=are.id_user)'
+    sql +=' INNER JOIN pertenece b on (b.usuario_id = are.id_user)'
+    sql +=' WHERE '  + date
+    sql +=' b.colegio_id IN (SELECT colegio_id from pertenece p INNER JOIN usuario u1 ON (p.usuario_id = u1.id) WHERE username="' + request.user.username + '")'
+    sql +=' AND b.curso_id IN (SELECT curso_id FROM pertenece WHERE usuario_id = (SELECT id FROM usuario WHERE username = "' + request.user.username + '"))'
+    sql +=' and are.id_elemento in(290078,290079,290080,290081,290577,290578,290579,290580,290581,290582,'
+    sql +=' 290583,290584,290585,290586,290587,290588,290589,290590,290591,'
+    sql +=' 290592,290593,290594,290595,290596,290597,290598,290599,290600,290601,290602,290603,290604)' + query_params
+    sql +=' group by date(datetime_touch)'
+    sql +=' order by date(datetime_touch) asc;'
+    return sql
+
+def get_desafios_porcentual_formas(request):
+
+    cursor = get_from_db()
+    query_params = ''
+
+    if request.GET.get('reim') and request.GET.get('reim') != '0':
+        query_params += " AND are.id_reim = " + request.GET.get('reim')
+    if request.GET.get('course') and request.GET.get('course') != '0':
+        query_params += " AND b.curso_id = " + request.GET.get('course')
+    if request.GET.get('school') and request.GET.get('school') != '0':
+        query_params += " AND b.colegio_id = " + request.GET.get('school')
+    if request.GET.get('student') and request.GET.get('student') != '0':
+        query_params += " AND u.id = " + request.GET.get('student')
+
+    date = get_date_param(request)
+
+    sql='SELECT DATE_FORMAT(date(datetime_touch), "%d/%m/%Y"), sum(if(correcta=1,1,0)) as corectas, sum(if(correcta=0,1,0)) as corectas'
+    sql +=' FROM asigna_reim_alumno a'
+    sql +=' right JOIN alumno_respuesta_actividad are on(are.id_user=a.usuario_id and id_per=periodo_id and id_reim=reim_id and datetime_touch between datetime_inicio and datetime_termino)'
+    sql +=' INNER JOIN actividad act on (act.id=id_actividad)'
+    sql +=' INNER JOIN usuario u on (u.id=are.id_user)'
+    sql +=' INNER JOIN pertenece b on (b.usuario_id = are.id_user)'
+    sql +=' WHERE '  + date
+    sql +=' b.colegio_id IN (SELECT colegio_id from pertenece p INNER JOIN usuario u1 ON (p.usuario_id = u1.id) WHERE username="' + request.user.username + '")'
+    sql +=' AND b.curso_id IN (SELECT curso_id FROM pertenece WHERE usuario_id = (SELECT id FROM usuario WHERE username = "' + request.user.username + '"))'
+    sql +=' and are.id_elemento in(290078,290079,290080,290081,290577,290578,290579,290580,290581,290582,'
+    sql +=' 290583,290584,290585,290586,290587,290588,290589,290590,290591,'
+    sql +=' 290592,290593,290594,290595,290596,290597,290598,290599,290600,290601,290602,290603,290604)' + query_params
+    sql +=' group by date(datetime_touch)'
+    sql +=' order by date(datetime_touch) asc;'
+    return sql
+
+def get_desafios_porcentual_vocales(request):
+
+    cursor = get_from_db()
+    query_params = ''
+
+    if request.GET.get('reim') and request.GET.get('reim') != '0':
+        query_params += " AND are.id_reim = " + request.GET.get('reim')
+    if request.GET.get('course') and request.GET.get('course') != '0':
+        query_params += " AND b.curso_id = " + request.GET.get('course')
+    if request.GET.get('school') and request.GET.get('school') != '0':
+        query_params += " AND b.colegio_id = " + request.GET.get('school')
+    if request.GET.get('student') and request.GET.get('student') != '0':
+        query_params += " AND u.id = " + request.GET.get('student')
+
+    date = get_date_param(request)
+
+    sql='SELECT DATE_FORMAT(date(datetime_touch), "%d/%m/%Y"), sum(if(correcta=1,1,0)) as corectas, sum(if(correcta=0,1,0)) as corectas'
+    sql +=' FROM asigna_reim_alumno a'
+    sql +=' right JOIN alumno_respuesta_actividad are on(are.id_user=a.usuario_id and id_per=periodo_id and id_reim=reim_id and datetime_touch between datetime_inicio and datetime_termino)'
+    sql +=' INNER JOIN actividad act on (act.id=id_actividad)'
+    sql +=' INNER JOIN usuario u on (u.id=are.id_user)'
+    sql +=' INNER JOIN pertenece b on (b.usuario_id = are.id_user)'
+    sql +=' WHERE '  + date
+    sql +=' b.colegio_id IN (SELECT colegio_id from pertenece p INNER JOIN usuario u1 ON (p.usuario_id = u1.id) WHERE username="' + request.user.username + '")'
+    sql +=' AND b.curso_id IN (SELECT curso_id FROM pertenece WHERE usuario_id = (SELECT id FROM usuario WHERE username = "' + request.user.username + '"))'
+    sql +=' and are.id_elemento in(290605,290606,290607,290608,290609)' + query_params
+    sql +=' group by date(datetime_touch)'
+    sql +=' order by date(datetime_touch) asc;'
+    return sql
+
+def get_desafios_porcentual_numeros(request):
+
+    cursor = get_from_db()
+    query_params = ''
+
+    if request.GET.get('reim') and request.GET.get('reim') != '0':
+        query_params += " AND are.id_reim = " + request.GET.get('reim')
+    if request.GET.get('course') and request.GET.get('course') != '0':
+        query_params += " AND b.curso_id = " + request.GET.get('course')
+    if request.GET.get('school') and request.GET.get('school') != '0':
+        query_params += " AND b.colegio_id = " + request.GET.get('school')
+    if request.GET.get('student') and request.GET.get('student') != '0':
+        query_params += " AND u.id = " + request.GET.get('student')
+
+    date = get_date_param(request)
+
+    sql='SELECT DATE_FORMAT(date(datetime_touch), "%d/%m/%Y"), sum(if(correcta=1,1,0)) as corectas, sum(if(correcta=0,1,0)) as corectas'
+    sql +=' FROM asigna_reim_alumno a'
+    sql +=' right JOIN alumno_respuesta_actividad are on(are.id_user=a.usuario_id and id_per=periodo_id and id_reim=reim_id and datetime_touch between datetime_inicio and datetime_termino)'
+    sql +=' INNER JOIN actividad act on (act.id=id_actividad)'
+    sql +=' INNER JOIN usuario u on (u.id=are.id_user)'
+    sql +=' INNER JOIN pertenece b on (b.usuario_id = are.id_user)'
+    sql +=' WHERE '  + date
+    sql +=' b.colegio_id IN (SELECT colegio_id from pertenece p INNER JOIN usuario u1 ON (p.usuario_id = u1.id) WHERE username="' + request.user.username + '")'
+    sql +=' AND b.curso_id IN (SELECT curso_id FROM pertenece WHERE usuario_id = (SELECT id FROM usuario WHERE username = "' + request.user.username + '"))'
+    sql +=' and are.id_elemento in(300205,300206,300207,300208,300209,290610,290611,290612,290613.290614)' + query_params
+    sql +=' group by date(datetime_touch)'
+    sql +=' order by date(datetime_touch) asc;'
+    return sql
+
+def get_no_desafios(request):
+
+    cursor = get_from_db()
+    query_params = ''
+
+    if request.GET.get('reim') and request.GET.get('reim') != '0':
+        query_params += " AND a.reim_id = " + request.GET.get('reim')
+    if request.GET.get('course') and request.GET.get('course') != '0':
+        query_params += " AND b.curso_id = " + request.GET.get('course')
+    if request.GET.get('school') and request.GET.get('school') != '0':
+        query_params += " AND b.colegio_id = " + request.GET.get('school')
+    if request.GET.get('student') and request.GET.get('student') != '0':
+        query_params += " AND u.id = " + request.GET.get('student')
+
+    date = get_date_param(request)
+
+    sql='SELECT if(id_Actividad=9016,"Colores",if(id_Actividad=9017,"Formas",if(id_Actividad=9018,"Vocales",if(id_Actividad=9019,"Números","Otra")))),'
+    sql +=' sum(if(id_elemento=290048,1,0))/count(id_elemento) as no_realizado'
+    sql +=' FROM asigna_reim_alumno a'
+    sql +=' INNER JOIN alumno_respuesta_actividad are on(are.id_user=a.usuario_id and id_per=periodo_id and id_reim=reim_id and datetime_touch between datetime_inicio and datetime_termino)'
+    sql +=' INNER JOIN actividad act on (act.id=id_actividad)'
+    sql +=' INNER JOIN usuario u on (u.id=a.usuario_id)'
+    sql +=' INNER JOIN pertenece b on (b.usuario_id = a.usuario_id)'
+    sql +=' WHERE '  + date
+    sql +=' b.colegio_id IN (SELECT colegio_id from pertenece p INNER JOIN usuario u1 ON (p.usuario_id = u1.id) WHERE username="' + request.user.username + '")'
+    sql +=' AND b.curso_id IN (SELECT curso_id FROM pertenece WHERE usuario_id = (SELECT id FROM usuario WHERE username = "' + request.user.username + '"))'
+    sql +=' and id_elemento not in(290045)' + query_params
+    sql +=' Group by id_actividad;'
+    return sql
+
+def get_colores(request):
+    cursor = get_from_db()
+    query_params = ''
+
+    if request.GET.get('reim') and request.GET.get('reim') != '0':
+        query_params += " AND are.id_reim = " + request.GET.get('reim')
+    if request.GET.get('course') and request.GET.get('course') != '0':
+        query_params += " AND b.curso_id = " + request.GET.get('course')
+    if request.GET.get('school') and request.GET.get('school') != '0':
+        query_params += " AND b.colegio_id = " + request.GET.get('school')
+    if request.GET.get('student') and request.GET.get('student') != '0':
+        query_params += " AND u.id = " + request.GET.get('student')
+
+    date = get_date_param(request)
+
+    sql='SELECT distinct(are.id_elemento),SUBSTRING(descripcion,INSTR(descripcion, " ")) as descripcion,'
+    sql +=' sum(if(correcta=1,1,0)) as corectas,sum(if(correcta=0,1,0)) as incorectas'
+    sql +=' FROM '
+    sql +=' alumno_respuesta_actividad are'
+    sql +=' INNER JOIN detalle_elemento d on (d.id_elemento=are.id_elemento)'
+    sql +=' INNER JOIN actividad act on (act.id=id_actividad)'
+    sql +=' INNER JOIN usuario u on (u.id=are.id_user)'
+    sql +=' INNER JOIN pertenece b on (b.usuario_id = are.id_user)'
+    sql +=' WHERE '  + date
+    sql +=' b.colegio_id IN (SELECT colegio_id from pertenece p INNER JOIN usuario u1 ON (p.usuario_id = u1.id) WHERE username="' + request.user.username + '")'
+    sql +=' AND b.curso_id IN (SELECT curso_id FROM pertenece WHERE usuario_id = (SELECT id FROM usuario WHERE username = "' + request.user.username + '"))'
+    sql +=' and are.id_elemento in(290078,290079,290080,290081,290577,290578,290579,290580,290581,290582,'
+    sql +=' 290583,290584,290585,290586,290587,290588,290589,290590,290591,'
+    sql +=' 290592,290593,290594,290595,290596,290597,290598,290599,290600,290601,290602,290603,290604)' + query_params
+    sql +=' group by SUBSTRING(descripcion,INSTR(descripcion, " "))' 
+    return sql
+
+    
+def get_formas(request):
+    cursor = get_from_db()
+    query_params = ''
+
+    if request.GET.get('reim') and request.GET.get('reim') != '0':
+        query_params += " AND are.id_reim = " + request.GET.get('reim')
+    if request.GET.get('course') and request.GET.get('course') != '0':
+        query_params += " AND b.curso_id = " + request.GET.get('course')
+    if request.GET.get('school') and request.GET.get('school') != '0':
+        query_params += " AND b.colegio_id = " + request.GET.get('school')
+    if request.GET.get('student') and request.GET.get('student') != '0':
+        query_params += " AND u.id = " + request.GET.get('student')
+
+    date = get_date_param(request)
+
+    sql='SELECT distinct(are.id_elemento),MID(descripcion,1,INSTR(descripcion, " ")) as descripcion,'
+    sql +=' sum(if(correcta=1,1,0)) as corectas,sum(if(correcta=0,1,0)) as incorectas'
+    sql +=' FROM  asigna_reim_alumno a'
+    sql +=' INNER JOIN alumno_respuesta_actividad are on(are.id_user=a.usuario_id and id_per=periodo_id and id_reim=reim_id and datetime_touch between datetime_inicio and datetime_termino)'
+    sql +=' INNER JOIN detalle_elemento d on (d.id_elemento=are.id_elemento)'
+    sql +=' INNER JOIN actividad act on (act.id=id_actividad)'
+    sql +=' INNER JOIN usuario u on (u.id=are.id_user)'
+    sql +=' INNER JOIN pertenece b on (b.usuario_id = are.id_user)'
+    sql +=' WHERE '  + date
+    sql +=' b.colegio_id IN (SELECT colegio_id from pertenece p INNER JOIN usuario u1 ON (p.usuario_id = u1.id) WHERE username="' + request.user.username + '")'
+    sql +=' AND b.curso_id IN (SELECT curso_id FROM pertenece WHERE usuario_id = (SELECT id FROM usuario WHERE username = "' + request.user.username + '"))'
+    sql +=' and are.id_elemento in(290078,290079,290080,290081,290577,290578,290579,290580,290581,290582,'
+    sql +=' 290583,290584,290585,290586,290587,290588,290589,290590,290591,'
+    sql +=' 290592,290593,290594,290595,290596,290597,290598,290599,290600,290601,290602,290603,290604)' + query_params
+    sql +=' group by Mid(descripcion,1,INSTR(descripcion, " "))' 
+    return sql
+
+def get_vocales(request):
+    cursor = get_from_db()
+    query_params = ''
+
+    if request.GET.get('reim') and request.GET.get('reim') != '0':
+        query_params += " AND are.id_reim = " + request.GET.get('reim')
+    if request.GET.get('course') and request.GET.get('course') != '0':
+        query_params += " AND b.curso_id = " + request.GET.get('course')
+    if request.GET.get('school') and request.GET.get('school') != '0':
+        query_params += " AND b.colegio_id = " + request.GET.get('school')
+    if request.GET.get('student') and request.GET.get('student') != '0':
+        query_params += " AND u.id = " + request.GET.get('student')
+
+    date = get_date_param(request)
+
+    sql='SELECT distinct(are.id_elemento),descripcion,'
+    sql +=' sum(if(correcta=1,1,0)) as corectas,sum(if(correcta=0,1,0)) as incorectas'
+    sql +=' FROM alumno_respuesta_actividad are'
+    sql +=' INNER JOIN detalle_elemento d on (d.id_elemento=are.id_elemento)'
+    sql +=' INNER JOIN actividad act on (act.id=id_actividad)'
+    sql +=' INNER JOIN usuario u on (u.id=are.id_user)'
+    sql +=' INNER JOIN pertenece b on (b.usuario_id = are.id_user)'
+    sql +=' WHERE '  + date
+    sql +=' b.colegio_id IN (SELECT colegio_id from pertenece p INNER JOIN usuario u1 ON (p.usuario_id = u1.id) WHERE username="' + request.user.username + '")'
+    sql +=' AND b.curso_id IN (SELECT curso_id FROM pertenece WHERE usuario_id = (SELECT id FROM usuario WHERE username = "' + request.user.username + '"))'
+    sql +=' and are.id_elemento in(290605,290606,290607,290608,290609)' + query_params
+    sql +=' group by descripcion' 
+    return sql
+
+def get_numeros(request):
+    cursor = get_from_db()
+    query_params = ''
+
+    if request.GET.get('reim') and request.GET.get('reim') != '0':
+        query_params += " AND are.id_reim = " + request.GET.get('reim')
+    if request.GET.get('course') and request.GET.get('course') != '0':
+        query_params += " AND b.curso_id = " + request.GET.get('course')
+    if request.GET.get('school') and request.GET.get('school') != '0':
+        query_params += " AND b.colegio_id = " + request.GET.get('school')
+    if request.GET.get('student') and request.GET.get('student') != '0':
+        query_params += " AND u.id = " + request.GET.get('student')
+
+    date = get_date_param(request)
+
+    sql='SELECT distinct(are.id_elemento),descripcion,'
+    sql +=' sum(if(correcta=1,1,0)) as corectas,sum(if(correcta=0,1,0)) as incorectas'
+    sql +=' FROM alumno_respuesta_actividad are'
+    sql +=' INNER JOIN detalle_elemento d on (d.id_elemento=are.id_elemento)'
+    sql +=' INNER JOIN actividad act on (act.id=id_actividad)'
+    sql +=' INNER JOIN usuario u on (u.id=are.id_user)'
+    sql +=' INNER JOIN pertenece b on (b.usuario_id = are.id_user)'
+    sql +=' WHERE '  + date
+    sql +=' b.colegio_id IN (SELECT colegio_id from pertenece p INNER JOIN usuario u1 ON (p.usuario_id = u1.id) WHERE username="' + request.user.username + '")'
+    sql +=' AND b.curso_id IN (SELECT curso_id FROM pertenece WHERE usuario_id = (SELECT id FROM usuario WHERE username = "' + request.user.username + '"))'
+    sql +=' and are.id_elemento in(300205,300206,300207,300208,300209,290610,290611,290612,290613.290614)' + query_params
+    sql +=' group by descripcion' 
+    return sql
+
+def get_ordenar(request):
+
+    cursor = get_from_db()
+    query_params = ''
+
+    if request.GET.get('reim') and request.GET.get('reim') != '0':
+        query_params += " AND are.id_reim = " + request.GET.get('reim')
+    if request.GET.get('course') and request.GET.get('course') != '0':
+        query_params += " AND b.curso_id = " + request.GET.get('course')
+    if request.GET.get('school') and request.GET.get('school') != '0':
+        query_params += " AND b.colegio_id = " + request.GET.get('school')
+    if request.GET.get('student') and request.GET.get('student') != '0':
+        query_params += " AND u.id = " + request.GET.get('student')
+    if request.GET.get('activity') and request.GET.get('activity') != '0':
+        query_params += ' AND id_actividad=' + request.GET.get('activity')
+    else:
+        query_params += ' AND id_actividad in (9020,9021,9022,9023,9024,9025,9026,9027)'
+
+    date = get_date_param(request)
+
+    sql='SELECT DATE_FORMAT(date(datetime_touch), "%d/%m/%Y"), sum(if(correcta=1,1,0)) as corectas, sum(if(correcta=0,1,0)) as incorectas'
+    sql +=' FROM asigna_reim_alumno a'
+    sql +=' Right JOIN alumno_respuesta_actividad are on(are.id_user=a.usuario_id and id_per=periodo_id and id_reim=reim_id and datetime_touch between datetime_inicio and datetime_termino)'
+    sql +=' INNER JOIN actividad act on (act.id=id_actividad)'
+    sql +=' INNER JOIN usuario u on (u.id=are.id_user)'
+    sql +=' INNER JOIN pertenece b on (b.usuario_id = are.id_user)'
+    sql +=' WHERE '  + date
+    sql +=' b.colegio_id IN (SELECT colegio_id from pertenece p INNER JOIN usuario u1 ON (p.usuario_id = u1.id) WHERE username="' + request.user.username + '")'
+    sql +=' AND b.curso_id IN (SELECT curso_id FROM pertenece WHERE usuario_id = (SELECT id FROM usuario WHERE username = "' + request.user.username + '"))'
+    sql +=' and are.id_elemento in(300211,300212,300210)' + query_params
+    sql +=' group by date(datetime_touch)'
+    sql +=' order by date(datetime_touch) asc;'
+    return sql
+
+def get_ordenar_resultados(request):
+
+    cursor = get_from_db()
+    query_params = ''
+
+    if request.GET.get('reim') and request.GET.get('reim') != '0':
+        query_params += " AND are.id_reim = " + request.GET.get('reim')
+    if request.GET.get('course') and request.GET.get('course') != '0':
+        query_params += " AND b.curso_id = " + request.GET.get('course')
+    if request.GET.get('school') and request.GET.get('school') != '0':
+        query_params += " AND b.colegio_id = " + request.GET.get('school')
+    if request.GET.get('student') and request.GET.get('student') != '0':
+        query_params += " AND u.id = " + request.GET.get('student')
+    if request.GET.get('activity') and request.GET.get('activity') != '0':
+        query_params += ' AND id_actividad=' + request.GET.get('activity')
+    else:
+        query_params += ' AND id_actividad in (9020,9021,9022,9023,9024,9025,9026,9027)'
+
+    date = get_date_param(request)
+
+    sql='SELECT distinct(are.id_elemento),descripcion, sum(if(correcta=1,1,0)) as corectas,sum(if(correcta=0,1,0)) as incorectas'
+    sql +=' FROM  asigna_reim_alumno a'
+    sql +=' RIGHT JOIN alumno_respuesta_actividad are on(are.id_user=a.usuario_id and id_per=periodo_id and id_reim=reim_id and datetime_touch between datetime_inicio and datetime_termino)'
+    sql +=' INNER JOIN detalle_elemento d on (d.id_elemento=are.id_elemento)'
+    sql +=' INNER JOIN actividad act on (act.id=id_actividad)'
+    sql +=' INNER JOIN usuario u on (u.id=are.id_user)'
+    sql +=' INNER JOIN pertenece b on (b.usuario_id = are.id_user)'
+    sql +=' WHERE '  + date
+    sql +=' b.colegio_id IN (SELECT colegio_id from pertenece p INNER JOIN usuario u1 ON (p.usuario_id = u1.id) WHERE username="' + request.user.username + '")'
+    sql +=' AND b.curso_id IN (SELECT curso_id FROM pertenece WHERE usuario_id = (SELECT id FROM usuario WHERE username = "' + request.user.username + '"))'
+    sql +=' and are.id_elemento in(300211,300212,300210)' + query_params
+    sql +=' group by descripcion order by descripcion asc;'
+    return sql
+
+
+def get_buscar(request):
+
+    cursor = get_from_db()
+    query_params = ''
+
+    if request.GET.get('reim') and request.GET.get('reim') != '0':
+        query_params += " AND are.id_reim = " + request.GET.get('reim')
+    if request.GET.get('course') and request.GET.get('course') != '0':
+        query_params += " AND b.curso_id = " + request.GET.get('course')
+    if request.GET.get('school') and request.GET.get('school') != '0':
+        query_params += " AND b.colegio_id = " + request.GET.get('school')
+    if request.GET.get('student') and request.GET.get('student') != '0':
+        query_params += " AND u.id = " + request.GET.get('student')
+
+    date = get_date_param(request)
+
+    sql='SELECT DATE_FORMAT(date(datetime_touch), "%d/%m/%Y"), sum(if(correcta=1,1,0)) as corectas, sum(if(correcta=0,1,0)) as incorectas'
+    sql +=' FROM asigna_reim_alumno a'
+    sql +=' right JOIN alumno_respuesta_actividad are on(are.id_user=a.usuario_id and id_per=periodo_id and id_reim=reim_id and datetime_touch between datetime_inicio and datetime_termino)'
+    sql +=' INNER JOIN actividad act on (act.id=id_actividad)'
+    sql +=' INNER JOIN usuario u on (u.id=are.id_user)'
+    sql +=' INNER JOIN pertenece b on (b.usuario_id = are.id_user)'
+    sql +=' WHERE '  + date
+    sql +=' b.colegio_id IN (SELECT colegio_id from pertenece p INNER JOIN usuario u1 ON (p.usuario_id = u1.id) WHERE username="' + request.user.username + '")'
+    sql +=' AND b.curso_id IN (SELECT curso_id FROM pertenece WHERE usuario_id = (SELECT id FROM usuario WHERE username = "' + request.user.username + '"))'
+    sql +=' and are.id_elemento in(290087,290093,290099,290102,290106) ' + query_params
+    sql +=' group by date(datetime_touch)'
+    sql +=' order by date(datetime_touch) asc;'
+    return sql
+
+def get_buscarb(request):
+
+    cursor = get_from_db()
+    query_params = ''
+
+    if request.GET.get('reim') and request.GET.get('reim') != '0':
+        query_params += " AND are.id_reim = " + request.GET.get('reim')
+    if request.GET.get('course') and request.GET.get('course') != '0':
+        query_params += " AND b.curso_id = " + request.GET.get('course')
+    if request.GET.get('school') and request.GET.get('school') != '0':
+        query_params += " AND b.colegio_id = " + request.GET.get('school')
+    if request.GET.get('student') and request.GET.get('student') != '0':
+        query_params += " AND u.id = " + request.GET.get('student')
+
+    date = get_date_param(request)
+
+    sql='SELECT DATE_FORMAT(date(datetime_touch), "%d/%m/%Y"), sum(if(correcta=1,1,0)) as corectas, sum(if(correcta=0,1,0)) as incorectas'
+    sql +=' FROM asigna_reim_alumno a'
+    sql +=' right JOIN alumno_respuesta_actividad are on(are.id_user=a.usuario_id and id_per=periodo_id and id_reim=reim_id and datetime_touch between datetime_inicio and datetime_termino)'
+    sql +=' INNER JOIN actividad act on (act.id=id_actividad)'
+    sql +=' INNER JOIN usuario u on (u.id=are.id_user)'
+    sql +=' INNER JOIN pertenece b on (b.usuario_id = are.id_user)'
+    sql +=' WHERE '  + date
+    sql +=' b.colegio_id IN (SELECT colegio_id from pertenece p INNER JOIN usuario u1 ON (p.usuario_id = u1.id) WHERE username="' + request.user.username + '")'
+    sql +=' AND b.curso_id IN (SELECT curso_id FROM pertenece WHERE usuario_id = (SELECT id FROM usuario WHERE username = "' + request.user.username + '"))'
+    sql +=' and are.id_elemento in(290111,290113,290115,290118,290122,290124,290125)' + query_params
+    sql +=' group by date(datetime_touch)'
+    sql +=' order by date(datetime_touch) asc;'
+    return sql
+    
+def get_buscarc(request):
+
+    cursor = get_from_db()
+    query_params = ''
+
+    if request.GET.get('reim') and request.GET.get('reim') != '0':
+        query_params += " AND are.id_reim = " + request.GET.get('reim')
+    if request.GET.get('course') and request.GET.get('course') != '0':
+        query_params += " AND b.curso_id = " + request.GET.get('course')
+    if request.GET.get('school') and request.GET.get('school') != '0':
+        query_params += " AND b.colegio_id = " + request.GET.get('school')
+    if request.GET.get('student') and request.GET.get('student') != '0':
+        query_params += " AND u.id = " + request.GET.get('student')
+
+    date = get_date_param(request)
+
+    sql='SELECT DATE_FORMAT(date(datetime_touch), "%d/%m/%Y"), sum(if(correcta=1,1,0)) as corectas, sum(if(correcta=0,1,0)) as incorectas'
+    sql +=' FROM asigna_reim_alumno a'
+    sql +=' right JOIN alumno_respuesta_actividad are on(are.id_user=a.usuario_id and id_per=periodo_id and id_reim=reim_id and datetime_touch between datetime_inicio and datetime_termino)'
+    sql +=' INNER JOIN actividad act on (act.id=id_actividad)'
+    sql +=' INNER JOIN usuario u on (u.id=are.id_user)'
+    sql +=' INNER JOIN pertenece b on (b.usuario_id = are.id_user)'
+    sql +=' WHERE '  + date
+    sql +=' b.colegio_id IN (SELECT colegio_id from pertenece p INNER JOIN usuario u1 ON (p.usuario_id = u1.id) WHERE username="' + request.user.username + '")'
+    sql +=' AND b.curso_id IN (SELECT curso_id FROM pertenece WHERE usuario_id = (SELECT id FROM usuario WHERE username = "' + request.user.username + '"))'
+    sql +=' and are.id_elemento in(300215,300216,300217,300218,300219,300220,300221)' + query_params
+    sql +=' group by date(datetime_touch)'
+    sql +=' order by date(datetime_touch) asc;'
+    return sql
+    
+def get_buscard(request):
+
+    cursor = get_from_db()
+    query_params = ''
+
+    if request.GET.get('reim') and request.GET.get('reim') != '0':
+        query_params += " AND are.id_reim = " + request.GET.get('reim')
+    if request.GET.get('course') and request.GET.get('course') != '0':
+        query_params += " AND b.curso_id = " + request.GET.get('course')
+    if request.GET.get('school') and request.GET.get('school') != '0':
+        query_params += " AND b.colegio_id = " + request.GET.get('school')
+    if request.GET.get('student') and request.GET.get('student') != '0':
+        query_params += " AND u.id = " + request.GET.get('student')
+
+    date = get_date_param(request)
+
+    sql='SELECT DATE_FORMAT(date(datetime_touch), "%d/%m/%Y"), sum(if(correcta=1,1,0)) as corectas, sum(if(correcta=0,1,0)) as incorectas'
+    sql +=' FROM asigna_reim_alumno a'
+    sql +=' right JOIN alumno_respuesta_actividad are on(are.id_user=a.usuario_id and id_per=periodo_id and id_reim=reim_id and datetime_touch between datetime_inicio and datetime_termino)'
+    sql +=' INNER JOIN actividad act on (act.id=id_actividad)'
+    sql +=' INNER JOIN usuario u on (u.id=are.id_user)'
+    sql +=' INNER JOIN pertenece b on (b.usuario_id = are.id_user)'
+    sql +=' WHERE '  + date
+    sql +=' b.colegio_id IN (SELECT colegio_id from pertenece p INNER JOIN usuario u1 ON (p.usuario_id = u1.id) WHERE username="' + request.user.username + '")'
+    sql +=' AND b.curso_id IN (SELECT curso_id FROM pertenece WHERE usuario_id = (SELECT id FROM usuario WHERE username = "' + request.user.username + '"))'
+    sql +=' and are.id_elemento in(290127,290128,290129,290130,290131,290132,290133,290134,290135,290136,290137,290138,290139,290140,290141)' + query_params
+    sql +=' group by date(datetime_touch)'
+    sql +=' order by date(datetime_touch) asc;'
+    return sql
+    
+def get_buscare(request):
+
+    cursor = get_from_db()
+    query_params = ''
+
+    if request.GET.get('reim') and request.GET.get('reim') != '0':
+        query_params += " AND are.id_reim = " + request.GET.get('reim')
+    if request.GET.get('course') and request.GET.get('course') != '0':
+        query_params += " AND b.curso_id = " + request.GET.get('course')
+    if request.GET.get('school') and request.GET.get('school') != '0':
+        query_params += " AND b.colegio_id = " + request.GET.get('school')
+    if request.GET.get('student') and request.GET.get('student') != '0':
+        query_params += " AND u.id = " + request.GET.get('student')
+
+    date = get_date_param(request)
+
+    sql='SELECT DATE_FORMAT(date(datetime_touch), "%d/%m/%Y"), sum(if(correcta=1,1,0)) as corectas, sum(if(correcta=0,1,0)) as incorectas'
+    sql +=' FROM asigna_reim_alumno a'
+    sql +=' right JOIN alumno_respuesta_actividad are on(are.id_user=a.usuario_id and id_per=periodo_id and id_reim=reim_id and datetime_touch between datetime_inicio and datetime_termino)'
+    sql +=' INNER JOIN actividad act on (act.id=id_actividad)'
+    sql +=' INNER JOIN usuario u on (u.id=are.id_user)'
+    sql +=' INNER JOIN pertenece b on (b.usuario_id = are.id_user)'
+    sql +=' WHERE '  + date
+    sql +=' b.colegio_id IN (SELECT colegio_id from pertenece p INNER JOIN usuario u1 ON (p.usuario_id = u1.id) WHERE username="' + request.user.username + '")'
+    sql +=' AND b.curso_id IN (SELECT curso_id FROM pertenece WHERE usuario_id = (SELECT id FROM usuario WHERE username = "' + request.user.username + '"))'
+    sql +=' and are.id_elemento in (290142,290143,290144,290145,290146,290147,290148,290149,290150,290151,290152,290153,290154,290155,290156,290157,290158,290159,290160,290161,290162,290163) ' + query_params
+    sql +=' group by date(datetime_touch)'
+    sql +=' order by date(datetime_touch) asc;'
+    return sql
+
+def get_buscarf(request):
+
+    cursor = get_from_db()
+    query_params = ''
+
+    if request.GET.get('reim') and request.GET.get('reim') != '0':
+        query_params += " AND are.id_reim = " + request.GET.get('reim')
+    if request.GET.get('course') and request.GET.get('course') != '0':
+        query_params += " AND b.curso_id = " + request.GET.get('course')
+    if request.GET.get('school') and request.GET.get('school') != '0':
+        query_params += " AND b.colegio_id = " + request.GET.get('school')
+    if request.GET.get('student') and request.GET.get('student') != '0':
+        query_params += " AND u.id = " + request.GET.get('student')
+
+    date = get_date_param(request)
+
+    sql='SELECT DATE_FORMAT(date(datetime_touch), "%d/%m/%Y"), sum(if(correcta=1,1,0)) as corectas, sum(if(correcta=0,1,0)) as incorectas'
+    sql +=' FROM asigna_reim_alumno a'
+    sql +=' right JOIN alumno_respuesta_actividad are on(are.id_user=a.usuario_id and id_per=periodo_id and id_reim=reim_id and datetime_touch between datetime_inicio and datetime_termino)'
+    sql +=' INNER JOIN actividad act on (act.id=id_actividad)'
+    sql +=' INNER JOIN usuario u on (u.id=are.id_user)'
+    sql +=' INNER JOIN pertenece b on (b.usuario_id = are.id_user)'
+    sql +=' WHERE '  + date
+    sql +=' b.colegio_id IN (SELECT colegio_id from pertenece p INNER JOIN usuario u1 ON (p.usuario_id = u1.id) WHERE username="' + request.user.username + '")'
+    sql +=' AND b.curso_id IN (SELECT curso_id FROM pertenece WHERE usuario_id = (SELECT id FROM usuario WHERE username = "' + request.user.username + '"))'
+    sql +=' and are.id_elemento in (290084,290086,290088,290094,290095,290096,290100,290103,290107)' + query_params
+    sql +=' group by date(datetime_touch)'
+    sql +=' order by date(datetime_touch) asc;'
+    return sql
+    
+def get_buscarg(request):
+
+    cursor = get_from_db()
+    query_params = ''
+
+    if request.GET.get('reim') and request.GET.get('reim') != '0':
+        query_params += " AND are.id_reim = " + request.GET.get('reim')
+    if request.GET.get('course') and request.GET.get('course') != '0':
+        query_params += " AND b.curso_id = " + request.GET.get('course')
+    if request.GET.get('school') and request.GET.get('school') != '0':
+        query_params += " AND b.colegio_id = " + request.GET.get('school')
+    if request.GET.get('student') and request.GET.get('student') != '0':
+        query_params += " AND u.id = " + request.GET.get('student')
+
+    date = get_date_param(request)
+
+    sql='SELECT DATE_FORMAT(date(datetime_touch), "%d/%m/%Y"), sum(if(correcta=1,1,0)) as corectas, sum(if(correcta=0,1,0)) as incorectas'
+    sql +=' FROM asigna_reim_alumno a'
+    sql +=' right JOIN alumno_respuesta_actividad are on(are.id_user=a.usuario_id and id_per=periodo_id and id_reim=reim_id and datetime_touch between datetime_inicio and datetime_termino)'
+    sql +=' INNER JOIN actividad act on (act.id=id_actividad)'
+    sql +=' INNER JOIN usuario u on (u.id=are.id_user)'
+    sql +=' INNER JOIN pertenece b on (b.usuario_id = are.id_user)'
+    sql +=' WHERE '  + date
+    sql +=' b.colegio_id IN (SELECT colegio_id from pertenece p INNER JOIN usuario u1 ON (p.usuario_id = u1.id) WHERE username="' + request.user.username + '")'
+    sql +=' AND b.curso_id IN (SELECT curso_id FROM pertenece WHERE usuario_id = (SELECT id FROM usuario WHERE username = "' + request.user.username + '"))'
+    sql +=' and are.id_elemento in(290085,290089,290090,290091,290091,290092,290097,290098,290101,290104,290105) ' + query_params
+    sql +=' group by date(datetime_touch)'
+    sql +=' order by date(datetime_touch) asc;'
+    return sql
+
+def get_buscarh(request):
+
+    cursor = get_from_db()
+    query_params = ''
+
+    if request.GET.get('reim') and request.GET.get('reim') != '0':
+        query_params += " AND are.id_reim = " + request.GET.get('reim')
+    if request.GET.get('course') and request.GET.get('course') != '0':
+        query_params += " AND b.curso_id = " + request.GET.get('course')
+    if request.GET.get('school') and request.GET.get('school') != '0':
+        query_params += " AND b.colegio_id = " + request.GET.get('school')
+    if request.GET.get('student') and request.GET.get('student') != '0':
+        query_params += " AND u.id = " + request.GET.get('student')
+
+    date = get_date_param(request)
+
+    sql='SELECT DATE_FORMAT(date(datetime_touch), "%d/%m/%Y"), sum(if(correcta=1,1,0)) as corectas, sum(if(correcta=0,1,0)) as incorectas'
+    sql +=' FROM asigna_reim_alumno a'
+    sql +=' right JOIN alumno_respuesta_actividad are on(are.id_user=a.usuario_id and id_per=periodo_id and id_reim=reim_id and datetime_touch between datetime_inicio and datetime_termino)'
+    sql +=' INNER JOIN actividad act on (act.id=id_actividad)'
+    sql +=' INNER JOIN usuario u on (u.id=are.id_user)'
+    sql +=' INNER JOIN pertenece b on (b.usuario_id = are.id_user)'
+    sql +=' WHERE '  + date
+    sql +=' b.colegio_id IN (SELECT colegio_id from pertenece p INNER JOIN usuario u1 ON (p.usuario_id = u1.id) WHERE username="' + request.user.username + '")'
+    sql +=' AND b.curso_id IN (SELECT curso_id FROM pertenece WHERE usuario_id = (SELECT id FROM usuario WHERE username = "' + request.user.username + '"))'
+    sql +=' and are.id_elemento in (290108,290110,290112,290114,290116,290117,290119,290120,290121,290123,290126)' + query_params
+    sql +=' group by date(datetime_touch)'
+    sql +=' order by date(datetime_touch) asc;'
+    return sql
+
+def get_buscar_resultados(request):
+
+    cursor = get_from_db()
+    query_params = ''
+
+    if request.GET.get('reim') and request.GET.get('reim') != '0':
+        query_params += " AND a.reim_id = " + request.GET.get('reim')
+    if request.GET.get('course') and request.GET.get('course') != '0':
+        query_params += " AND b.curso_id = " + request.GET.get('course')
+    if request.GET.get('school') and request.GET.get('school') != '0':
+        query_params += " AND b.colegio_id = " + request.GET.get('school')
+    if request.GET.get('student') and request.GET.get('student') != '0':
+        query_params += " AND u.id = " + request.GET.get('student')
+
+    date = get_date_param(request)
+
+    sql='SELECT distinct(are.id_elemento),descripcion, sum(if(correcta=1,1,0)) as corectas,sum(if(correcta=0,1,0)) as incorectas'
+    sql +=' FROM  asigna_reim_alumno a'
+    sql +=' INNER JOIN alumno_respuesta_actividad are on(are.id_user=a.usuario_id and id_per=periodo_id and id_reim=reim_id and datetime_touch between datetime_inicio and datetime_termino)'
+    sql +=' INNER JOIN detalle_elemento d on (d.id_elemento=are.id_elemento)'
+    sql +=' INNER JOIN actividad act on (act.id=id_actividad)'
+    sql +=' INNER JOIN usuario u on (u.id=are.id_user)'
+    sql +=' INNER JOIN pertenece b on (b.usuario_id = are.id_user)'
+    sql +=' WHERE '  + date
+    sql +=' b.colegio_id IN (SELECT colegio_id from pertenece p INNER JOIN usuario u1 ON (p.usuario_id = u1.id) WHERE username="' + request.user.username + '")'
+    sql +=' AND b.curso_id IN (SELECT curso_id FROM pertenece WHERE usuario_id = (SELECT id FROM usuario WHERE username = "' + request.user.username + '"))'
+    sql +=' and are.id_elemento in(290087,290093,290099,290102,290106) ' + query_params
+    sql +=' group by descripcion order by descripcion asc;'
+    return sql
+
+def get_buscar_resultadosb(request):
+
+    cursor = get_from_db()
+    query_params = ''
+
+    if request.GET.get('reim') and request.GET.get('reim') != '0':
+        query_params += " AND a.reim_id = " + request.GET.get('reim')
+    if request.GET.get('course') and request.GET.get('course') != '0':
+        query_params += " AND b.curso_id = " + request.GET.get('course')
+    if request.GET.get('school') and request.GET.get('school') != '0':
+        query_params += " AND b.colegio_id = " + request.GET.get('school')
+    if request.GET.get('student') and request.GET.get('student') != '0':
+        query_params += " AND u.id = " + request.GET.get('student')
+
+    date = get_date_param(request)
+
+    sql='SELECT distinct(are.id_elemento),descripcion, sum(if(correcta=1,1,0)) as corectas,sum(if(correcta=0,1,0)) as incorectas'
+    sql +=' FROM  asigna_reim_alumno a'
+    sql +=' INNER JOIN alumno_respuesta_actividad are on(are.id_user=a.usuario_id and id_per=periodo_id and id_reim=reim_id and datetime_touch between datetime_inicio and datetime_termino)'
+    sql +=' INNER JOIN detalle_elemento d on (d.id_elemento=are.id_elemento)'
+    sql +=' INNER JOIN actividad act on (act.id=id_actividad)'
+    sql +=' INNER JOIN usuario u on (u.id=are.id_user)'
+    sql +=' INNER JOIN pertenece b on (b.usuario_id = are.id_user)'
+    sql +=' WHERE '  + date
+    sql +=' b.colegio_id IN (SELECT colegio_id from pertenece p INNER JOIN usuario u1 ON (p.usuario_id = u1.id) WHERE username="' + request.user.username + '")'
+    sql +=' AND b.curso_id IN (SELECT curso_id FROM pertenece WHERE usuario_id = (SELECT id FROM usuario WHERE username = "' + request.user.username + '"))'
+    sql +=' and are.id_elemento in(290111,290113,290115,290118,290122,290124,290125)' + query_params
+    sql +=' group by descripcion order by descripcion asc;'
+    return sql
+
+def get_buscar_resultadosc(request):
+
+    cursor = get_from_db()
+    query_params = ''
+
+    if request.GET.get('reim') and request.GET.get('reim') != '0':
+        query_params += " AND a.reim_id = " + request.GET.get('reim')
+    if request.GET.get('course') and request.GET.get('course') != '0':
+        query_params += " AND b.curso_id = " + request.GET.get('course')
+    if request.GET.get('school') and request.GET.get('school') != '0':
+        query_params += " AND b.colegio_id = " + request.GET.get('school')
+    if request.GET.get('student') and request.GET.get('student') != '0':
+        query_params += " AND u.id = " + request.GET.get('student')
+
+    date = get_date_param(request)
+
+    sql='SELECT distinct(are.id_elemento),descripcion, sum(if(correcta=1,1,0)) as corectas,sum(if(correcta=0,1,0)) as incorectas'
+    sql +=' FROM  asigna_reim_alumno a'
+    sql +=' INNER JOIN alumno_respuesta_actividad are on(are.id_user=a.usuario_id and id_per=periodo_id and id_reim=reim_id and datetime_touch between datetime_inicio and datetime_termino)'
+    sql +=' INNER JOIN detalle_elemento d on (d.id_elemento=are.id_elemento)'
+    sql +=' INNER JOIN actividad act on (act.id=id_actividad)'
+    sql +=' INNER JOIN usuario u on (u.id=are.id_user)'
+    sql +=' INNER JOIN pertenece b on (b.usuario_id = are.id_user)'
+    sql +=' WHERE '  + date
+    sql +=' b.colegio_id IN (SELECT colegio_id from pertenece p INNER JOIN usuario u1 ON (p.usuario_id = u1.id) WHERE username="' + request.user.username + '")'
+    sql +=' AND b.curso_id IN (SELECT curso_id FROM pertenece WHERE usuario_id = (SELECT id FROM usuario WHERE username = "' + request.user.username + '"))'
+    sql +=' and are.id_elemento in(300215,300216,300217,300218,300219,300220,300221)' + query_params
+    sql +=' group by descripcion order by descripcion asc;'
+    return sql
+
+def get_buscar_resultadosd(request):
+
+    cursor = get_from_db()
+    query_params = ''
+
+    if request.GET.get('reim') and request.GET.get('reim') != '0':
+        query_params += " AND a.reim_id = " + request.GET.get('reim')
+    if request.GET.get('course') and request.GET.get('course') != '0':
+        query_params += " AND b.curso_id = " + request.GET.get('course')
+    if request.GET.get('school') and request.GET.get('school') != '0':
+        query_params += " AND b.colegio_id = " + request.GET.get('school')
+    if request.GET.get('student') and request.GET.get('student') != '0':
+        query_params += " AND u.id = " + request.GET.get('student')
+
+    date = get_date_param(request)
+
+    sql='SELECT distinct(are.id_elemento),descripcion, sum(if(correcta=1,1,0)) as corectas,sum(if(correcta=0,1,0)) as incorectas'
+    sql +=' FROM  asigna_reim_alumno a'
+    sql +=' INNER JOIN alumno_respuesta_actividad are on(are.id_user=a.usuario_id and id_per=periodo_id and id_reim=reim_id and datetime_touch between datetime_inicio and datetime_termino)'
+    sql +=' INNER JOIN detalle_elemento d on (d.id_elemento=are.id_elemento)'
+    sql +=' INNER JOIN actividad act on (act.id=id_actividad)'
+    sql +=' INNER JOIN usuario u on (u.id=are.id_user)'
+    sql +=' INNER JOIN pertenece b on (b.usuario_id = are.id_user)'
+    sql +=' WHERE '  + date
+    sql +=' b.colegio_id IN (SELECT colegio_id from pertenece p INNER JOIN usuario u1 ON (p.usuario_id = u1.id) WHERE username="' + request.user.username + '")'
+    sql +=' AND b.curso_id IN (SELECT curso_id FROM pertenece WHERE usuario_id = (SELECT id FROM usuario WHERE username = "' + request.user.username + '"))'
+    sql +=' and are.id_elemento in(290127,290128,290129,290130,290131,290132,290133,290134,290135,290136,290137,290138,290139,290140,290141)' + query_params
+    sql +=' group by descripcion order by descripcion asc;'
+    return sql
+
+def get_buscar_resultadose(request):
+
+    cursor = get_from_db()
+    query_params = ''
+
+    if request.GET.get('reim') and request.GET.get('reim') != '0':
+        query_params += " AND a.reim_id = " + request.GET.get('reim')
+    if request.GET.get('course') and request.GET.get('course') != '0':
+        query_params += " AND b.curso_id = " + request.GET.get('course')
+    if request.GET.get('school') and request.GET.get('school') != '0':
+        query_params += " AND b.colegio_id = " + request.GET.get('school')
+    if request.GET.get('student') and request.GET.get('student') != '0':
+        query_params += " AND u.id = " + request.GET.get('student')
+
+    date = get_date_param(request)
+
+    sql='SELECT distinct(are.id_elemento),descripcion, sum(if(correcta=1,1,0)) as corectas,sum(if(correcta=0,1,0)) as incorectas'
+    sql +=' FROM  asigna_reim_alumno a'
+    sql +=' INNER JOIN alumno_respuesta_actividad are on(are.id_user=a.usuario_id and id_per=periodo_id and id_reim=reim_id and datetime_touch between datetime_inicio and datetime_termino)'
+    sql +=' INNER JOIN detalle_elemento d on (d.id_elemento=are.id_elemento)'
+    sql +=' INNER JOIN actividad act on (act.id=id_actividad)'
+    sql +=' INNER JOIN usuario u on (u.id=are.id_user)'
+    sql +=' INNER JOIN pertenece b on (b.usuario_id = are.id_user)'
+    sql +=' WHERE '  + date
+    sql +=' b.colegio_id IN (SELECT colegio_id from pertenece p INNER JOIN usuario u1 ON (p.usuario_id = u1.id) WHERE username="' + request.user.username + '")'
+    sql +=' AND b.curso_id IN (SELECT curso_id FROM pertenece WHERE usuario_id = (SELECT id FROM usuario WHERE username = "' + request.user.username + '"))'
+    sql +=' and are.id_elemento in (290142,290143,290144,290145,290146,290147,290148,290149,290150,290151,290152,290153,290154,290155,290156,290157,290158,290159,290160,290161,290162,290163)' + query_params
+    sql +=' group by descripcion order by descripcion asc;'
+    return sql
+
+def get_buscar_resultadosf(request):
+
+    cursor = get_from_db()
+    query_params = ''
+
+    if request.GET.get('reim') and request.GET.get('reim') != '0':
+        query_params += " AND a.reim_id = " + request.GET.get('reim')
+    if request.GET.get('course') and request.GET.get('course') != '0':
+        query_params += " AND b.curso_id = " + request.GET.get('course')
+    if request.GET.get('school') and request.GET.get('school') != '0':
+        query_params += " AND b.colegio_id = " + request.GET.get('school')
+    if request.GET.get('student') and request.GET.get('student') != '0':
+        query_params += " AND u.id = " + request.GET.get('student')
+
+    date = get_date_param(request)
+
+    sql='SELECT distinct(are.id_elemento),descripcion, sum(if(correcta=1,1,0)) as corectas,sum(if(correcta=0,1,0)) as incorectas'
+    sql +=' FROM  asigna_reim_alumno a'
+    sql +=' INNER JOIN alumno_respuesta_actividad are on(are.id_user=a.usuario_id and id_per=periodo_id and id_reim=reim_id and datetime_touch between datetime_inicio and datetime_termino)'
+    sql +=' INNER JOIN detalle_elemento d on (d.id_elemento=are.id_elemento)'
+    sql +=' INNER JOIN actividad act on (act.id=id_actividad)'
+    sql +=' INNER JOIN usuario u on (u.id=are.id_user)'
+    sql +=' INNER JOIN pertenece b on (b.usuario_id = are.id_user)'
+    sql +=' WHERE '  + date
+    sql +=' b.colegio_id IN (SELECT colegio_id from pertenece p INNER JOIN usuario u1 ON (p.usuario_id = u1.id) WHERE username="' + request.user.username + '")'
+    sql +=' AND b.curso_id IN (SELECT curso_id FROM pertenece WHERE usuario_id = (SELECT id FROM usuario WHERE username = "' + request.user.username + '"))'
+    sql +=' and are.id_elemento in (290084,290086,290088,290094,290095,290096,290100,290103,290107)  ' + query_params
+    sql +=' group by descripcion order by descripcion asc;'
+    return sql
+
+def get_buscar_resultadosg(request):
+
+    cursor = get_from_db()
+    query_params = ''
+
+    if request.GET.get('reim') and request.GET.get('reim') != '0':
+        query_params += " AND a.reim_id = " + request.GET.get('reim')
+    if request.GET.get('course') and request.GET.get('course') != '0':
+        query_params += " AND b.curso_id = " + request.GET.get('course')
+    if request.GET.get('school') and request.GET.get('school') != '0':
+        query_params += " AND b.colegio_id = " + request.GET.get('school')
+    if request.GET.get('student') and request.GET.get('student') != '0':
+        query_params += " AND u.id = " + request.GET.get('student')
+
+    date = get_date_param(request)
+
+    sql='SELECT distinct(are.id_elemento),descripcion, sum(if(correcta=1,1,0)) as corectas,sum(if(correcta=0,1,0)) as incorectas'
+    sql +=' FROM  asigna_reim_alumno a'
+    sql +=' INNER JOIN alumno_respuesta_actividad are on(are.id_user=a.usuario_id and id_per=periodo_id and id_reim=reim_id and datetime_touch between datetime_inicio and datetime_termino)'
+    sql +=' INNER JOIN detalle_elemento d on (d.id_elemento=are.id_elemento)'
+    sql +=' INNER JOIN actividad act on (act.id=id_actividad)'
+    sql +=' INNER JOIN usuario u on (u.id=are.id_user)'
+    sql +=' INNER JOIN pertenece b on (b.usuario_id = are.id_user)'
+    sql +=' WHERE '  + date
+    sql +=' b.colegio_id IN (SELECT colegio_id from pertenece p INNER JOIN usuario u1 ON (p.usuario_id = u1.id) WHERE username="' + request.user.username + '")'
+    sql +=' AND b.curso_id IN (SELECT curso_id FROM pertenece WHERE usuario_id = (SELECT id FROM usuario WHERE username = "' + request.user.username + '"))'
+    sql +=' and are.id_elemento in(290085,290089,290090,290091,290091,290092,290097,290098,290101,290104,290105) ' + query_params
+    sql +=' group by descripcion order by descripcion asc;'
+    return sql
+
+def get_buscar_resultadosh(request):
+
+    cursor = get_from_db()
+    query_params = ''
+
+    if request.GET.get('reim') and request.GET.get('reim') != '0':
+        query_params += " AND a.reim_id = " + request.GET.get('reim')
+    if request.GET.get('course') and request.GET.get('course') != '0':
+        query_params += " AND b.curso_id = " + request.GET.get('course')
+    if request.GET.get('school') and request.GET.get('school') != '0':
+        query_params += " AND b.colegio_id = " + request.GET.get('school')
+    if request.GET.get('student') and request.GET.get('student') != '0':
+        query_params += " AND u.id = " + request.GET.get('student')
+
+    date = get_date_param(request)
+
+    sql='SELECT distinct(are.id_elemento),descripcion, sum(if(correcta=1,1,0)) as corectas,sum(if(correcta=0,1,0)) as incorectas'
+    sql +=' FROM  asigna_reim_alumno a'
+    sql +=' INNER JOIN alumno_respuesta_actividad are on(are.id_user=a.usuario_id and id_per=periodo_id and id_reim=reim_id and datetime_touch between datetime_inicio and datetime_termino)'
+    sql +=' INNER JOIN detalle_elemento d on (d.id_elemento=are.id_elemento)'
+    sql +=' INNER JOIN actividad act on (act.id=id_actividad)'
+    sql +=' INNER JOIN usuario u on (u.id=are.id_user)'
+    sql +=' INNER JOIN pertenece b on (b.usuario_id = are.id_user)'
+    sql +=' WHERE '  + date
+    sql +=' b.colegio_id IN (SELECT colegio_id from pertenece p INNER JOIN usuario u1 ON (p.usuario_id = u1.id) WHERE username="' + request.user.username + '")'
+    sql +=' AND b.curso_id IN (SELECT curso_id FROM pertenece WHERE usuario_id = (SELECT id FROM usuario WHERE username = "' + request.user.username + '"))'
+    sql +=' and are.id_elemento in (290108,290110,290112,290114,290116,290117,290119,290120,290121,290123,290126) ' + query_params
+    sql +=' group by descripcion order by descripcion asc;'
+    return sql
+
+def get_donaciones(request):
+
+    cursor = get_from_db()
+    query_params = ''
+
+    if request.GET.get('reim') and request.GET.get('reim') != '0':
+        query_params += " AND a.reim_id = " + request.GET.get('reim')
+    if request.GET.get('course') and request.GET.get('course') != '0':
+        query_params += " AND b.curso_id = " + request.GET.get('course')
+    if request.GET.get('school') and request.GET.get('school') != '0':
+        query_params += " AND b.colegio_id = " + request.GET.get('school')
+    if request.GET.get('student') and request.GET.get('student') != '0':
+        query_params += " AND u.id = " + request.GET.get('student')
+
+    date = get_date_param(request)
+
+    sql='SELECT concat(u.nombres ," ", u.apellido_paterno ," ", u.apellido_materno) as nombre, count(correcta) as cantidad'
+    sql +=' FROM  asigna_reim_alumno a '
+    sql +=' INNER JOIN alumno_respuesta_actividad are on(are.id_user=a.usuario_id and id_per=periodo_id and id_reim=reim_id and datetime_touch between datetime_inicio and datetime_termino) '
+    sql +=' INNER JOIN actividad act on (act.id=id_actividad) '
+    sql +=' INNER JOIN usuario u on (u.id=are.id_user) '
+    sql +=' INNER JOIN pertenece b on (b.usuario_id = are.id_user)'
+    sql +=' WHERE '  + date
+    sql +=' b.colegio_id IN (SELECT colegio_id from pertenece p INNER JOIN usuario u1 ON (p.usuario_id = u1.id) WHERE username="' + request.user.username + '")'
+    sql +=' AND b.curso_id IN (SELECT curso_id FROM pertenece WHERE usuario_id = (SELECT id FROM usuario WHERE username = "' + request.user.username + '"))'
+    sql +=' and are.id_elemento in (300222) ' + query_params
+    sql +=' group by u.id order by u.id asc;'
+    return sql
+#FIN Query TOY'S COLECTION
