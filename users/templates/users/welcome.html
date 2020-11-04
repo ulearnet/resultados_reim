@@ -1609,7 +1609,7 @@
             
             <!-- Fin Clean Ocean -->
 
-            {% if student_num == '0' and reim_num != '0' and reim_num != '1' and activity_num == '0' and reim_num != '3' and reim_num != '2' and reim_num != '4' and reim_num != '201' and reim_num != '206' %}
+            {% if student_num == '0' and reim_num != '0' and reim_num != '1' and activity_num == '0' and reim_num != '3' and reim_num != '2' and reim_num != '4' and reim_num != '201' and reim_num != '206' and reim_num != '202'%}
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="row" {% if not activate_graphics %}style="display: none;"{% endif %}>
@@ -1922,7 +1922,7 @@
             
             <!-- Fin Clean Ocean -->
 
-            {% if student_num == '0' and reim_num != '0' and reim_num != '1' and activity_num == '0' and reim_num != '3' and reim_num != '2' and reim_num != '4' and reim_num != '27' and reim_num != '201' and reim_num != '206' %}
+            {% if student_num == '0' and reim_num != '0' and reim_num != '1' and activity_num == '0' and reim_num != '3' and reim_num != '2' and reim_num != '4' and reim_num != '27' and reim_num != '201' and reim_num != '206' and reim_num != '202' %}
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="row" {% if not activate_graphics %}style="display: none;"{% endif %}>
@@ -4652,7 +4652,305 @@
 
                 <!-- FIN BUILD YOUR CITY -->
 
+               <!-- INICIO PROTECT YOUR LAND -->
+                {% if reim_num == '202' %}
+                <div class="wrapper wrapper-content">
+                    <!-- GENERAL RESULTS-->
+                    {% if activity_num == '0' %}
+                        <h1>Resultados Generales REIM: <strong>PROTECT YOUR LAND</strong></h1>
+                        <div style="background-color: #E8E8E8; margin: 30px; text-align: center;">
+                            <img align="center" alt="image" src="{% static 'img/BienvenidaPYL.PNG' %}"/>
+                        </div>
+                        <hr><br>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="row" >
+                                    <div class="col-lg-6">
+                                        <div class="ibox ">
+                                            <div class="ibox-title">
+                                                <h5>Sesiones por alumn@ </h5><span class="  glyphicon glyphicon-info-sign" title="Cantidad de sesiones que cada niñ@ realizó al jugar con Protect Your Land entre las fechas seleccionadas"></span>
+                                                <div class="ibox-tools"></div>
+                                            </div>
+                                            <div class="ibox-content">
+                                                <div class="scroll_content">
+                                                    <canvas id="PyL_NumberOfSessions" height={{PyL_numberOfSessions_GraphSize}}>{% load staticfiles %}</canvas>
 
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="ibox ">
+                                            <div class="ibox-title">
+                                                <h5>Tiempo de juego por alumn@ </h5><span class="  glyphicon glyphicon-info-sign" title="Cantidad de tiempo (min) que cada niñ@ ha jugado con Protect Your Land entre las fechas seleccionadas"></span>
+                                                <div class="ibox-tools"></div>
+                                            </div>
+                                            <div class="ibox-content">
+                                                <div class="scroll_content">
+                                                    <canvas id="PyL_PlayTime" height={{PyL_numberOfSessions_GraphSize}}>{% load staticfiles %}</canvas>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="ibox">
+                                            <div class="ibox-title">
+                                                <h5>Cantidad de touch a la pantalla por alumn@ </h5><span class="  glyphicon glyphicon-info-sign" title="Cantidad de toques a la pantalla que cada niñ@ realizó al jugar con Protect Your Land entre las fechas seleccionadas"></span>
+                                                <div class="ibox-tools"></div>
+                                            </div>
+                                            <div class="ibox-content">
+                                                <div class="scroll_content">
+                                                    <canvas id="PyL_TouchCountInGame" height={{ByC_touchCount_GraphSize}}>{% load staticfiles %}</canvas>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                        <div class="col-lg-6">
+                                            <div class="ibox ">
+                                                <div class="ibox-title">
+                                                    <h5>Preferencia de Actividades </h5><span class="  glyphicon glyphicon-info-sign" title="Numero de ingresos a cada actividad de Protect Your Land entre las fechas seleccionadas"></span>
+                                                    <div class="ibox-tools"></div>
+                                                </div>
+                                                <div class="ibox-content">
+                                                    <div class="scroll_content">
+                                                        <canvas id="PYL_ActivityPreference">{% load staticfiles %}</canvas>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                        {% endif %}
+                        <!-- ACTIVITY 1:FOOTPRINTS - RESULTS: -->
+                         {% if activity_num == '8000' %}
+                           <h1>Resultados Actividad 1 : <strong>FOOTPRINTS</strong></h1>
+                             <div style="background-color: #E8E8E8; margin: 30px; text-align: center;">
+                            <img align="center" alt="image" src="{% static 'img/footprints.PNG' %}"/>
+                        </div>
+                        <hr><br>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="row" >
+                                    <div class="col-lg-6">
+                                        <div class="ibox ">
+                                            <div class="ibox-title">
+                                                <h5>Elementos recolectados durante la locomoción y manipulación del juego </h5><span class="  glyphicon glyphicon-info-sign" title="Cantidad elementos total recolectados por alumn@ durante la manipulación del juego"></span>
+                                                <div class="ibox-tools"></div>
+                                            </div>
+                                            <div class="ibox-content">
+                                                <div class="scroll_content">
+                                                    {% comment %} <canvas id="ByC_NumberOfSessions" height=1620>{% load staticfiles %}</canvas> {% endcomment %}
+                                                    <canvas id="PYL_NumberOfElement" height={{PyL_numberOfSessions_GraphSize}}>{% load staticfiles %}</canvas>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="ibox ">
+                                            <div class="ibox-title">
+                                                <h5>Elementos recolectados durante la locomoción y manipulación del juego en el tiempo </h5><span class="  glyphicon glyphicon-info-sign" title="Cantidad elementos recolectados por sesión durante la manipulación del juego, para ver resultados por estudiante, filtre en la parte superior"></span>
+                                                <div class="ibox-tools"></div>
+                                            </div>
+                                            <div class="ibox-content">
+                                                <div class="scroll_content">
+                                                    {% comment %} <canvas id="ByC_NumberOfSessions" height=1620>{% load staticfiles %}</canvas> {% endcomment %}
+                                                    <canvas id="PyL_ElementsxSession" height={{PyL_numberOfSessions_GraphSize}}>{% load staticfiles %}</canvas>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="ibox ">
+                                            <div class="ibox-title">
+                                                <h5>Tiempo promedio total en segundos logrados sin chocar con un obstáculo  </h5><span class="  glyphicon glyphicon-info-sign" title="Estudiante vs tiempo promedio"></span>
+                                                <div class="ibox-tools"></div>
+                                            </div>
+                                            <div class="ibox-content">
+                                                <div class="scroll_content">
+                                                    {% comment %} <canvas id="ByC_NumberOfSessions" height=1620>{% load staticfiles %}</canvas> {% endcomment %}
+                                                    <canvas id="PYL_timer" height={{PyL_timer_GraphSize}}>{% load staticfiles %}</canvas>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                                                        <div class="col-lg-6">
+                                        <div class="ibox ">
+                                            <div class="ibox-title">
+                                                <h5>Tiempo promedio total en segundos logrados en cada sesión sin chocar con un obstáculo  </h5><span class="  glyphicon glyphicon-info-sign" title="Estudiante vs tiempo promedio"></span>
+                                                <div class="ibox-tools"></div>
+                                            </div>
+                                            <div class="ibox-content">
+                                                <div class="scroll_content">
+                                                    {% comment %} <canvas id="ByC_NumberOfSessions" height=1620>{% load staticfiles %}</canvas> {% endcomment %}
+                                                    <canvas id="PyL_timersession" height={{PyL_timer_GraphSize}}>{% load staticfiles %}</canvas>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+                        <!-- ACTIVITY 2: DRAW SOLUTIONS - RESULTS: -->
+                        {% if activity_num == '8001' %}
+                            <h1>Resultados Actividad : <strong>Draw Solutions</strong></h1>
+                            <div style="background-color: #E8E8E8; margin: 30px; text-align: center;">
+                            <img align="center" alt="image" src="{% static 'img/DrawSolutions.PNG' %}"/>
+                        </div>
+                            <hr><br>
+                         <div class="row">
+                            <div class="col-lg-12">
+                                <div class="row" >
+                                    <div class="col-lg-6">
+                                        <div class="ibox ">
+                                            <div class="ibox-title">
+                                                <h5>Colores utilizados por alumn@ para realizar sus dibujos </h5><span class="  glyphicon glyphicon-info-sign" title="Cantidad de veces que el alumn@ ha seleccionado un tipo de color"></span>
+                                                <div class="ibox-tools"></div>
+                                            </div>
+                                            <div class="ibox-content">
+                                                <div class="scroll_content">
+                                                    {% comment %} <canvas id="ByC_NumberOfSessions" height=1620>{% load staticfiles %}</canvas> {% endcomment %}
+                                                    <canvas id="PYL_Color" height={{PyL_numberOfSessions_GraphSize}}>{% load staticfiles %}</canvas>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="ibox ">
+                                            <div class="ibox-title">
+                                                <h5>Elementos de lenguaje visual utilizados</h5><span class="  glyphicon glyphicon-info-sign" title="Cantidad de veces que el alumn@ ha seleccionado un color"></span>
+                                                <div class="ibox-tools"></div>
+                                            </div>
+                                            <div class="ibox-content">
+                                                <div class="scroll_content">
+                                                    <canvas id="PYL_ColorTimer" height={{PyL_numberOfSessions_GraphSize}}>{% load staticfiles %}</canvas>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="ibox ">
+                                            <div class="ibox-title">
+                                                <h5>Elementos de lenguaje visual utilizados en el tiempo</h5><span class="  glyphicon glyphicon-info-sign" title="Cantidad de veces que el alumn@ ha seleccionado un color por sesión"></span>
+                                                <div class="ibox-tools"></div>
+                                            </div>
+                                            <div class="ibox-content">
+                                                <div class="scroll_content">
+                                                    <canvas id="PYL_ElemVisual" height={{PyL_numberOfSessions_GraphSize}}>{% load staticfiles %}</canvas>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="ibox ">
+                                            <div class="ibox-title">
+                                                <h5>Elementos de lenguaje visual utilizados en el tiempo</h5><span class="  glyphicon glyphicon-info-sign" title="Cantidad de veces que el alumn@ ha seleccionado un color por sesión"></span>
+                                                <div class="ibox-tools"></div>
+                                            </div>
+                                            <div class="ibox-content">
+                                                <div class="scroll_content">
+                                                    <canvas id="PYL_ElemVisualTimer" height={{PyL_numberOfSessions_GraphSize}}>{% load staticfiles %}</canvas>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {% endif %}
+                                        <!-- ACTIVIDAD GALLERY-->
+                    {% if activity_num == '8002' %}
+                        <h1>Resultados Actividad : <strong>Art Gallery</strong></h1>
+                        <div style="background-color: #E8E8E8; margin: 30px; text-align: center;">
+                            <img align="center" alt="image" src="{% static 'img/ArtGallery.PNG' %}"/>
+                        </div>
+                        <hr><br>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="row" >
+                                    <div class="col-lg-6">
+                                        <div class="ibox ">
+                                            <div class="ibox-title">
+                                                <h5>Reacciones ingresadas por estudiantes en la galeria de arte</h5><span class="  glyphicon glyphicon-info-sign" title="Reacciones realizadas por estudiante"></span>
+                                                <div class="ibox-tools"></div>
+                                            </div>
+                                            <div class="ibox-content">
+                                                <div class="scroll_content">
+                                                    {% comment %} <canvas id="ByC_NumberOfSessions" height=1620>{% load staticfiles %}</canvas> {% endcomment %}
+                                                    <canvas id="PYL_emociones" height={{PyL_numberOfSessions_GraphSize}}>{% load staticfiles %}</canvas>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        {% endif %}
+                                      <!-- ACTIVIDAD 4 BUILD YOUR LAND-->
+                    {% if activity_num == '8004' %}
+                        <h1>Resultados Actividad : <strong>BUILD YOUR LAND </strong></h1>
+                        <div style="background-color: #E8E8E8; margin: 30px; text-align: center;">
+                            <img align="center" alt="image" src="{% static 'img/BuildYourLand.PNG' %}"/>
+                        </div>
+                        <hr><br>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="row" >
+                                    <div class="col-lg-6">
+                                        <div class="ibox ">
+                                            <div class="ibox-title">
+                                                <h5>Respuestas correctas e incorrectas por pregunta </h5><span class="  glyphicon glyphicon-info-sign" title="Cantidad de respuestas correctas e incorrectas por pregunta"></span>
+                                                <div class="ibox-tools"></div>
+                                            </div>
+                                            <div class="ibox-content">
+                                                <div class="scroll_content">
+                                                    {% comment %} <canvas id="ByC_NumberOfSessions" height=1620>{% load staticfiles %}</canvas> {% endcomment %}
+                                                    <canvas id="PyL_Answer" height={{PyL_numberOfSessions_GraphSize}}>{% load staticfiles %}</canvas>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="ibox ">
+                                            <div class="ibox-title">
+                                                <h5>Respuestas correctas e incorrectas por objetivo de aprendizaje </h5><span class="  glyphicon glyphicon-info-sign" title="Cantidad de respuestas correctas e incorrectas por objetivo de aprendizaje"></span>
+                                                <div class="ibox-tools"></div>
+                                            </div>
+                                            <div class="ibox-content">
+                                                <div class="scroll_content">
+                                                    {% comment %} <canvas id="ByC_GameTime" height={{game_time_graph}}>{% load staticfiles %}</canvas> {% endcomment %}
+                                                    <canvas id="PyL_AnswerOA" height={{PYL_answerOA_GraphSize}}>{% load staticfiles %}</canvas>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="row">
+
+                        {% endif %}
+
+
+
+                                </div>
+                            </div>
+                        </div>
+                </div>
+
+
+                {% endif %}
+            <!-- FIN PROTEC YOUR LAND-->
 				<!-- INICIO TOYS COLECTION -->
                 {% if reim_num == '205' %}
         
@@ -7091,6 +7389,881 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////FIN BUILD YOUR CITY//////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
+                /////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////PROTECT YOUR LAND////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+        //GRAPHS SETTINGS:
+        //0.- REIM:
+        //0.1.- SESSIONS COUNTER:
+        var PyL_NumberOfSessions_Data = {
+            labels: [
+                //CONNECT WITH BD:
+                {% if PYL_numberOfSessions_Dictionary %}
+                    {% for session in PYL_numberOfSessions_Dictionary %}
+                        '{{session.name}}',
+                    {% endfor%}
+                {% endif%}
+
+            ],
+            datasets: [
+                {
+                    label: "Numero de sesiones iniciadas",
+                    backgroundColor: 'rgb(255,152,0)',
+                    borderColor: "rgb(251,104,0)",
+                    pointBorderColor: "#fff",
+                    data: [
+                        //CONNECT WITH BD:
+                        {% if PYL_numberOfSessions_Dictionary %}
+                            {% for session in PYL_numberOfSessions_Dictionary %}
+                                '{{session.quantity}}',
+                            {% endfor%}
+                        {% endif%}
+
+                    ]
+                }
+            ]
+        };
+
+        //0.2.- PLAY TIME:
+        var PyL_PlayTime_Data = {
+            labels:
+                    [
+                        //CONNECT WITH BD:
+                        {% if PYL_playTime_Dictionary %}
+                            {% for user in PYL_playTime_Dictionary %}
+                                '{{user.name}}',
+                            {% endfor%}
+                        {% endif%}
+
+                    ],
+
+            datasets: [
+                {
+                    label: "Tiempo de juego en minutos",
+                    backgroundColor: 'rgb(33,143,192)',
+                    borderColor: "rgb(33,143,92)",
+                    pointBorderColor: "#fff",
+                    data:
+                        [
+                            //CONNECT WITH BD:
+                            {% if PYL_playTime_Dictionary %}
+                                {% for user in PYL_playTime_Dictionary %}
+                                    '{{user.playTime}}',
+                                {% endfor%}
+                            {% endif%}
+
+
+                        ]
+                }
+            ]
+        };
+
+
+        //0.3.- TOUCH COUNT:
+        var PyL_TouchCountInGame_Data = {
+            labels: [
+                //CONNECT WITH BD:
+
+                {% if PYL_touchCount_Dictionary %}
+                    {% for touch in PYL_touchCount_Dictionary %}
+                        '{{touch.name}}',
+                    {% endfor%}
+                {% endif%}
+
+
+
+            ],
+            datasets: [
+                {
+                    label: "Numero de toques en pantalla",
+                    backgroundColor: 'rgb(92,107,192)',
+                    borderColor: "rgb(63,81,181)",
+                    pointBorderColor: "#fff",
+                    data: [
+                        //CONNECT WITH BD:
+                        {% if PYL_touchCount_Dictionary %}
+                            {% for touch in PYL_touchCount_Dictionary %}
+                                '{{touch.touchCount}}',
+                            {% endfor%}
+                        {% endif%}
+
+
+                    ]
+                }
+            ]
+        };
+                //0.4.- ACTIVITY PREFERENCE:
+        var PYL_ActivityPreference_Data = {
+            labels: [
+                    //CONNECT WITH BD:
+
+                    {% if PYL_activitiesPlayedCounter_Dictionary %}
+                        {% for actividad in PYL_activitiesPlayedCounter_Dictionary %}
+                            '{{actividad.name}}',
+                        {% endfor%}
+                    {% endif%}
+
+
+            ],
+            datasets:
+            [
+                {
+                    backgroundColor: ['rgb(236,112,99)','rgb(175,122,197)','rgb(93,173,226)','rgb(245,176,65)','rgb(253,216,53)','rgb(72,201,176)'],
+                    pointBorderColor: "#fff",
+                    data: [
+                        //CONNECT WITH BD:
+
+                        {% if PYL_activitiesPlayedCounter_Dictionary %}
+                            {% for actividad in PYL_activitiesPlayedCounter_Dictionary %}
+                                '{{actividad.counter}}',
+                            {% endfor%}
+                        {% endif%}
+
+
+                    ]
+                }
+            ]
+        };
+        // ACTIVIDAD FOOTPRINTS
+
+        var PYL_NumberOfElement_Data = {
+            labels: [
+                //CONNECT WITH BD:
+                {% if PYLcorrects_quantity_Dictionary %}
+                    {% for session in PYLcorrects_quantity_Dictionary %}
+                        '{{session.name}}',
+                    {% endfor%}
+                {% endif%}
+
+            ],
+            datasets: [
+                {
+                    label: "Elementos recolectados",
+                    backgroundColor: 'rgb(255,152,0)',
+                    borderColor: "rgb(251,104,0)",
+                    pointBorderColor: "#fff",
+                    data: [
+                        //CONNECT WITH BD:
+                        {% if PYLcorrects_quantity_Dictionary %}
+                            {% for session in PYLcorrects_quantity_Dictionary %}
+                                '{{session.quantity}}',
+                            {% endfor%}
+                        {% endif%}
+                    ]
+                }
+            ]
+        };
+
+        var PyL_ElementsxSession_Data = {
+            labels: [
+                    {% if PYL_correctsxsession_Dictionary %}
+                        {% for elemento in PYL_correctsxsession_Dictionary %}
+                            '{{elemento.fecha}}',
+                        {% endfor%}
+                    {% endif%}
+                ],
+            datasets: [
+                {
+                    label: "Elementos recolectados",
+                    backgroundColor: 'rgb(0,188,212)',
+                    borderColor: "rgb(3,155,229)",
+                    pointBorderColor: "#fff",
+                    data: [
+                        {% if PYL_correctsxsession_Dictionary %}
+                            {% for elemento in PYL_correctsxsession_Dictionary %}
+                                '{{elemento.quantity}}',
+                            {% endfor%}
+                        {% endif%}
+                        ],
+                    fill: false,
+                    pointRadius:7,
+                    pointHoverRadius:10,
+                    showLine:true
+                }
+            ]
+
+        };
+
+        var PYL_Timer_Data = {
+            labels: [
+                //CONNECT WITH BD:
+
+                {% if PYL_timer_Dictionary %}
+                    {% for touch in PYL_timer_Dictionary %}
+                        '{{touch.nombre}}',
+                    {% endfor%}
+                {% endif%}
+                        ],
+            datasets: [
+                {
+                    label: "Tiempo promedio total de permanencia",
+                    backgroundColor: 'rgb(92,107,192)',
+                    borderColor: "rgb(63,81,181)",
+                    pointBorderColor: "#fff",
+                    data: [
+                        //CONNECT WITH BD:
+                        {% if PYL_timer_Dictionary %}
+                            {% for touch in PYL_timer_Dictionary %}
+                                '{{touch.promedio}}',
+                            {% endfor%}
+                        {% endif%}
+                    ]
+                },
+
+            ],
+
+
+        };
+        var PyL_timersession_Data = {
+            labels: [
+                    {% if PYL_timerpromsess_Dictionary %}
+                        {% for elemento in PYL_timerpromsess_Dictionary %}
+                            '{{elemento.fecha}}',
+                        {% endfor%}
+                    {% endif%}
+                ],
+            datasets: [
+                {
+                    label: "Tiempo promedio de permanencia por sesión",
+                    backgroundColor: 'rgb(0,188,212)',
+                    borderColor: "rgb(3,155,229)",
+                    pointBorderColor: "#fff",
+                    data: [
+                        {% if PYL_timerpromsess_Dictionary %}
+                            {% for element in PYL_timerpromsess_Dictionary %}
+                                '{{element.promedio}}',
+                            {% endfor%}
+                        {% endif%}
+                        ],
+                    fill: false,
+                    pointRadius:7,
+                    pointHoverRadius:10,
+                    showLine:true
+                }
+            ]
+
+        };
+
+
+        // ACTIVIDAD DRAW SOLUTIONS
+         //2.1.- ACTIVITY PREFERENCE:
+        var PYL_Color_Data = {
+            labels: [
+                    //CONNECT WITH BD:
+
+                    {% if PYL_color_Dictionary %}
+                        {% for actividad in PYL_color_Dictionary %}
+                            '{{actividad.name}}',
+                        {% endfor%}
+                    {% endif%}
+
+            ],
+            datasets:
+            [
+                {
+                    backgroundColor: ['rgb(231,112,99)','rgb(17,10,220)','rgb(45,213,3)','rgb(245,176,65)','rgb(3,68,68)','rgb(12,11,11)'],
+                    pointBorderColor: "#fff",
+                    data: [
+                        //CONNECT WITH BD:
+
+                        {% if PYL_color_Dictionary %}
+                            {% for actividad in PYL_color_Dictionary %}
+                                '{{actividad.counter}}',
+                            {% endfor%}
+                        {% endif%}
+
+
+                    ]
+                }
+            ]
+        };
+        var PYL_Color_Data = {
+            labels: [
+                {% if PYL_color_Dictionary %}
+                    {% for posicionamiento_PS in PYL_color_Dictionary %}
+                        '{{posicionamiento_PS.name}}',
+                    {% endfor%}
+                {% endif%}
+            ],
+            datasets: [
+                {
+                    label: "Rojo",
+                    backgroundColor: 'rgb(181,34,24)',
+                    borderColor: "rgb(181,34,24)",
+                    pointBorderColor: "#fff",
+                    data: [
+                        {% if PYL_color_Dictionary %}
+                            {% for posicionamiento_PS in PYL_color_Dictionary %}
+                                '{{posicionamiento_PS.Rojo}}',
+                            {% endfor%}
+                        {% endif%}
+                    ]
+                },
+                {
+                    label: "Azúl",
+                    backgroundColor: 'rgb(33,37,175)',
+                    borderColor: "rgb(33,37,175)",
+                    pointBorderColor: "#fff",
+                    data: [
+                        {% if PYL_color_Dictionary %}
+                            {% for posicionamiento_PS in PYL_color_Dictionary %}
+                                '{{posicionamiento_PS.Azul}}',
+                            {% endfor%}
+                        {% endif%}
+                    ]
+                },
+                {
+                    label: "Verde",
+                    backgroundColor: 'rgb(55,175,33)',
+                    borderColor: "rgb(55,175,33)",
+                    pointBorderColor: "#fff",
+                    data: [
+                        {% if PYL_color_Dictionary %}
+                            {% for posicionamiento_PS in PYL_color_Dictionary %}
+                                '{{posicionamiento_PS.Verde}}',
+                            {% endfor%}
+                        {% endif%}
+                    ]
+                },
+                {
+                    label: "Amarillo",
+                    backgroundColor: 'rgb(227,233,45)',
+                    borderColor: "rgb(227,233,45)",
+                    pointBorderColor: "#fff",
+                    data: [
+                        {% if PYL_color_Dictionary %}
+                            {% for posicionamiento_PS in PYL_color_Dictionary %}
+                                '{{posicionamiento_PS.Amarillo}}',
+                            {% endfor%}
+                        {% endif%}
+                    ]
+                },
+                                {
+                    label: "Negro",
+                    backgroundColor: 'rgb(0,0,0)',
+                    borderColor: "rgb(0,0,0)",
+                    pointBorderColor: "#fff",
+                    data: [
+                        {% if PYL_color_Dictionary %}
+                            {% for posicionamiento_PS in PYL_color_Dictionary %}
+                                '{{posicionamiento_PS.Negro}}',
+                            {% endfor%}
+                        {% endif%}
+                    ]
+                },
+            ]
+        };
+
+        var PYL_ColorTimer_Data = {
+            labels: [
+                    {% if PYL_colorxtiempo_Dictionary %}
+                        {% for elemento in PYL_colorxtiempo_Dictionary %}
+                            '{{elemento.fecha}}',
+                        {% endfor%}
+                    {% endif%}
+                ],
+            datasets: [
+                {
+                    label: "Rojo",
+                    backgroundColor: 'rgb(181,34,24)',
+                    borderColor: "rgb(181,34,24)",
+                    pointBorderColor: "#fff",
+                    data: [
+                        {% if PYL_colorxtiempo_Dictionary %}
+                            {% for elemento in PYL_colorxtiempo_Dictionary %}
+                                '{{elemento.Rojo}}',
+                            {% endfor%}
+                        {% endif%}
+                        ],
+                    fill: false,
+                    pointRadius:7,
+                    pointHoverRadius:10,
+                    showLine:true
+                },
+                                {
+                    label: "Azul",
+                    backgroundColor: 'rgb(33,37,175)',
+                    borderColor: "rgb(33,37,175)",
+                    pointBorderColor: "#fff",
+                    data: [
+                        {% if PYL_colorxtiempo_Dictionary %}
+                            {% for elemento in PYL_colorxtiempo_Dictionary %}
+                                '{{elemento.Azul}}',
+                            {% endfor%}
+                        {% endif%}
+                        ],
+                    fill: false,
+                    pointRadius:7,
+                    pointHoverRadius:10,
+                    showLine:true
+                },
+                                                {
+                    label: "Verde",
+                    backgroundColor: 'rgb(55,175,33)',
+                    borderColor: "rgb(55,175,33)",
+                    pointBorderColor: "#fff",
+                    data: [
+                        {% if PYL_colorxtiempo_Dictionary %}
+                            {% for elemento in PYL_colorxtiempo_Dictionary %}
+                                '{{elemento.Verde}}',
+                            {% endfor%}
+                        {% endif%}
+                        ],
+                    fill: false,
+                    pointRadius:7,
+                    pointHoverRadius:10,
+                    showLine:true
+                },
+                                                {
+                    label: "Amarillo",
+                    backgroundColor: 'rgb(227,233,45)',
+                    borderColor: "rgb(227,233,45)",
+                    pointBorderColor: "#fff",
+                    data: [
+                        {% if PYL_colorxtiempo_Dictionary %}
+                            {% for elemento in PYL_colorxtiempo_Dictionary %}
+                                '{{elemento.Amarillo}}',
+                            {% endfor%}
+                        {% endif%}
+                        ],
+                    fill: false,
+                    pointRadius:7,
+                    pointHoverRadius:10,
+                    showLine:true
+                },
+                                                {
+                    label: "Negro",
+                    backgroundColor: 'rgb(0,0,0)',
+                    borderColor: "rgb(0,0,0)",
+                    pointBorderColor: "#fff",
+                    data: [
+                        {% if PYL_colorxtiempo_Dictionary %}
+                            {% for elemento in PYL_colorxtiempo_Dictionary %}
+                                '{{elemento.Negro}}',
+                            {% endfor%}
+                        {% endif%}
+                        ],
+                    fill: false,
+                    pointRadius:7,
+                    pointHoverRadius:10,
+                    showLine:true
+                },
+            ]
+
+        };
+
+        var PYL_ElemVisual_Data = {
+            labels: [
+                {% if PYL_ElemVisual_Dictionary %}
+        {% for posicionamiento_PS in PYL_ElemVisual_Dictionary %}
+        '{{posicionamiento_PS.nombre}}',
+        {% endfor%}
+        {% endif%}
+        ],
+        datasets: [
+            {
+                label: "Intensidad",
+                backgroundColor: 'rgb(236,64,122)',
+                borderColor: "rgb(233,30,99)",
+                pointBorderColor: "#fff",
+                data: [
+                    {% if PYL_ElemVisual_Dictionary %}
+            {% for posicionamiento_PS in PYL_ElemVisual_Dictionary %}
+        '{{posicionamiento_PS.Intensidad}}',
+        {% endfor%}
+        {% endif%}
+        ]
+        },
+        {
+                label: "Grosor",
+                backgroundColor: 'rgb(171,71,188)',
+                borderColor: "rgb(156,39,176)",
+                pointBorderColor: "#fff",
+                data: [
+                    {% if PYL_ElemVisual_Dictionary %}
+            {% for posicionamiento_PS in PYL_ElemVisual_Dictionary %}
+        '{{posicionamiento_PS.Grosor}}',
+        {% endfor%}
+        {% endif%}
+        ]
+        },
+        {
+                label: "Goma",
+                backgroundColor: 'rgb(92,107,192)',
+                borderColor: "rgb(92,107,192)",
+                pointBorderColor: "#fff",
+                data: [
+                    {% if PYL_ElemVisual_Dictionary %}
+            {% for posicionamiento_PS in PYL_ElemVisual_Dictionary %}
+        '{{posicionamiento_PS.Borrar}}',
+        {% endfor%}
+        {% endif%}
+        ]
+        },
+        ]
+        };
+
+        var PYL_ElemVisualTimer_Data = {
+            labels: [
+                    {% if PYL_ElemVisualTimer_Dictionary %}
+                        {% for elemento in PYL_ElemVisualTimer_Dictionary %}
+                            '{{elemento.fecha}}',
+                        {% endfor%}
+                    {% endif%}
+                ],
+            datasets: [
+                {
+                    label: "Intensidad",
+                    backgroundColor: 'rgb(236,64,122)',
+                    borderColor: "rgb(236,64,122)",
+                    pointBorderColor: "#fff",
+                    data: [
+                        {% if PYL_ElemVisualTimer_Dictionary %}
+                            {% for elemento in PYL_ElemVisualTimer_Dictionary %}
+                                '{{elemento.Intensidad}}',
+                            {% endfor%}
+                        {% endif%}
+                        ],
+                    fill: false,
+                    pointRadius:7,
+                    pointHoverRadius:10,
+                    showLine:true
+                },
+                                {
+                    label: "Grosor",
+                    backgroundColor: 'rgb(171,71,188)',
+                    borderColor: "rgb(171,71,188)",
+                    pointBorderColor: "#fff",
+                    data: [
+                        {% if PYL_ElemVisualTimer_Dictionary %}
+                            {% for elemento in PYL_ElemVisualTimer_Dictionary %}
+                                '{{elemento.Grosor}}',
+                            {% endfor%}
+                        {% endif%}
+                        ],
+                    fill: false,
+                    pointRadius:7,
+                    pointHoverRadius:10,
+                    showLine:true
+                },
+                                                {
+                    label: "Goma",
+                    backgroundColor: 'rgb(92,107,192)',
+                    borderColor: "rgb(92,107,192)",
+                    pointBorderColor: "#fff",
+                    data: [
+                        {% if PYL_ElemVisualTimer_Dictionary %}
+                            {% for elemento in PYL_ElemVisualTimer_Dictionary %}
+                                '{{elemento.Goma}}',
+                            {% endfor%}
+                        {% endif%}
+                        ],
+                    fill: false,
+                    pointRadius:7,
+                    pointHoverRadius:10,
+                    showLine:true
+                },
+
+            ]
+
+        };
+
+
+
+        // ACTIVIDAD ART GALLERY
+
+        var PYL_emociones_data = {
+            labels: [
+                {% if PYL_emociones_Dictionary %}
+        {% for posicionamiento_PS in PYL_emociones_Dictionary %}
+        '{{posicionamiento_PS.nombre}}',
+        {% endfor%}
+        {% endif%}
+        ],
+        datasets: [
+            {
+                label: "Sorprendido",
+                backgroundColor: 'rgb(236,64,122)',
+                borderColor: "rgb(233,30,99)",
+                pointBorderColor: "#fff",
+                data: [
+                    {% if PYL_emociones_Dictionary %}
+            {% for posicionamiento_PS in PYL_emociones_Dictionary %}
+        '{{posicionamiento_PS.Sorprendido}}',
+        {% endfor%}
+        {% endif%}
+        ]
+        },
+        {
+                label: "Triste",
+                backgroundColor: 'rgb(171,71,188)',
+                borderColor: "rgb(156,39,176)",
+                pointBorderColor: "#fff",
+                data: [
+                    {% if PYL_emociones_Dictionary %}
+            {% for posicionamiento_PS in PYL_emociones_Dictionary %}
+        '{{posicionamiento_PS.Triste}}',
+        {% endfor%}
+        {% endif%}
+        ]
+        },
+        {
+                label: "Encantado",
+                backgroundColor: 'rgb(92,107,192)',
+                borderColor: "rgb(63,81,181)",
+                pointBorderColor: "#fff",
+                data: [
+                    {% if PYL_emociones_Dictionary %}
+            {% for posicionamiento_PS in PYL_emociones_Dictionary %}
+        '{{posicionamiento_PS.Encantado}}',
+        {% endfor%}
+        {% endif%}
+        ]
+        },
+        {
+                label: "Feliz",
+                backgroundColor: 'rgb(41,182,246)',
+                borderColor: "rgb(3,169,244)",
+                pointBorderColor: "#fff",
+                data: [
+                    {% if PYL_emociones_Dictionary %}
+            {% for posicionamiento_PS in PYL_emociones_Dictionary %}
+        '{{posicionamiento_PS.Feliz}}',
+        {% endfor%}
+        {% endif%}
+        ]
+        },
+        ]
+        };
+
+
+        // ACTIVIDAD BUILD YOUR LAND
+
+        var PyL_Answer_Data = {
+            labels: [
+                //CONNECT WITH BD:
+
+                {% if PYL_answer_Dictionary %}
+                    {% for elemento in PYL_answer_Dictionary %}
+                        '{{elemento.Pregunta}}',
+                    {% endfor%}
+                {% endif%}
+
+            ],
+            datasets: [
+                {
+                    label: "Respuestas correctas",
+                    backgroundColor: 'rgb(75, 192, 192)',//GREEN
+                    pointBorderColor: "#fff",
+                    data: [
+                        //CONNECT WITH BD:
+                        {% if PYL_answer_Dictionary %}
+                            {% for elemento in PYL_answer_Dictionary %}
+                                '{{elemento.Correcta}}',
+                            {% endfor%}
+                        {% endif%}
+
+                    ]
+                },
+                {
+                    label: "Respuestas Incorrectas",
+                    backgroundColor: 'rgb(255, 99, 132)', //RED
+                    pointBorderColor: "#fff",
+                    data: [
+                        //CONNECT WITH BD:
+                        {% if PYL_answer_Dictionary %}
+                            {% for elemento in PYL_answer_Dictionary %}
+                                '{{elemento.Incorrecta}}',
+                            {% endfor%}
+                        {% endif%}
+                    ]
+                }
+            ]
+        };
+
+        var PyL_AnswerOA_Data = {
+            labels: [
+                //CONNECT WITH BD:
+
+                {% if PYL_answerOA_Dictionary %}
+                    {% for elemento in PYL_answerOA_Dictionary %}
+                        '{{elemento.OA}}',
+                    {% endfor%}
+                {% endif%}
+
+            ],
+            datasets: [
+                {
+                    label: "Respuestas correctas",
+                    backgroundColor: 'rgb(10, 192, 192)',//GREEN
+                    pointBorderColor: "#fff",
+                    data: [
+                        //CONNECT WITH BD:
+                        {% if PYL_answerOA_Dictionary %}
+                            {% for elemento in PYL_answerOA_Dictionary %}
+                                '{{elemento.Correcta}}',
+                            {% endfor%}
+                        {% endif%}
+
+                    ]
+                },
+                {
+                    label: "Respuestas Incorrectas",
+                    backgroundColor: 'rgb(255, 99, 132)', //RED
+                    pointBorderColor: "#fff",
+                    data: [
+                        //CONNECT WITH BD:
+                        {% if PYL_answerOA_Dictionary %}
+                            {% for elemento in PYL_answerOA_Dictionary %}
+                                '{{elemento.Incorrecta}}',
+                            {% endfor%}
+                        {% endif%}
+                    ]
+                }
+            ]
+        };
+
+        ////////////////////
+        //GRAPH OPTIONS:
+        ////////////////////
+        var PyL_PieOptions = {
+            scale: {
+                    angleLines: {
+                        display: false
+                    },
+                    ticks: {
+                        suggestedMin: 0,
+                        suggestedMax: 5
+                    }
+                }
+            };
+        var PyL_HorizontalBarOptions = {
+            animation: false,
+            isFixedWidth:true,
+            barWidth:50,
+            barValueSpacing: 1,
+            scales: {
+                xAxes:[{
+                    ticks: {
+                        min: 0,
+                        callback: function(value, index, values) {
+                            if (Math.floor(value) === value) {
+                                return value;
+                            }
+                        }
+                    },
+                }],
+            },
+            display: true,
+        };
+
+        var PyL_LineOptions = {
+            animation: false,
+            scales: {
+                xAxes:[{
+                    stacked:true,
+                    ticks: {
+                        min: 0
+                    }
+                }],
+                yAxes:[{
+                    stacked:false,
+                    ticks: {
+                        min: 0,
+                        max: 100
+                    }
+                }]
+            },
+            display: true
+
+        };
+        //GENERAL RESULTS:
+        if ($('#PyL_PlayTime').length){
+            var ctx = document.getElementById("PyL_PlayTime").getContext("2d");
+            new Chart(ctx, {type: 'horizontalBar', data: PyL_PlayTime_Data, options: PyL_HorizontalBarOptions } );
+        }
+
+        if ($('#PyL_TouchCountInGame').length){
+            var ctx = document.getElementById("PyL_TouchCountInGame").getContext("2d");
+            new Chart(ctx, {type: 'horizontalBar', data: PyL_TouchCountInGame_Data, options: PyL_HorizontalBarOptions } );
+        }
+
+        if ($('#PyL_NumberOfSessions').length){
+            var ctx = document.getElementById("PyL_NumberOfSessions").getContext("2d");
+            new Chart(ctx, {type: 'horizontalBar', data: PyL_NumberOfSessions_Data, options: PyL_HorizontalBarOptions } );
+        }
+
+        if ($('#PYL_ActivityPreference').length){
+            var ctx = document.getElementById("PYL_ActivityPreference").getContext("2d");
+            new Chart(ctx, {type: 'pie', data: PYL_ActivityPreference_Data, options: PyL_PieOptions});
+        }
+
+        // FOOTPRINTS
+
+        if ($('#PYL_NumberOfElement').length){
+            var ctx = document.getElementById("PYL_NumberOfElement").getContext("2d");
+            new Chart(ctx, {type: 'horizontalBar', data: PYL_NumberOfElement_Data, options: PyL_HorizontalBarOptions });
+            }
+        if ($('#PyL_ElementsxSession').length){
+            var ctx17 = document.getElementById("PyL_ElementsxSession").getContext("2d");
+            new Chart(ctx17, {type: 'line', data: PyL_ElementsxSession_Data, options: PyL_LineOptions});
+        }
+        if ($('#PYL_timer').length){
+            var ctx4 = document.getElementById("PYL_timer").getContext("2d");
+            new Chart(ctx4, {type: 'horizontalBar', data: PYL_Timer_Data, options: PyL_HorizontalBarOptions });
+        }
+        if ($('#PyL_timersession').length){
+            var ctx1 = document.getElementById("PyL_timersession").getContext("2d");
+            new Chart(ctx1, {type: 'line', data: PyL_timersession_Data, options: PyL_LineOptions});
+        }
+
+
+        //DRAW SOLUTIONS
+
+        if ($('#PYL_Color').length){
+            var ctx = document.getElementById("PYL_Color").getContext("2d");
+            new Chart(ctx, {type: 'horizontalBar', data: PYL_Color_Data, options: PyL_HorizontalBarOptions});
+        }
+        if ($('#PYL_ColorTimer').length){
+            var ctx = document.getElementById("PYL_ColorTimer").getContext("2d");
+            new Chart(ctx, {type: 'line', data: PYL_ColorTimer_Data, options: PyL_LineOptions});
+        }
+        if ($('#PYL_ElemVisual').length){
+            var ctx = document.getElementById("PYL_ElemVisual").getContext("2d");
+            new Chart(ctx, {type: 'horizontalBar', data: PYL_ElemVisual_Data, options: PyL_HorizontalBarOptions });
+            }
+        if ($('#PYL_ElemVisualTimer').length){
+            var ctx = document.getElementById("PYL_ElemVisualTimer").getContext("2d");
+            new Chart(ctx, {type: 'line', data: PYL_ElemVisualTimer_Data, options: PyL_LineOptions});
+        }
+
+        //GALLERY
+
+        if ($('#PYL_emociones').length){
+            var ctx = document.getElementById("PYL_emociones").getContext("2d");
+            new Chart(ctx, {type: 'horizontalBar', data: PYL_emociones_data, options: PyL_HorizontalBarOptions});
+        }
+
+        //BUILD YOUR LAND
+
+        if ($('#PyL_Answer').length){
+            var ctx = document.getElementById("PyL_Answer").getContext("2d");
+            new Chart(ctx, {type: 'horizontalBar', data: PyL_Answer_Data, options: PyL_HorizontalBarOptions } );
+        }
+
+        if ($('#PyL_AnswerOA').length){
+            var ctx = document.getElementById("PyL_AnswerOA").getContext("2d");
+            new Chart(ctx, {type: 'horizontalBar', data: PyL_AnswerOA_Data, options: PyL_HorizontalBarOptions } );
+        }
+
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////// FIN PROTECT YOUR LAND////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
         //TIEMPO DE JUEGO GENERAL
         var stackedData = {
