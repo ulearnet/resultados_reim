@@ -2753,7 +2753,7 @@ def get_activities_played_counterRC(request):
     if request.GET.get('student') and request.GET.get('student') != '0':
         query_params += ' AND a.usuario_id=' + request.GET.get('student')
 
-    date = get_date_param_alumno_respuesta_actividad(request)
+    date = get_date_param_tiempoxactividad(request)
 
     start_base = 'SELECT a.actividad_id as idElemento, count(1) as counter FROM tiempoxactividad a, usuario u, pertenece b WHERE' + date
     final_base = ' a.usuario_id = u.id && b.usuario_id = a.usuario_id && b.colegio_id IN (SELECT colegio_id from pertenece INNER JOIN usuario ON usuario.id = pertenece.usuario_id WHERE username="' + request.user.username + '") AND b.curso_id IN (SELECT curso_id FROM pertenece WHERE usuario_id = (SELECT id FROM usuario WHERE username = "' + request.user.username + '"))' + ' AND a.actividad_id IN (9005,9006,9007,9008)' + query_params + ' GROUP BY a.actividad_id;'
