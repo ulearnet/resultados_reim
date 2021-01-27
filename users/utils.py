@@ -2,7 +2,7 @@ import pymysql
 from datetime import datetime
 
 def get_from_db():
-    db = pymysql.connect("ulearnet-db.cmfamk37bb89.sa-east-1.rds.amazonaws.com","masterulearnet","aT_1mE27X54mL.2018","ulearnet_reim_pilotaje")
+    db = pymysql.connect("ulearnet-db.cmfamk37bb89.sa-east-1.rds.amazonaws.com","reim_ulearnet","KsclS$AcSx.20Cv83xT","ulearnet_reim_pilotaje")
     cursor = db.cursor()
     return cursor
 
