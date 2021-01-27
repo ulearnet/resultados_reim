@@ -82,7 +82,7 @@ DATABASES = {
         'NAME': 'django_reim',
         'USER': 'masterulearnet',
         'PASSWORD': 'aT_1mE27X54mL.2018',
-        'HOST': 'ulearnet.org',
+        'HOST': 'ulearnet-db.cmfamk37bb89.sa-east-1.rds.amazonaws.com',
         'PORT': '3306',
     }
 }
