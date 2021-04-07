@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '-$1jrkfga@owp%idxu7b2$mnd4*899x8a94bfpgwbe3!kwv6t9'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -81,7 +81,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'django_reim',
         'USER': 'masterulearnet',
-        'PASSWORD': 'aT_1mE27X54mL.2018',
+        'PASSWORD': 'Ulearnet2021.',
         'HOST': 'ulearnet-db.cmfamk37bb89.sa-east-1.rds.amazonaws.com',
         'PORT': '3306',
     }
