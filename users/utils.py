@@ -2,7 +2,7 @@ import pymysql
 from datetime import datetime
 
 def get_from_db():
-    db = pymysql.connect("ulearnet-db.cmfamk37bb89.sa-east-1.rds.amazonaws.com","masterulearnet","aT_1mE27X54mL.2018","ulearnet_reim_pilotaje")
+    db = pymysql.connect("ulearnet-db.cmfamk37bb89.sa-east-1.rds.amazonaws.com","masterulearnet","Ulearnet2021.","ulearnet_reim_pruebas")
     cursor = db.cursor()
     return cursor
 
@@ -1336,7 +1336,7 @@ def get_move_element_query(request):
         end += " 23:59:59.000000"
         date = ' (a.datetime_touch >= TIMESTAMP("'+ start + '") && a.datetime_touch <= TIMESTAMP("' + end  + '")) &&'
 
-    start_base = ' SELECT concat(u.nombres ," ", u.apellido_paterno ," ", u.apellido_materno) as nombre, CEILING(a.fila/100), CEILING(a.columna/100) FROM alumno_respuesta_actividad a, usuario u, pertenece b WHERE' + date
+    start_base = ' SELECT concat(u.nombres ," ", u.apellido_paterno ," ", u.apellido_materno) as nombre, CEILING(a.Eje_X/100), CEILING(a.columna/100) FROM alumno_respuesta_actividad a, usuario u, pertenece b WHERE' + date
     final_base = ' a.id_user = u.id && b.usuario_id = a.id_user' + query_params + ' AND (a.id_elemento= 2133 OR a.id_elemento= 2134 OR a.id_elemento= 2135 OR a.id_elemento= 2136 OR a.id_elemento= 2137 OR a.id_elemento= 2138 OR a.id_elemento= 2139)'
 
     return start_base + final_base
@@ -5450,7 +5450,7 @@ def PYL_getTimer(request):
         query_params += ' AND a.id_user=' + request.GET.get('student')
     date = get_date_param_alumno_respuesta_actividad(request)
 
-    start_base = '  SELECT u.id,  concat(u.nombres ," ", u.apellido_paterno ," ", u.apellido_materno) as nombre, concat(CAST(AVG(a.fila) as DECIMAL(5,2))) as promTiempo FROM alumno_respuesta_actividad a, usuario u, pertenece b WHERE' + date
+    start_base = '  SELECT u.id,  concat(u.nombres ," ", u.apellido_paterno ," ", u.apellido_materno) as nombre, concat(CAST(AVG(a.Eje_X) as DECIMAL(5,2))) as promTiempo FROM alumno_respuesta_actividad a, usuario u, pertenece b WHERE' + date
     final_base = ' a.id_user= u.id && b.usuario_id = a.id_user AND a.id_elemento = 280215 ' + query_params + ' GROUP BY u.id;'
 
     return start_base + final_base
@@ -5489,7 +5489,7 @@ def get_timerpromsess_PYL(request):
 
 
     date = get_date_param_alumno_respuesta_actividad(request)
-    start_base = ' SELECT concat(u.nombres ," ", u.apellido_paterno ," ", u.apellido_materno) as nombre, concat(day(datetime_touch),"/",month(datetime_touch),"/", year(datetime_touch)) AS fecha, concat(CAST(AVG(a.fila) as DECIMAL(6,2))) as promTiempo FROM alumno_respuesta_actividad a, usuario u, pertenece b  WHERE' + date
+    start_base = ' SELECT concat(u.nombres ," ", u.apellido_paterno ," ", u.apellido_materno) as nombre, concat(day(datetime_touch),"/",month(datetime_touch),"/", year(datetime_touch)) AS fecha, concat(CAST(AVG(a.Eje_X) as DECIMAL(6,2))) as promTiempo FROM alumno_respuesta_actividad a, usuario u, pertenece b  WHERE' + date
     final_base = '  a.id_user= u.id && b.usuario_id = a.id_user AND (a.id_elemento=280215) ' + query_params + ' GROUP BY day(a.datetime_touch) ORDER BY a.datetime_touch ASC'
     return start_base + final_base
 
@@ -5647,3 +5647,597 @@ def PYL_Get_AnswerxOA(request):
 
     return start_base + final_base
 ###########FIN PROTECT YOUR LAND
+
+
+###########INICIO SPACEMATH2############
+###GRÁFICAS GENERALES###
+def get_NumberSessionsSPACE(request):
+    query_params = ''
+
+    if request.GET.get('reim') and request.GET.get('reim') != '0':
+        query_params += " AND a.reim_id = " + request.GET.get('reim')
+    if request.GET.get('course') and request.GET.get('course') != '0':
+        query_params += " AND b.curso_id = " + request.GET.get('course')
+    if request.GET.get('school') and request.GET.get('school') != '0':
+        query_params += " AND b.colegio_id = " + request.GET.get('school')
+    if request.GET.get('student') and request.GET.get('student') != '0':
+        query_params += " AND a.usuario_id = " + request.GET.get('student')
+
+    date = get_date_param(request)
+
+    start_base = 'SELECT u.id, concat(u.nombres ," ", u.apellido_paterno ," ", u.apellido_materno) as nombre, count(a.usuario_id) AS Sesiones, b.colegio_id, b.curso_id FROM asigna_reim_alumno a, usuario u, pertenece b WHERE' + date
+    final_base = ' a.usuario_id= u.id && b.usuario_id = a.usuario_id && b.colegio_id IN (SELECT colegio_id from pertenece INNER JOIN usuario ON pertenece.usuario_id = usuario.id WHERE username="' + request.user.username + '") AND b.curso_id IN (SELECT curso_id FROM pertenece WHERE usuario_id = (SELECT id FROM usuario WHERE username = "' + request.user.username + '"))' + query_params + ' GROUP BY u.id'
+
+    return start_base + final_base
+
+def get_playtimeSPACE(request):
+    query_params = ''
+
+    if request.GET.get('reim') and request.GET.get('reim') != '0':
+        query_params += " AND a.reim_id = " + request.GET.get('reim')
+    if request.GET.get('course') and request.GET.get('course') != '0':
+        query_params += " AND c.id = " + request.GET.get('course')
+    if request.GET.get('school') and request.GET.get('school') != '0':
+        query_params += " AND co.id = " + request.GET.get('school')
+    if request.GET.get('student') and request.GET.get('student') != '0':
+        query_params += " AND a.usuario_id = " + request.GET.get('student')
+
+    date = get_date_param(request)
+
+    start_base = "SELECT u.id, concat(nombres ,' ', apellido_paterno , ' ',apellido_materno) as nombre_alumno, IF (ROUND((SUM(TIMESTAMPDIFF(SECOND, datetime_inicio,datetime_termino))))/60<1, 1,ROUND(SUM(TIMESTAMPDIFF(SECOND, datetime_inicio,datetime_termino))/60)) as minutos_juego, co.nombre as Colegio, concat(n.nombre, c.nombre) as Curso FROM asigna_reim_alumno a, usuario u, pertenece p , nivel n , curso c, colegio co WHERE" + date
+    final_base = ' n.id=p.nivel_id and p.curso_id = c.id and  a.usuario_id = u.id and p.usuario_id=u.id and co.id = p.colegio_id AND p.colegio_id IN (SELECT colegio_id FROM pertenece INNER JOIN usuario ON usuario.id = pertenece.usuario_id WHERE username="' + request.user.username + '") AND p.curso_id IN (SELECT curso_id FROM pertenece WHERE usuario_id = (SELECT id FROM usuario WHERE username = "' + request.user.username + '"))' + query_params + ' GROUP BY u.id'
+
+    return start_base + final_base
+
+def get_touch_countSPACE(request):
+    query_params = ''
+    date = ''
+
+    if request.GET.get('reim') and request.GET.get('reim') != '0':
+        query_params = ' AND a.id_reim=' + request.GET.get('reim')
+    if request.GET.get('course') and request.GET.get('course') != '0':
+        query_params += " AND b.curso_id = " + request.GET.get('course')
+    if request.GET.get('school') and request.GET.get('school') != '0':
+        query_params += " AND b.colegio_id = " + request.GET.get('school')
+    if request.GET.get('activity') and request.GET.get('activity') != '0':
+        query_params += ' AND a.id_actividad=' + request.GET.get('activity')
+    if request.GET.get('student') and request.GET.get('student') != '0':
+        query_params += " AND a.id_user = " + request.GET.get('student')
+    print(query_params)
+
+    date = get_date_param_alumno_respuesta_actividad(request)
+
+    start_base = 'SELECT u.id, concat(u.nombres ," " , u.apellido_paterno ," " , u.apellido_materno) as nombre, count(a.id_user) AS CantidadTouch, b.colegio_id, b.curso_id FROM alumno_respuesta_actividad a, usuario u, pertenece b WHERE' + date
+    final_base = ' a.id_user = u.id && b.usuario_id = a.id_user && b.colegio_id IN (SELECT colegio_id from pertenece INNER JOIN usuario ON usuario.id = pertenece.usuario_id WHERE username="' + request.user.username + '") AND b.curso_id IN (SELECT curso_id FROM pertenece WHERE usuario_id = (SELECT id FROM usuario WHERE username = "' + request.user.username + '"))' + query_params + ' GROUP BY id_user'
+
+    return start_base + final_base
+
+def get_activities_played_counterSPACE(request):
+    cursor = get_from_db()
+    query_params = ''
+
+    if request.GET.get('reim') and request.GET.get('reim') != '0':
+        query_params += " AND a.id_reim = " + request.GET.get('reim')
+    if request.GET.get('course') and request.GET.get('course') != '0':
+        query_params += " AND b.curso_id = " + request.GET.get('course')
+    if request.GET.get('school') and request.GET.get('school') != '0':
+        query_params += " AND b.colegio_id = " + request.GET.get('school')
+    if request.GET.get('student') and request.GET.get('student') != '0':
+        query_params += ' AND a.id_user=' + request.GET.get('student')
+
+    date = get_date_param_alumno_respuesta_actividad(request)
+
+    start_base = 'SELECT a.id_elemento as idElemento, count(1) as counter FROM alumno_respuesta_actividad a, usuario u, pertenece b WHERE' + date
+    final_base = ' a.id_user = u.id && b.usuario_id = a.id_user && b.colegio_id IN (SELECT colegio_id from pertenece INNER JOIN usuario ON usuario.id = pertenece.usuario_id WHERE username="' + request.user.username + '") AND b.curso_id IN (SELECT curso_id FROM pertenece WHERE usuario_id = (SELECT id FROM usuario WHERE username = "' + request.user.username + '"))' + ' AND a.id_elemento IN (500005,500006,500007,500008,500011,500054,500000)' + query_params + ' GROUP BY a.id_elemento;'
+
+    return start_base + final_base
+
+###ACTIVIDAD RECOGER SUMINISTROS###
+def get_corrects_SPACE(request):
+
+    query_params = ''
+
+    if request.GET.get('reim') and request.GET.get('reim') != '0':
+        query_params += " AND a.id_reim = " + request.GET.get('reim')
+    if request.GET.get('course') and request.GET.get('course') != '0':
+        query_params += " AND b.curso_id = " + request.GET.get('course')
+    if request.GET.get('school') and request.GET.get('school') != '0':
+        query_params += " AND b.colegio_id = " + request.GET.get('school')
+    if request.GET.get('activity') and request.GET.get('activity') != '0':
+        query_params += " AND a.id_actividad = " + request.GET.get('activity')
+
+
+    date = get_date_param_alumno_respuesta_actividad(request)
+    start_base = 'SELECT u.id, concat(u.nombres ," ", u.apellido_paterno ," ", u.apellido_materno) as nombre, count(if(a.id_elemento=500018,1,NULL)) Correctas , count(if(a.id_elemento=500096,1,NULL)) Incorrectas FROM alumno_respuesta_actividad a, usuario u, pertenece b WHERE' + date
+    final_base = ' a.id_user= u.id && b.usuario_id = a.id_user' + query_params + ' GROUP BY u.id'
+    return start_base + final_base
+
+def get_correctsxsession_SPACE(request):
+
+    query_params = ''
+
+    if request.GET.get('reim') and request.GET.get('reim') != '0':
+        query_params += " AND a.id_reim = " + request.GET.get('reim')
+    if request.GET.get('course') and request.GET.get('course') != '0':
+        query_params += " AND b.curso_id = " + request.GET.get('course')
+    if request.GET.get('school') and request.GET.get('school') != '0':
+        query_params += " AND b.colegio_id = " + request.GET.get('school')
+    if request.GET.get('activity') and request.GET.get('activity') != '0':
+        query_params += " AND a.id_actividad = " + request.GET.get('activity')
+
+
+    date = get_date_param_alumno_respuesta_actividad(request)
+    start_base = 'SELECT concat(u.nombres ," ", u.apellido_paterno ," ", u.apellido_materno) as nombre, concat(day(datetime_touch),"/",month(datetime_touch),"/", year(datetime_touch)) AS fecha, count(a.id_user) AS ocurrecias FROM alumno_respuesta_actividad a, usuario u, pertenece b WHERE' + date
+    final_base = ' a.id_user= u.id && b.usuario_id = a.id_user AND (a.id_elemento=500018) ' + query_params + ' GROUP BY day(a.datetime_touch) ORDER BY a.datetime_touch ASC'
+    return start_base + final_base
+
+def SPACE_getTimer(request):
+    query_params = ''
+
+    if request.GET.get('reim') and request.GET.get('reim') != '0':
+        query_params += " AND a.id_reim = " + request.GET.get('reim')
+    if request.GET.get('course') and request.GET.get('course') != '0':
+        query_params += " AND b.curso_id = " + request.GET.get('course')
+    if request.GET.get('school') and request.GET.get('school') != '0':
+        query_params += " AND b.colegio_id = " + request.GET.get('school')
+    if request.GET.get('student') and request.GET.get('student') != '0':
+        query_params += ' AND a.id_user=' + request.GET.get('student')
+    date = get_date_param_alumno_respuesta_actividad(request)
+
+    start_base = '  SELECT u.id,  concat(u.nombres ," ", u.apellido_paterno ," ", u.apellido_materno) as nombre, concat(CAST(AVG(a.Eje_X) as DECIMAL(5,2))) as promTiempo FROM alumno_respuesta_actividad a, usuario u, pertenece b WHERE' + date
+    final_base = ' a.id_user= u.id && b.usuario_id = a.id_user AND a.id_actividad=11003 ' + query_params + ' GROUP BY u.id;'
+
+    return start_base + final_base
+
+def get_incorrectsxsession_SPACE(request):
+
+    query_params = ''
+
+    if request.GET.get('reim') and request.GET.get('reim') != '0':
+        query_params += " AND a.id_reim = " + request.GET.get('reim')
+    if request.GET.get('course') and request.GET.get('course') != '0':
+        query_params += " AND b.curso_id = " + request.GET.get('course')
+    if request.GET.get('school') and request.GET.get('school') != '0':
+        query_params += " AND b.colegio_id = " + request.GET.get('school')
+    if request.GET.get('activity') and request.GET.get('activity') != '0':
+        query_params += " AND a.id_actividad = " + request.GET.get('activity')
+
+
+    date = get_date_param_alumno_respuesta_actividad(request)
+    start_base = 'SELECT concat(u.nombres ," ", u.apellido_paterno ," ", u.apellido_materno) as nombre, concat(day(datetime_touch),"/",month(datetime_touch),"/", year(datetime_touch)) AS fecha, count(a.id_user) AS ocurrecias FROM alumno_respuesta_actividad a, usuario u, pertenece b WHERE' + date
+    final_base = ' a.id_user= u.id && b.usuario_id = a.id_user AND (a.id_elemento=500096) ' + query_params + ' GROUP BY day(a.datetime_touch) ORDER BY a.datetime_touch ASC'
+    return start_base + final_base
+
+###ACTIVIDAD DESAFIO###
+def get_desafio_SPACE(request):
+
+    query_params = ''
+
+    if request.GET.get('reim') and request.GET.get('reim') != '0':
+        query_params += " AND a.id_reim = " + request.GET.get('reim')
+    if request.GET.get('course') and request.GET.get('course') != '0':
+        query_params += " AND b.curso_id = " + request.GET.get('course')
+    if request.GET.get('school') and request.GET.get('school') != '0':
+        query_params += " AND b.colegio_id = " + request.GET.get('school')
+    if request.GET.get('activity') and request.GET.get('activity') != '0':
+        query_params += " AND a.id_actividad = " + request.GET.get('activity')
+
+
+    date = get_date_param_alumno_respuesta_actividad(request)
+    start_base = 'SELECT u.id, concat(u.nombres ," ", u.apellido_paterno ," ", u.apellido_materno) as nombre, count(if(correcta=1,1,NULL)) Saltos FROM alumno_respuesta_actividad a, usuario u, pertenece b WHERE' + date
+    final_base = ' a.id_user= u.id && b.usuario_id = a.id_user' + query_params + ' GROUP BY u.id'
+    return start_base + final_base
+
+def get_saltosxsession_SPACE(request):
+
+    query_params = ''
+
+    if request.GET.get('reim') and request.GET.get('reim') != '0':
+        query_params += " AND a.id_reim = " + request.GET.get('reim')
+    if request.GET.get('course') and request.GET.get('course') != '0':
+        query_params += " AND b.curso_id = " + request.GET.get('course')
+    if request.GET.get('school') and request.GET.get('school') != '0':
+        query_params += " AND b.colegio_id = " + request.GET.get('school')
+    if request.GET.get('activity') and request.GET.get('activity') != '0':
+        query_params += " AND a.id_actividad = " + request.GET.get('activity')
+
+
+    date = get_date_param_alumno_respuesta_actividad(request)
+    start_base = 'SELECT concat(u.nombres ," ", u.apellido_paterno ," ", u.apellido_materno) as nombre, concat(day(datetime_touch),"/",month(datetime_touch),"/", year(datetime_touch)) AS fecha, count(a.id_user) AS ocurrecias FROM alumno_respuesta_actividad a, usuario u, pertenece b WHERE' + date
+    final_base = ' a.id_user= u.id && b.usuario_id = a.id_user AND (a.id_elemento=500097) ' + query_params + ' GROUP BY day(a.datetime_touch) ORDER BY a.datetime_touch ASC'
+    return start_base + final_base
+
+def SPACE_getTimerDesafio(request):
+    query_params = ''
+
+    if request.GET.get('reim') and request.GET.get('reim') != '0':
+        query_params += " AND a.id_reim = " + request.GET.get('reim')
+    if request.GET.get('course') and request.GET.get('course') != '0':
+        query_params += " AND b.curso_id = " + request.GET.get('course')
+    if request.GET.get('school') and request.GET.get('school') != '0':
+        query_params += " AND b.colegio_id = " + request.GET.get('school')
+    if request.GET.get('student') and request.GET.get('student') != '0':
+        query_params += ' AND a.id_user=' + request.GET.get('student')
+    date = get_date_param_alumno_respuesta_actividad(request)
+
+    start_base = '  SELECT u.id,  concat(u.nombres ," ", u.apellido_paterno ," ", u.apellido_materno) as nombre, concat(CAST(AVG(a.Eje_X) as DECIMAL(5,2))) as promTiempo FROM alumno_respuesta_actividad a, usuario u, pertenece b WHERE' + date
+    final_base = ' a.id_user= u.id && b.usuario_id = a.id_user AND a.id_actividad=11007 ' + query_params + ' GROUP BY u.id;'
+
+    return start_base + final_base
+
+def get_AbandonaDesafioxsession_SPACE(request):
+
+    query_params = ''
+
+    if request.GET.get('reim') and request.GET.get('reim') != '0':
+        query_params += " AND a.id_reim = " + request.GET.get('reim')
+    if request.GET.get('course') and request.GET.get('course') != '0':
+        query_params += " AND b.curso_id = " + request.GET.get('course')
+    if request.GET.get('school') and request.GET.get('school') != '0':
+        query_params += " AND b.colegio_id = " + request.GET.get('school')
+    if request.GET.get('activity') and request.GET.get('activity') != '0':
+        query_params += " AND a.id_actividad = " + request.GET.get('activity')
+
+
+    date = get_date_param_alumno_respuesta_actividad(request)
+    start_base = 'SELECT concat(u.nombres ," ", u.apellido_paterno ," ", u.apellido_materno) as nombre, concat(day(datetime_touch),"/",month(datetime_touch),"/", year(datetime_touch)) AS fecha, count(a.id_user) AS ocurrecias FROM alumno_respuesta_actividad a, usuario u, pertenece b WHERE' + date
+    final_base = ' a.id_user= u.id && b.usuario_id = a.id_user AND (a.id_elemento=500013) ' + query_params + ' GROUP BY day(a.datetime_touch) ORDER BY a.datetime_touch ASC'
+    return start_base + final_base
+
+
+###ACTIVIDAD GUIA LA NAVE###
+def get_NaveIntentos_SPACE(request):
+
+    query_params = ''
+
+    if request.GET.get('reim') and request.GET.get('reim') != '0':
+        query_params += " AND a.id_reim = " + request.GET.get('reim')
+    if request.GET.get('course') and request.GET.get('course') != '0':
+        query_params += " AND b.curso_id = " + request.GET.get('course')
+    if request.GET.get('school') and request.GET.get('school') != '0':
+        query_params += " AND b.colegio_id = " + request.GET.get('school')
+    if request.GET.get('activity') and request.GET.get('activity') != '0':
+        query_params += " AND a.id_actividad = " + request.GET.get('activity')
+
+
+    date = get_date_param_alumno_respuesta_actividad(request)
+    start_base = 'SELECT u.id, concat(u.nombres ," ", u.apellido_paterno ," ", u.apellido_materno) as nombre, count(if(a.id_elemento=500090,1,NULL)) Intentos FROM alumno_respuesta_actividad a, usuario u, pertenece b WHERE' + date
+    final_base = ' a.id_user= u.id && b.usuario_id = a.id_user' + query_params + ' GROUP BY u.id'
+    return start_base + final_base
+
+
+def get_RutasCompletasxsession_SPACE(request):
+
+    query_params = ''
+
+    if request.GET.get('reim') and request.GET.get('reim') != '0':
+        query_params += " AND a.id_reim = " + request.GET.get('reim')
+    if request.GET.get('course') and request.GET.get('course') != '0':
+        query_params += " AND b.curso_id = " + request.GET.get('course')
+    if request.GET.get('school') and request.GET.get('school') != '0':
+        query_params += " AND b.colegio_id = " + request.GET.get('school')
+    if request.GET.get('activity') and request.GET.get('activity') != '0':
+        query_params += " AND a.id_actividad = " + request.GET.get('activity')
+
+
+    date = get_date_param_alumno_respuesta_actividad(request)
+    start_base = 'SELECT concat(u.nombres ," ", u.apellido_paterno ," ", u.apellido_materno) as nombre, concat(day(datetime_touch),"/",month(datetime_touch),"/", year(datetime_touch)) AS fecha, count(a.id_user) AS ocurrecias FROM alumno_respuesta_actividad a, usuario u, pertenece b WHERE' + date
+    final_base = ' a.id_user= u.id && b.usuario_id = a.id_user AND (a.id_elemento=500022) ' + query_params + ' GROUP BY day(a.datetime_touch) ORDER BY a.datetime_touch ASC'
+    return start_base + final_base
+
+def get_Colisionesxsession_SPACE(request):
+
+    query_params = ''
+
+    if request.GET.get('reim') and request.GET.get('reim') != '0':
+        query_params += " AND a.id_reim = " + request.GET.get('reim')
+    if request.GET.get('course') and request.GET.get('course') != '0':
+        query_params += " AND b.curso_id = " + request.GET.get('course')
+    if request.GET.get('school') and request.GET.get('school') != '0':
+        query_params += " AND b.colegio_id = " + request.GET.get('school')
+    if request.GET.get('activity') and request.GET.get('activity') != '0':
+        query_params += " AND a.id_actividad = " + request.GET.get('activity')
+
+
+    date = get_date_param_alumno_respuesta_actividad(request)
+    start_base = 'SELECT concat(u.nombres ," ", u.apellido_paterno ," ", u.apellido_materno) as nombre, concat(day(datetime_touch),"/",month(datetime_touch),"/", year(datetime_touch)) AS fecha, count(a.id_user) AS ocurrecias FROM alumno_respuesta_actividad a, usuario u, pertenece b WHERE' + date
+    final_base = ' a.id_user= u.id && b.usuario_id = a.id_user AND (a.id_elemento=500023) ' + query_params + ' GROUP BY day(a.datetime_touch) ORDER BY a.datetime_touch ASC'
+    return start_base + final_base
+
+def SPACE_getTimerNave(request):
+    query_params = ''
+
+    if request.GET.get('reim') and request.GET.get('reim') != '0':
+        query_params += " AND a.id_reim = " + request.GET.get('reim')
+    if request.GET.get('course') and request.GET.get('course') != '0':
+        query_params += " AND b.curso_id = " + request.GET.get('course')
+    if request.GET.get('school') and request.GET.get('school') != '0':
+        query_params += " AND b.colegio_id = " + request.GET.get('school')
+    if request.GET.get('student') and request.GET.get('student') != '0':
+        query_params += ' AND a.id_user=' + request.GET.get('student')
+    date = get_date_param_alumno_respuesta_actividad(request)
+
+    start_base = '  SELECT u.id,  concat(u.nombres ," ", u.apellido_paterno ," ", u.apellido_materno) as nombre, concat(CAST(AVG(a.Eje_X) as DECIMAL(5,2))) as promTiempo FROM alumno_respuesta_actividad a, usuario u, pertenece b WHERE' + date
+    final_base = ' a.id_user= u.id && b.usuario_id = a.id_user AND a.id_actividad=11004 ' + query_params + ' GROUP BY u.id;'
+
+    return start_base + final_base
+
+###ACTIVIDAD REPITE EL SONIDO###
+def get_sonido_SPACE(request):
+
+    query_params = ''
+
+    if request.GET.get('reim') and request.GET.get('reim') != '0':
+        query_params += " AND a.id_reim = " + request.GET.get('reim')
+    if request.GET.get('course') and request.GET.get('course') != '0':
+        query_params += " AND b.curso_id = " + request.GET.get('course')
+    if request.GET.get('school') and request.GET.get('school') != '0':
+        query_params += " AND b.colegio_id = " + request.GET.get('school')
+    if request.GET.get('activity') and request.GET.get('activity') != '0':
+        query_params += " AND a.id_actividad = " + request.GET.get('activity')
+
+    date = get_date_param_alumno_respuesta_actividad(request)
+    start_base = 'SELECT u.id, concat(u.nombres ," ", u.apellido_paterno ," ", u.apellido_materno) as nombre, count(if(correcta=1,1,NULL)) Saltos FROM alumno_respuesta_actividad a, usuario u, pertenece b WHERE' + date
+    final_base = ' a.id_user= u.id && b.usuario_id = a.id_user' + query_params + ' AND (a.id_elemento BETWEEN 500026 AND 5000029 ) GROUP BY u.id'
+    return start_base + final_base
+
+def get_sonidoIntentoxsession_SPACE(request):
+
+    query_params = ''
+
+    if request.GET.get('reim') and request.GET.get('reim') != '0':
+        query_params += " AND a.id_reim = " + request.GET.get('reim')
+    if request.GET.get('course') and request.GET.get('course') != '0':
+        query_params += " AND b.curso_id = " + request.GET.get('course')
+    if request.GET.get('school') and request.GET.get('school') != '0':
+        query_params += " AND b.colegio_id = " + request.GET.get('school')
+    if request.GET.get('activity') and request.GET.get('activity') != '0':
+        query_params += " AND a.id_actividad = " + request.GET.get('activity')
+
+    date = get_date_param_alumno_respuesta_actividad(request)
+    start_base = 'SELECT concat(u.nombres ," ", u.apellido_paterno ," ", u.apellido_materno) as nombre, concat(day(datetime_touch),"/",month(datetime_touch),"/", year(datetime_touch)) AS fecha, count(if(a.id_elemento=500094,1,NULL)) Intentos, count(if(a.id_elemento=500105,1,NULL)) Correcto FROM alumno_respuesta_actividad a, usuario u, pertenece b WHERE' + date
+    final_base = ' a.id_user= u.id && b.usuario_id = a.id_user  ' + query_params + ' GROUP BY day(a.datetime_touch) ORDER BY a.datetime_touch ASC'
+    return start_base + final_base
+
+def SPACE_getTimerSound(request):
+    query_params = ''
+
+    if request.GET.get('reim') and request.GET.get('reim') != '0':
+        query_params += " AND a.id_reim = " + request.GET.get('reim')
+    if request.GET.get('course') and request.GET.get('course') != '0':
+        query_params += " AND b.curso_id = " + request.GET.get('course')
+    if request.GET.get('school') and request.GET.get('school') != '0':
+        query_params += " AND b.colegio_id = " + request.GET.get('school')
+    if request.GET.get('student') and request.GET.get('student') != '0':
+        query_params += ' AND a.id_user=' + request.GET.get('student')
+    date = get_date_param_alumno_respuesta_actividad(request)
+
+    start_base = '  SELECT u.id,  concat(u.nombres ," ", u.apellido_paterno ," ", u.apellido_materno) as nombre, concat(CAST(AVG(a.Eje_X) as DECIMAL(5,2))) as promTiempo FROM alumno_respuesta_actividad a, usuario u, pertenece b WHERE' + date
+    final_base = ' a.id_user= u.id && b.usuario_id = a.id_user AND a.id_actividad=11005 ' + query_params + ' GROUP BY u.id;'
+
+    return start_base + final_base
+
+def get_TouchxsessionSound_SPACE(request):
+
+    query_params = ''
+
+    if request.GET.get('reim') and request.GET.get('reim') != '0':
+        query_params += " AND a.id_reim = " + request.GET.get('reim')
+    if request.GET.get('course') and request.GET.get('course') != '0':
+        query_params += " AND b.curso_id = " + request.GET.get('course')
+    if request.GET.get('school') and request.GET.get('school') != '0':
+        query_params += " AND b.colegio_id = " + request.GET.get('school')
+    if request.GET.get('activity') and request.GET.get('activity') != '0':
+        query_params += " AND a.id_actividad = " + request.GET.get('activity')
+
+    date = get_date_param_alumno_respuesta_actividad(request)
+    start_base = 'SELECT concat(u.nombres ," ", u.apellido_paterno ," ", u.apellido_materno) as nombre, concat(day(datetime_touch),"/",month(datetime_touch),"/", year(datetime_touch)) AS fecha, count(a.id_user) AS ocurrecias FROM alumno_respuesta_actividad a, usuario u, pertenece b WHERE' + date
+    final_base = ' a.id_user= u.id && b.usuario_id = a.id_user AND (a.id_elemento BETWEEN 500026 AND 5000029 ) ' + query_params + ' GROUP BY day(a.datetime_touch) ORDER BY a.datetime_touch ASC'
+    return start_base + final_base
+
+###ACTIVIDAD LIMPIA EL ESPACIO###
+def get_espacio_SPACE(request):
+
+    query_params = ''
+
+    if request.GET.get('reim') and request.GET.get('reim') != '0':
+        query_params += " AND a.id_reim = " + request.GET.get('reim')
+    if request.GET.get('course') and request.GET.get('course') != '0':
+        query_params += " AND b.curso_id = " + request.GET.get('course')
+    if request.GET.get('school') and request.GET.get('school') != '0':
+        query_params += " AND b.colegio_id = " + request.GET.get('school')
+    if request.GET.get('activity') and request.GET.get('activity') != '0':
+        query_params += " AND a.id_actividad = " + request.GET.get('activity')
+
+
+    date = get_date_param_alumno_respuesta_actividad(request)
+    start_base = 'SELECT u.id, concat(u.nombres ," ", u.apellido_paterno ," ", u.apellido_materno) as nombre, count(if(a.id_elemento=500032,1,NULL)) Recogidos, count(if(a.id_elemento=500098,1,NULL)) Colisionados FROM alumno_respuesta_actividad a, usuario u, pertenece b WHERE' + date
+    final_base = ' a.id_user= u.id && b.usuario_id = a.id_user' + query_params + ' GROUP BY u.id'
+    return start_base + final_base
+
+def get_CorrectoxsessionLE_SPACE(request):
+
+    query_params = ''
+
+    if request.GET.get('reim') and request.GET.get('reim') != '0':
+        query_params += " AND a.id_reim = " + request.GET.get('reim')
+    if request.GET.get('course') and request.GET.get('course') != '0':
+        query_params += " AND b.curso_id = " + request.GET.get('course')
+    if request.GET.get('school') and request.GET.get('school') != '0':
+        query_params += " AND b.colegio_id = " + request.GET.get('school')
+    if request.GET.get('activity') and request.GET.get('activity') != '0':
+        query_params += " AND a.id_actividad = " + request.GET.get('activity')
+
+    date = get_date_param_alumno_respuesta_actividad(request)
+    start_base = 'SELECT concat(u.nombres ," ", u.apellido_paterno ," ", u.apellido_materno) as nombre, concat(day(datetime_touch),"/",month(datetime_touch),"/", year(datetime_touch)) AS fecha, count(a.id_user) AS ocurrecias FROM alumno_respuesta_actividad a, usuario u, pertenece b WHERE' + date
+    final_base = ' a.id_user= u.id && b.usuario_id = a.id_user AND (a.id_elemento=500032) ' + query_params + ' GROUP BY day(a.datetime_touch) ORDER BY a.datetime_touch ASC'
+    return start_base + final_base
+
+def get_IncorrectoxsessionLE_SPACE(request):
+
+    query_params = ''
+
+    if request.GET.get('reim') and request.GET.get('reim') != '0':
+        query_params += " AND a.id_reim = " + request.GET.get('reim')
+    if request.GET.get('course') and request.GET.get('course') != '0':
+        query_params += " AND b.curso_id = " + request.GET.get('course')
+    if request.GET.get('school') and request.GET.get('school') != '0':
+        query_params += " AND b.colegio_id = " + request.GET.get('school')
+    if request.GET.get('activity') and request.GET.get('activity') != '0':
+        query_params += " AND a.id_actividad = " + request.GET.get('activity')
+
+    date = get_date_param_alumno_respuesta_actividad(request)
+    start_base = 'SELECT concat(u.nombres ," ", u.apellido_paterno ," ", u.apellido_materno) as nombre, concat(day(datetime_touch),"/",month(datetime_touch),"/", year(datetime_touch)) AS fecha, count(a.id_user) AS ocurrecias FROM alumno_respuesta_actividad a, usuario u, pertenece b WHERE' + date
+    final_base = ' a.id_user= u.id && b.usuario_id = a.id_user AND (a.id_elemento=500098) ' + query_params + ' GROUP BY day(a.datetime_touch) ORDER BY a.datetime_touch ASC'
+    return start_base + final_base
+
+def SPACE_getTimerEspacio(request):
+    query_params = ''
+
+    if request.GET.get('reim') and request.GET.get('reim') != '0':
+        query_params += " AND a.id_reim = " + request.GET.get('reim')
+    if request.GET.get('course') and request.GET.get('course') != '0':
+        query_params += " AND b.curso_id = " + request.GET.get('course')
+    if request.GET.get('school') and request.GET.get('school') != '0':
+        query_params += " AND b.colegio_id = " + request.GET.get('school')
+    if request.GET.get('student') and request.GET.get('student') != '0':
+        query_params += ' AND a.id_user=' + request.GET.get('student')
+    date = get_date_param_alumno_respuesta_actividad(request)
+
+    start_base = '  SELECT u.id,  concat(u.nombres ," ", u.apellido_paterno ," ", u.apellido_materno) as nombre, concat(CAST(AVG(a.Eje_X) as DECIMAL(5,2))) as promTiempo FROM alumno_respuesta_actividad a, usuario u, pertenece b WHERE' + date
+    final_base = ' a.id_user= u.id && b.usuario_id = a.id_user AND a.id_actividad=11006 ' + query_params + ' GROUP BY u.id;'
+
+    return start_base + final_base
+
+###ACTIVIDAD CONSTRUIR HUERTO###
+def get_huertoxsession_SPACE(request):
+
+    query_params = ''
+
+    if request.GET.get('reim') and request.GET.get('reim') != '0':
+        query_params += " AND a.id_reim = " + request.GET.get('reim')
+    if request.GET.get('course') and request.GET.get('course') != '0':
+        query_params += " AND b.curso_id = " + request.GET.get('course')
+    if request.GET.get('school') and request.GET.get('school') != '0':
+        query_params += " AND b.colegio_id = " + request.GET.get('school')
+    if request.GET.get('activity') and request.GET.get('activity') != '0':
+        query_params += " AND a.id_actividad = " + request.GET.get('activity')
+
+    date = get_date_param_alumno_respuesta_actividad(request)
+    start_base = 'SELECT concat(u.nombres ," ", u.apellido_paterno ," ", u.apellido_materno) as nombre, concat(day(datetime_touch),"/",month(datetime_touch),"/", year(datetime_touch)) AS fecha, count(if(a.id_elemento=500050,1,NULL)) Regar, count(if(a.id_elemento=500107,1,NULL)) Sol FROM alumno_respuesta_actividad a, usuario u, pertenece b WHERE' + date
+    final_base = ' a.id_user= u.id && b.usuario_id = a.id_user  ' + query_params + ' GROUP BY day(a.datetime_touch) ORDER BY a.datetime_touch ASC'
+    return start_base + final_base
+
+
+def get_compartirxsession_SPACE(request):
+
+    query_params = ''
+
+    if request.GET.get('reim') and request.GET.get('reim') != '0':
+        query_params += " AND a.id_reim = " + request.GET.get('reim')
+    if request.GET.get('course') and request.GET.get('course') != '0':
+        query_params += " AND b.curso_id = " + request.GET.get('course')
+    if request.GET.get('school') and request.GET.get('school') != '0':
+        query_params += " AND b.colegio_id = " + request.GET.get('school')
+    if request.GET.get('activity') and request.GET.get('activity') != '0':
+        query_params += " AND a.id_actividad = " + request.GET.get('activity')
+
+
+    date = get_date_param_alumno_respuesta_actividad(request)
+    start_base = 'SELECT concat(u.nombres ," ", u.apellido_paterno ," ", u.apellido_materno) as nombre, concat(day(datetime_touch),"/",month(datetime_touch),"/", year(datetime_touch)) AS fecha, count(a.id_user) AS ocurrecias FROM alumno_respuesta_actividad a, usuario u, pertenece b WHERE' + date
+    final_base = ' a.id_user= u.id && b.usuario_id = a.id_user AND (a.id_elemento=500054) ' + query_params + ' GROUP BY day(a.datetime_touch) ORDER BY a.datetime_touch ASC'
+    return start_base + final_base
+
+def get_elementoshuerto_SPACE(request):
+
+    query_params = ''
+
+    if request.GET.get('reim') and request.GET.get('reim') != '0':
+        query_params += " AND a.id_reim = " + request.GET.get('reim')
+    if request.GET.get('course') and request.GET.get('course') != '0':
+        query_params += " AND b.curso_id = " + request.GET.get('course')
+    if request.GET.get('school') and request.GET.get('school') != '0':
+        query_params += " AND b.colegio_id = " + request.GET.get('school')
+    if request.GET.get('activity') and request.GET.get('activity') != '0':
+        query_params += " AND a.id_actividad = " + request.GET.get('activity')
+
+    date = get_date_param_alumno_respuesta_actividad(request)
+    start_base = 'SELECT u.id, concat(u.nombres ," ", u.apellido_paterno ," ", u.apellido_materno) as nombre, count(if(a.id_elemento=500049,1,NULL)) Sembrar, count(if(a.id_elemento=500051,1,NULL)) Cosechar FROM alumno_respuesta_actividad a, usuario u, pertenece b WHERE' + date
+    final_base = ' a.id_user= u.id && b.usuario_id = a.id_user' + query_params + ' GROUP BY u.id'
+    return start_base + final_base
+
+def SPACE_getTimerHuerto(request):
+    query_params = ''
+
+    if request.GET.get('reim') and request.GET.get('reim') != '0':
+        query_params += " AND a.id_reim = " + request.GET.get('reim')
+    if request.GET.get('course') and request.GET.get('course') != '0':
+        query_params += " AND b.curso_id = " + request.GET.get('course')
+    if request.GET.get('school') and request.GET.get('school') != '0':
+        query_params += " AND b.colegio_id = " + request.GET.get('school')
+    if request.GET.get('student') and request.GET.get('student') != '0':
+        query_params += ' AND a.id_user=' + request.GET.get('student')
+    date = get_date_param_alumno_respuesta_actividad(request)
+
+    start_base = '  SELECT u.id,  concat(u.nombres ," ", u.apellido_paterno ," ", u.apellido_materno) as nombre, concat(CAST(AVG(a.Eje_X) as DECIMAL(5,2))) as promTiempo FROM alumno_respuesta_actividad a, usuario u, pertenece b WHERE' + date
+    final_base = ' a.id_user= u.id && b.usuario_id = a.id_user AND a.id_actividad=11009 ' + query_params + ' GROUP BY u.id;'
+
+    return start_base + final_base
+
+###ACTIVIDAD COLABORATIVA###
+def get_colaborativaxsession_SPACE(request):
+
+    query_params = ''
+
+    if request.GET.get('reim') and request.GET.get('reim') != '0':
+        query_params += " AND a.id_reim = " + request.GET.get('reim')
+    if request.GET.get('course') and request.GET.get('course') != '0':
+        query_params += " AND b.curso_id = " + request.GET.get('course')
+    if request.GET.get('school') and request.GET.get('school') != '0':
+        query_params += " AND b.colegio_id = " + request.GET.get('school')
+    if request.GET.get('activity') and request.GET.get('activity') != '0':
+        query_params += " AND a.id_actividad = " + request.GET.get('activity')
+
+    date = get_date_param_alumno_respuesta_actividad(request)
+    start_base = 'SELECT concat(u.nombres ," ", u.apellido_paterno ," ", u.apellido_materno) as nombre, concat(day(datetime_touch),"/",month(datetime_touch),"/", year(datetime_touch)) AS fecha, count(a.id_elemento between 500070 and 500089) as Alimentos, count(if(a.id_elemento=500069,1,NULL)) Menús FROM alumno_respuesta_actividad a, usuario u, pertenece b WHERE' + date
+    final_base = ' a.id_user= u.id && b.usuario_id = a.id_user  ' + query_params + ' GROUP BY day(a.datetime_touch) ORDER BY a.datetime_touch ASC'
+    return start_base + final_base
+
+
+def SPACE_getTimerColaborativa(request):
+    query_params = ''
+
+    if request.GET.get('reim') and request.GET.get('reim') != '0':
+        query_params += " AND a.id_reim = " + request.GET.get('reim')
+    if request.GET.get('course') and request.GET.get('course') != '0':
+        query_params += " AND b.curso_id = " + request.GET.get('course')
+    if request.GET.get('school') and request.GET.get('school') != '0':
+        query_params += " AND b.colegio_id = " + request.GET.get('school')
+    if request.GET.get('student') and request.GET.get('student') != '0':
+        query_params += ' AND a.id_user=' + request.GET.get('student')
+    date = get_date_param_alumno_respuesta_actividad(request)
+
+    start_base = '  SELECT u.id,  concat(u.nombres ," ", u.apellido_paterno ," ", u.apellido_materno) as nombre, concat(CAST(AVG(a.Eje_X) as DECIMAL(5,2))) as promTiempo FROM alumno_respuesta_actividad a, usuario u, pertenece b WHERE' + date
+    final_base = ' a.id_user= u.id && b.usuario_id = a.id_user AND a.id_actividad=11010 ' + query_params + ' GROUP BY u.id;'
+
+    return start_base + final_base
+
+def get_elements_played_counterSPACE(request):
+    cursor = get_from_db()
+    query_params = ''
+
+    if request.GET.get('reim') and request.GET.get('reim') != '0':
+        query_params += " AND a.id_reim = " + request.GET.get('reim')
+    if request.GET.get('course') and request.GET.get('course') != '0':
+        query_params += " AND b.curso_id = " + request.GET.get('course')
+    if request.GET.get('school') and request.GET.get('school') != '0':
+        query_params += " AND b.colegio_id = " + request.GET.get('school')
+    if request.GET.get('student') and request.GET.get('student') != '0':
+        query_params += ' AND a.id_user=' + request.GET.get('student')
+
+    date = get_date_param_alumno_respuesta_actividad(request)
+
+    start_base = 'SELECT a.id_elemento as idElemento, count(1) as counter FROM alumno_respuesta_actividad a, usuario u, pertenece b WHERE' + date
+    final_base = ' a.id_user = u.id && b.usuario_id = a.id_user && b.colegio_id IN (SELECT colegio_id from pertenece INNER JOIN usuario ON usuario.id = pertenece.usuario_id WHERE username="' + request.user.username + '") AND b.curso_id IN (SELECT curso_id FROM pertenece WHERE usuario_id = (SELECT id FROM usuario WHERE username = "' + request.user.username + '"))' + ' AND a.id_elemento IN (500070,500071,500072,500073,500074,500075,500076,500077,500078,500079,500080,500081,500082,500083,500084,500085,500086,500087,500088,500089)' + query_params + ' GROUP BY a.id_elemento;'
+
+    return start_base + final_base

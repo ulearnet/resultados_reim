@@ -1609,7 +1609,7 @@
             
             <!-- Fin Clean Ocean -->
 
-            {% if student_num == '0' and reim_num != '0' and reim_num != '1' and activity_num == '0' and reim_num != '3' and reim_num != '2' and reim_num != '4' and reim_num != '201' and reim_num != '206' and reim_num != '202'%}
+            {% if student_num == '0' and reim_num != '0' and reim_num != '1' and activity_num == '0' and reim_num != '3' and reim_num != '2' and reim_num != '4' and reim_num != '201' and reim_num != '206' and reim_num != '202' and reim_num != '300'%}
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="row" {% if not activate_graphics %}style="display: none;"{% endif %}>
@@ -1922,7 +1922,7 @@
             
             <!-- Fin Clean Ocean -->
 
-            {% if student_num == '0' and reim_num != '0' and reim_num != '1' and activity_num == '0' and reim_num != '3' and reim_num != '2' and reim_num != '4' and reim_num != '27' and reim_num != '201' and reim_num != '206' and reim_num != '202' %}
+            {% if student_num == '0' and reim_num != '0' and reim_num != '1' and activity_num == '0' and reim_num != '3' and reim_num != '2' and reim_num != '4' and reim_num != '27' and reim_num != '201' and reim_num != '206' and reim_num != '202' and reim_num != '300' %}
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="row" {% if not activate_graphics %}style="display: none;"{% endif %}>
@@ -4635,10 +4635,582 @@
 
 
 
-
-
                 <!-- FIN BUILD YOUR CITY -->
 
+<!-- INICIO SPACEMATH 2 -->
+<!-- GENERAL RESULTS-->
+{% if reim_num == '300' %}
+<div class="wrapper wrapper-content">
+{% if activity_num == '0' %}
+    <h1>Resultados Generales REIM: <strong>SPACEMATH 2</strong></h1>
+        <hr><br>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="row" >
+                    <div class="col-lg-6">
+                        <div class="ibox ">
+                            <div class="ibox-title">
+                                <h5>Sesiones por Estudiante </h5><span class="  glyphicon glyphicon-info-sign" title="Cantidad de sesiones iniciadas por niño@ al jugar con Spacemath 2"></span>
+                                <div class="ibox-tools"></div>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="scroll_content">
+                                    {% comment %} <canvas id="ByC_NumberOfSessions" height=1620>{% load staticfiles %}</canvas> {% endcomment %}
+                                     <canvas id="SPACE_NumberSessions" height={{SPACE_NumberSessions_graph}}>{% load staticfiles %}</canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                         <div class="ibox ">
+                             <div class="ibox-title">
+                                 <h5>Tiempo de juego por estudiante </h5><span class="  glyphicon glyphicon-info-sign" title="Cantidad de tiempo en minutos que cada niñ@ ha jugado con Spacemath 2"></span>
+                                 <div class="ibox-tools"></div>
+                             </div>
+                             <div class="ibox-content">
+                                 <div class="scroll_content">
+                                     <canvas id="SPACE_PlayTime" height={{SPACE_playTime_GraphSize}}>{% load staticfiles %}</canvas>
+                                 </div>
+                             </div>
+                         </div>
+                    </div>
+                    <div class="col-lg-6">
+                         <div class="ibox">
+                             <div class="ibox-title">
+                                  <h5>Cantidad de touch a la pantalla por estudiante</h5><span class="  glyphicon glyphicon-info-sign" title="Cantidad de toques a la pantalla que cada niñ@ realizó al jugar con Spacemath 2"></span>
+                                  <div class="ibox-tools"></div>
+                             </div>
+                             <div class="ibox-content">
+                                  <div class="scroll_content">
+                                       <canvas id="SPACE_TouchCountInGame" height={{SPACE_touchCount_GraphSize}}>{% load staticfiles %}</canvas>
+                                 </div>
+                             </div>
+                         </div>
+                    </div>
+                    <div class="col-lg-6">
+                         <div class="ibox ">
+                             <div class="ibox-title">
+                                  <h5>Preferencia de Actividades </h5><span class="  glyphicon glyphicon-info-sign" title="Numero de ingresos a cada actividad de Spacemath 2"></span>
+                                  <div class="ibox-tools"></div>
+                             </div>
+                             <div class="ibox-content">
+                                 <div class="scroll_content">
+                                     <canvas id="SPACE_ActivityPreference" height={{SPACE_activitiesPlayedCounter_GraphSize}}>{% load staticfiles %}</canvas>
+                                 </div>
+                             </div>
+                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+{% endif %}
+{% endif %}
+<!-- ACTIVIDAD RECOGER SUMINISTROS -->
+ {% if reim_num == '300' %}
+<div class="wrapper wrapper-content">
+{% if activity_num == '11003' %}
+    <h1>Resultados Actividad : <strong>Recoger Suministros</strong></h1>
+        <div style="background-color: #E8E8E8; margin: 30px; text-align: center;">
+
+        </div>
+        <hr><br>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="row" >
+                    <div class="col-lg-6">
+                        <div class="ibox ">
+                            <div class="ibox-title">
+                                <h5>Elementos capturados acumulados durante el transcurso de la actividad</h5><span class="  glyphicon glyphicon-info-sign" title="Cantidad de elementos capturados por alumn@ durante la manipulación de la actividad"></span>
+                                <div class="ibox-tools"></div>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="scroll_content">
+                                    {% comment %} <canvas id="ByC_NumberOfSessions" height=1620>{% load staticfiles %}</canvas> {% endcomment %}
+                                    <canvas id="SPACE_NumberOfElement" height={{PyL_numberOfSessions_GraphSize}}>{% load staticfiles %}</canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="ibox ">
+                            <div class="ibox-title">
+                                <h5>Identificar atributos de figuras 2D y 3D, tales como formas que observa a través de TICs. </h5><span class="  glyphicon glyphicon-info-sign" title="Cantidad elementos correctos recolectados por sesión durante la manipulación y locomoción del juego"></span>
+                                <div class="ibox-tools"></div>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="scroll_content">
+                                    {% comment %} <canvas id="ByC_NumberOfSessions" height=1620>{% load staticfiles %}</canvas> {% endcomment %}
+                                    <canvas id="SPACE_ElementsxSession" height={{PyL_numberOfSessions_GraphSize}}>{% load staticfiles %}</canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="ibox ">
+                            <div class="ibox-title">
+                                <h5>Tiempo promedio total en segundos logrados sin chocar con un obstáculo  </h5><span class="  glyphicon glyphicon-info-sign" title="Estudiante vs tiempo promedio"></span>
+                                <div class="ibox-tools"></div>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="scroll_content">
+                                    {% comment %} <canvas id="ByC_NumberOfSessions" height=1620>{% load staticfiles %}</canvas> {% endcomment %}
+                                    <canvas id="SPACE_timer" height={{SPACE_timer_GraphSize}}>{% load staticfiles %}</canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="ibox ">
+                            <div class="ibox-title">
+                                <h5>Coordinar con precisión y eficiencia sus habilidades psicomotrices finas en función de sus intereses de exploración y juego. </h5><span class="  glyphicon glyphicon-info-sign" title="Cantidad elementos colisionados por sesión durante la manipulación y locomoción del juego"></span>
+                                <div class="ibox-tools"></div>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="scroll_content">
+                                    {% comment %} <canvas id="ByC_NumberOfSessions" height=1620>{% load staticfiles %}</canvas> {% endcomment %}
+                                    <canvas id="SPACE_IncorrectasxSession" height={{PyL_numberOfSessions_GraphSize}}>{% load staticfiles %}</canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+{% endif %}
+{% endif %}
+<!-- ACTIVIDAD DESAFIO -->
+ {% if reim_num == '300' %}
+<div class="wrapper wrapper-content">
+{% if activity_num == '11007' %}
+    <h1>Resultados Actividad : <strong>Desafío</strong></h1>
+        <div style="background-color: #E8E8E8; margin: 30px; text-align: center;">
+
+        </div>
+        <hr><br>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="row" >
+                    <div class="col-lg-6">
+                        <div class="ibox ">
+                            <div class="ibox-title">
+                                <h5>Saltos acumulados durante el transcurso de la actividad </h5><span class="  glyphicon glyphicon-info-sign" title="Cantidad de saltos realizados por alumn@ durante el desarrollo de la actividad"></span>
+                                <div class="ibox-tools"></div>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="scroll_content">
+                                    {% comment %} <canvas id="ByC_NumberOfSessions" height=1620>{% load staticfiles %}</canvas> {% endcomment %}
+                                    <canvas id="SPACE_NumberOfJumps" height={{PyL_numberOfSessions_GraphSize}}>{% load staticfiles %}</canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="ibox ">
+                            <div class="ibox-title">
+                                <h5>Resolver desafíos prácticos manteniendo control, equilibrio y coordinación al combinar diversos movimientos</h5><span class="  glyphicon glyphicon-info-sign" title="Cantidad de saltos realizados por sesión durante la manipulación y locomoción del juego"></span>
+                                <div class="ibox-tools"></div>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="scroll_content">
+                                    {% comment %} <canvas id="ByC_NumberOfSessions" height=1620>{% load staticfiles %}</canvas> {% endcomment %}
+                                    <canvas id="SPACE_SaltosxSession" height={{PyL_numberOfSessions_GraphSize}}>{% load staticfiles %}</canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="ibox ">
+                            <div class="ibox-title">
+                                <h5>Tiempo promedio total en segundos de permanencia en la actividad </h5><span class="  glyphicon glyphicon-info-sign" title="Estudiante vs tiempo promedio"></span>
+                                <div class="ibox-tools"></div>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="scroll_content">
+                                    {% comment %} <canvas id="ByC_NumberOfSessions" height=1620>{% load staticfiles %}</canvas> {% endcomment %}
+                                    <canvas id="SPACE_timerDesafio" height={{SPACE_timerDesafio_GraphSize}}>{% load staticfiles %}</canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="ibox ">
+                            <div class="ibox-title">
+                                <h5>Abandono de la actividad por sesión durante la locomoción del juego en el tiempo </h5><span class="  glyphicon glyphicon-info-sign" title="Cantidad de abandonos de la actividad por sesión "></span>
+                                <div class="ibox-tools"></div>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="scroll_content">
+                                    {% comment %} <canvas id="ByC_NumberOfSessions" height=1620>{% load staticfiles %}</canvas> {% endcomment %}
+                                    <canvas id="SPACE_AbandonaDesafioxSession" height={{PyL_numberOfSessions_GraphSize}}>{% load staticfiles %}</canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+{% endif %}
+{% endif %}
+<!-- ACTIVIDAD GUÍA LA NAVE -->
+ {% if reim_num == '300' %}
+<div class="wrapper wrapper-content">
+{% if activity_num == '11004' %}
+    <h1>Resultados Actividad : <strong>Guía la nave</strong></h1>
+        <div style="background-color: #E8E8E8; margin: 30px; text-align: center;">
+
+        </div>
+        <hr><br>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="row" >
+                    <div class="col-lg-6">
+                        <div class="ibox ">
+                            <div class="ibox-title">
+                                <h5>Intentos realizados durante el transcurso de la actividad </h5><span class="  glyphicon glyphicon-info-sign" title="Cantidad de intentos realizados por alumn@ durante el desarrollo de la actividad"></span>
+                                <div class="ibox-tools"></div>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="scroll_content">
+                                    {% comment %} <canvas id="ByC_NumberOfSessions" height=1620>{% load staticfiles %}</canvas> {% endcomment %}
+                                    <canvas id="SPACE_NaveIntentos" height={{PyL_numberOfSessions_GraphSize}}>{% load staticfiles %}</canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="ibox ">
+                            <div class="ibox-title">
+                                <h5>Planificar proyectos y juegos, en función de sus ideas, proponiendo actividades, organizando los recursos, incorporando los ajustes necesarios </h5><span class="  glyphicon glyphicon-info-sign" title="Cantidad de caminos dibujados estratégicamente por sesión durante la manipulación del juego"></span>
+                                <div class="ibox-tools"></div>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="scroll_content">
+                                    {% comment %} <canvas id="ByC_NumberOfSessions" height=1620>{% load staticfiles %}</canvas> {% endcomment %}
+                                    <canvas id="SPACE_RutasCompletasxSession" height={{PyL_numberOfSessions_GraphSize}}>{% load staticfiles %}</canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="ibox ">
+                            <div class="ibox-title">
+                                <h5>Colisiones por sesión durante la locomoción del juego en el tiempo </h5><span class="  glyphicon glyphicon-info-sign" title="Cantidad de caminos dibujados por sesión durante la manipulación del juego"></span>
+                                <div class="ibox-tools"></div>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="scroll_content">
+                                    {% comment %} <canvas id="ByC_NumberOfSessions" height=1620>{% load staticfiles %}</canvas> {% endcomment %}
+                                    <canvas id="SPACE_ColisionesxSession" height={{PyL_numberOfSessions_GraphSize}}>{% load staticfiles %}</canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="ibox ">
+                            <div class="ibox-title">
+                                <h5>Tiempo promedio total en segundos de permanencia en la actividad  </h5><span class="  glyphicon glyphicon-info-sign" title="Estudiante vs tiempo promedio"></span>
+                                <div class="ibox-tools"></div>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="scroll_content">
+                                    {% comment %} <canvas id="ByC_NumberOfSessions" height=1620>{% load staticfiles %}</canvas> {% endcomment %}
+                                    <canvas id="SPACE_timerNave" height={{SPACE_timer_GraphSize}}>{% load staticfiles %}</canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+{% endif %}
+{% endif %}
+<!-- ACTIVIDAD REPITE SONIDO -->
+ {% if reim_num == '300' %}
+<div class="wrapper wrapper-content">
+{% if activity_num == '11005' %}
+    <h1>Resultados Actividad : <strong>Repite el Sonido</strong></h1>
+        <div style="background-color: #E8E8E8; margin: 30px; text-align: center;">
+
+        </div>
+        <hr><br>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="row" >
+                    <div class="col-lg-6">
+                        <div class="ibox ">
+                            <div class="ibox-title">
+                                <h5>Cantidad de touch acumulados durante el transcurso de la actividad </h5><span class="  glyphicon glyphicon-info-sign" title="Cantidad de touch realizados por alumn@ durante la manipulación de la actividad"></span>
+                                <div class="ibox-tools"></div>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="scroll_content">
+                                    {% comment %} <canvas id="ByC_NumberOfSessions" height=1620>{% load staticfiles %}</canvas> {% endcomment %}
+                                    <canvas id="SPACE_NumberOfTouchSonido" height={{PyL_numberOfSessions_GraphSize}}>{% load staticfiles %}</canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="ibox ">
+                            <div class="ibox-title">
+                                <h5>Interpretar canciones y juegos musicales, utilizando de manera integrada diversos recursos  </h5><span class="  glyphicon glyphicon-info-sign" title="Cantidad de intentos y patrones musicales por sesión"></span>
+                                <div class="ibox-tools"></div>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="scroll_content">
+                                    {% comment %} <canvas id="ByC_NumberOfSessions" height=1620>{% load staticfiles %}</canvas> {% endcomment %}
+                                    <canvas id="SPACE_SonidoIntentoxSession" height={{PyL_numberOfSessions_GraphSize}}>{% load staticfiles %}</canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="ibox ">
+                            <div class="ibox-title">
+                                <h5>Tiempo promedio total en segundos de permanencia en la actividad  </h5><span class="  glyphicon glyphicon-info-sign" title="Estudiante vs tiempo promedio"></span>
+                                <div class="ibox-tools"></div>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="scroll_content">
+                                    {% comment %} <canvas id="ByC_NumberOfSessions" height=1620>{% load staticfiles %}</canvas> {% endcomment %}
+                                    <canvas id="SPACE_timerSound" height={{SPACE_timer_GraphSize}}>{% load staticfiles %}</canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="ibox ">
+                            <div class="ibox-title">
+                                <h5>Touch por sesión durante la locomoción del juego en el tiempo </h5><span class="  glyphicon glyphicon-info-sign" title="Cantidad de touch por sesión durante la manipulación del juego"></span>
+                                <div class="ibox-tools"></div>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="scroll_content">
+                                    {% comment %} <canvas id="ByC_NumberOfSessions" height=1620>{% load staticfiles %}</canvas> {% endcomment %}
+                                    <canvas id="SPACE_TouchxSessionSound" height={{PyL_numberOfSessions_GraphSize}}>{% load staticfiles %}</canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+{% endif %}
+{% endif %}
+<!-- ACTIVIDAD LIMPIA EL ESPACIO -->
+ {% if reim_num == '300' %}
+<div class="wrapper wrapper-content">
+{% if activity_num == '11006' %}
+    <h1>Resultados Actividad : <strong>Limpia el Espacio</strong></h1>
+        <div style="background-color: #E8E8E8; margin: 30px; text-align: center;">
+
+        </div>
+        <hr><br>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="row" >
+                    <div class="col-lg-6">
+                        <div class="ibox ">
+                            <div class="ibox-title">
+                                <h5>Elementos capturados acumulados durante la locomoción y manipulación de la actividad</h5><span class="  glyphicon glyphicon-info-sign" title="Cantidad de elementos acumulados por alumn@ durante la manipulación de la actividad"></span>
+                                <div class="ibox-tools"></div>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="scroll_content">
+                                    {% comment %} <canvas id="ByC_NumberOfSessions" height=1620>{% load staticfiles %}</canvas> {% endcomment %}
+                                    <canvas id="SPACE_Espacio" height={{PyL_numberOfSessions_GraphSize}}>{% load staticfiles %}</canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="ibox ">
+                            <div class="ibox-title">
+                                <h5>Identificar atributos de figuras 2D y 3D, tales como formas que observa a través de TICs. </h5><span class="  glyphicon glyphicon-info-sign" title="Cantidad elementos correctos recolectados por sesión durante la manipulación del juego"></span>
+                                <div class="ibox-tools"></div>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="scroll_content">
+                                    {% comment %} <canvas id="ByC_NumberOfSessions" height=1620>{% load staticfiles %}</canvas> {% endcomment %}
+                                    <canvas id="SPACE_CorrectoxSessionLE" height={{PyL_numberOfSessions_GraphSize}}>{% load staticfiles %}</canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="ibox ">
+                            <div class="ibox-title">
+                                <h5>Coordinar con precisión y eficiencia sus habilidades psicomotrices finas en función de sus intereses de exploración y juego. </h5><span class="  glyphicon glyphicon-info-sign" title="Cantidad de elementos colisionados por sesión durante la manipulación del juego"></span>
+                                <div class="ibox-tools"></div>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="scroll_content">
+                                    {% comment %} <canvas id="ByC_NumberOfSessions" height=1620>{% load staticfiles %}</canvas> {% endcomment %}
+                                    <canvas id="SPACE_IncorrectoxSessionLE" height={{PyL_numberOfSessions_GraphSize}}>{% load staticfiles %}</canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="ibox ">
+                            <div class="ibox-title">
+                                <h5>Tiempo promedio total en segundos de permanencia en la actividad  </h5><span class="  glyphicon glyphicon-info-sign" title="Estudiante vs tiempo promedio"></span>
+                                <div class="ibox-tools"></div>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="scroll_content">
+                                    {% comment %} <canvas id="ByC_NumberOfSessions" height=1620>{% load staticfiles %}</canvas> {% endcomment %}
+                                    <canvas id="SPACE_timerEspacio" height={{SPACE_timer_GraphSize}}>{% load staticfiles %}</canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+{% endif %}
+{% endif %}
+<!-- ACTIVIDAD CONSTRUIR HUERTO -->
+ {% if reim_num == '300' %}
+<div class="wrapper wrapper-content">
+{% if activity_num == '11009' %}
+    <h1>Resultados Actividad : <strong>Construir Huerto</strong></h1>
+        <div style="background-color: #E8E8E8; margin: 30px; text-align: center;">
+
+        </div>
+        <hr><br>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="row" >
+                    <div class="col-lg-6">
+                        <div class="ibox ">
+                            <div class="ibox-title">
+                                <h5>Reconocer la importancia del agua y la energía solar para las plantas</h5><span class="  glyphicon glyphicon-info-sign" title="Cantidad de veces que el/la alumn@ reconoce la importancia del agua y de la energía solar por sesión"></span>
+                                <div class="ibox-tools"></div>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="scroll_content">
+                                    {% comment %} <canvas id="ByC_NumberOfSessions" height=1620>{% load staticfiles %}</canvas> {% endcomment %}
+                                    <canvas id="SPACE_HuertoxSession" height={{PyL_numberOfSessions_GraphSize}}>{% load staticfiles %}</canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="ibox ">
+                            <div class="ibox-title">
+                                <h5>Participar en actividades y juegos colaborativos, planificando, acordando estrategias para un propósito común  </h5><span class="  glyphicon glyphicon-info-sign" title="Cantidad de veces que el/la alumn@ comparte elementos con sus compañeros"></span>
+                                <div class="ibox-tools"></div>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="scroll_content">
+                                    {% comment %} <canvas id="ByC_NumberOfSessions" height=1620>{% load staticfiles %}</canvas> {% endcomment %}
+                                    <canvas id="SPACE_CompartirxSession" height={{PyL_numberOfSessions_GraphSize}}>{% load staticfiles %}</canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="ibox ">
+                            <div class="ibox-title">
+                                <h5>Elementos utilizados acumulados durante la manipulación de la actividad</h5><span class="  glyphicon glyphicon-info-sign" title="Cantidad elementos acumulados por alumn@ durante la manipulación del juego"></span>
+                                <div class="ibox-tools"></div>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="scroll_content">
+                                    {% comment %} <canvas id="ByC_NumberOfSessions" height=1620>{% load staticfiles %}</canvas> {% endcomment %}
+                                    <canvas id="SPACE_ElementosHuerto" height={{PyL_numberOfSessions_GraphSize}}>{% load staticfiles %}</canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="ibox ">
+                            <div class="ibox-title">
+                                <h5>Tiempo promedio total en segundos de permanencia en la actividad  </h5><span class="  glyphicon glyphicon-info-sign" title="Estudiante vs tiempo promedio"></span>
+                                <div class="ibox-tools"></div>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="scroll_content">
+                                    {% comment %} <canvas id="ByC_NumberOfSessions" height=1620>{% load staticfiles %}</canvas> {% endcomment %}
+                                    <canvas id="SPACE_timerHuerto" height={{SPACE_timer_GraphSize}}>{% load staticfiles %}</canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+{% endif %}
+{% endif %}
+<!-- ACTIVIDAD COLABORATIVA -->
+ {% if reim_num == '300' %}
+<div class="wrapper wrapper-content">
+{% if activity_num == '11010' %}
+    <h1>Resultados Actividad : <strong>Colaborativa</strong></h1>
+        <div style="background-color: #E8E8E8; margin: 30px; text-align: center;">
+
+        </div>
+        <hr><br>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="row" >
+                    <div class="col-lg-6">
+                        <div class="ibox ">
+                            <div class="ibox-title">
+                                <h5>Participar en actividades y juegos colaborativos, planificando, acordando estrategias para un propósito común </h5><span class="  glyphicon glyphicon-info-sign" title="Cantidad de elementos utilizados y menús creados por alumn@s por sesión"></span>
+                                <div class="ibox-tools"></div>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="scroll_content">
+                                    {% comment %} <canvas id="ByC_NumberOfSessions" height=1620>{% load staticfiles %}</canvas> {% endcomment %}
+                                    <canvas id="SPACE_ColaborativaxSession" height={{PyL_numberOfSessions_GraphSize}}>{% load staticfiles %}</canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="ibox ">
+                            <div class="ibox-title">
+                                <h5>Tiempo promedio total en segundos de permanencia en la actividad  </h5><span class="  glyphicon glyphicon-info-sign" title="Estudiante vs tiempo promedio"></span>
+                                <div class="ibox-tools"></div>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="scroll_content">
+                                    {% comment %} <canvas id="ByC_NumberOfSessions" height=1620>{% load staticfiles %}</canvas> {% endcomment %}
+                                    <canvas id="SPACE_timerColaborativa" height={{SPACE_timer_GraphSize}}>{% load staticfiles %}</canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                         <div class="ibox ">
+                             <div class="ibox-title">
+                                  <h5>Preferencia de Elementos </h5><span class="  glyphicon glyphicon-info-sign" title="Cantidad de elementos con mayor preferencia en la actividad"></span>
+                                  <div class="ibox-tools"></div>
+                             </div>
+                             <div class="ibox-content">
+                                 <div class="scroll_content">
+                                     <canvas id="SPACE_ElementPreference" height={{SPACE_elementsPlayedCounter_GraphSize}}>{% load staticfiles %}</canvas>
+                                 </div>
+                             </div>
+                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+{% endif %}
+{% endif %}
+
+<!-- FIN SPACEMATH 2 -->
                <!-- INICIO PROTECT YOUR LAND -->
                 {% if reim_num == '202' %}
                 <div class="wrapper wrapper-content">
@@ -4764,7 +5336,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                                                        <div class="col-lg-6">
+                                    <div class="col-lg-6">
                                         <div class="ibox ">
                                             <div class="ibox-title">
                                                 <h5>Tiempo promedio total en segundos logrados en cada sesión sin chocar con un obstáculo  </h5><span class="  glyphicon glyphicon-info-sign" title="Estudiante vs tiempo promedio"></span>
@@ -5551,7 +6123,7 @@
                     <strong>Copyright</strong>  &copy; 2020
 
 
-                    <!-- <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#queriesModal">
+                    <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#queriesModal">
                         queries
                     </button>
 
@@ -5573,7 +6145,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div> -->
+                    </div>
                 </div>
             </div>
         </div>
@@ -7376,6 +7948,1126 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////FIN BUILD YOUR CITY//////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
+       /////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////SPACEMATH 2////////////////////////////////////////////////////
+        var SPACE_NumberSessions_Data = {
+            labels: [
+                //CONNECT WITH BD:
+                {% if SPACE_NumberSessions_Dictionary %}
+                    {% for session in SPACE_NumberSessions_Dictionary %}
+                        '{{session.name}}',
+                    {% endfor%}
+                {% endif%}
+            ],
+            datasets: [
+                {
+                    label: "Cantidad de sesiones iniciadas",
+                    backgroundColor: 'rgb(103,253,234)',
+                    borderColor: "rgb(34,252,224)",
+                    pointBorderColor: "#fff",
+                    data: [
+                        //CONNECT WITH BD:
+                        {% if SPACE_NumberSessions_Dictionary %}
+                            {% for session in SPACE_NumberSessions_Dictionary %}
+                                '{{session.sesionesREIM}}',
+                            {% endfor%}
+                        {% endif%}
+                    ]
+                }
+            ]
+        };
+
+         var SPACE_PlayTime_Data = {
+            labels: [
+                        //CONNECT WITH BD:
+                        {% if SPACE_playTime_Dictionary %}
+                            {% for user in SPACE_playTime_Dictionary %}
+                                '{{user.name}}',
+                            {% endfor%}
+                        {% endif%}
+                    ],
+            datasets: [
+                {
+                    label: "Tiempo de juego en minutos",
+                    backgroundColor: 'rgb(103,116,253)',
+                    borderColor: "rgb(71,87,253)",
+                    pointBorderColor: "#fff",
+                    data:
+                        [
+                            //CONNECT WITH BD:
+                            {% if SPACE_playTime_Dictionary %}
+                                {% for user in SPACE_playTime_Dictionary %}
+                                    '{{user.playTime}}',
+                                {% endfor%}
+                            {% endif%}
+                        ]
+                }
+            ]
+        };
+
+        var SPACE_TouchCountInGame_Data = {
+            labels: [
+                //CONNECT WITH BD:
+
+                {% if SPACE_touchCount_Dictionary %}
+                    {% for touch in SPACE_touchCount_Dictionary %}
+                        '{{touch.name}}',
+                    {% endfor%}
+                {% endif%}
+            ],
+            datasets: [
+                {
+                    label: "Numero de toques en pantalla",
+                    backgroundColor: 'rgb(254,113,162)',
+                    borderColor: "rgb(253,71,135)",
+                    pointBorderColor: "#fff",
+                    data: [
+                        //CONNECT WITH BD:
+                        {% if SPACE_touchCount_Dictionary %}
+                            {% for touch in SPACE_touchCount_Dictionary %}
+                                '{{touch.touchCount}}',
+                            {% endfor%}
+                        {% endif%}
+                    ]
+                }
+            ]
+        };
+
+        var SPACE_ActivityPreference_Data = {
+            labels: [
+                    //CONNECT WITH BD:
+                    {% if SPACE_activitiesPlayedCounter_Dictionary %}
+                        {% for actividad in SPACE_activitiesPlayedCounter_Dictionary %}
+                            '{{actividad.name}}',
+                        {% endfor%}
+                    {% endif%}
+            ],
+            datasets: [
+                {
+                    backgroundColor: ['rgb(236,112,99)','rgb(175,122,197)','rgb(93,173,226)','rgb(50,205,50)','rgb(253,216,53)','rgb(253,71,135)','rgb(163,213,76)'],
+                    pointBorderColor: "#fff",
+                    data: [
+                        //CONNECT WITH BD:
+                        {% if SPACE_activitiesPlayedCounter_Dictionary %}
+                            {% for actividad in SPACE_activitiesPlayedCounter_Dictionary %}
+                                '{{actividad.counter}}',
+                            {% endfor%}
+                        {% endif%}
+                    ]
+                }
+            ]
+        };
+
+        var SPACE_NumberOfElement_Data = {
+            labels: [
+                //CONNECT WITH BD:
+                {% if SPACEcorrects_quantity_Dictionary %}
+                    {% for session in SPACEcorrects_quantity_Dictionary %}
+                        '{{session.name}}',
+                    {% endfor%}
+                {% endif%}
+            ],
+            datasets: [
+                {
+                    label: "Suministros recogidos",
+                    backgroundColor: 'rgb(186,85,211)',
+                    borderColor: "rgb(148,0,211)",
+                    pointBorderColor: "#fff",
+
+                    data: [
+                        //CONNECT WITH BD:
+                        {% if SPACEcorrects_quantity_Dictionary %}
+                            {% for session in SPACEcorrects_quantity_Dictionary %}
+                                '{{session.correctas}}',
+                            {% endfor%}
+                        {% endif%}
+                    ]
+                },
+                {
+                    label: "Rocas colisionadas",
+                    backgroundColor: 'rgb(144,283,144)',
+                    borderColor: "rgb(50,205,50)",
+                    pointBorderColor: "#fff",
+                    data: [
+                        //CONNECT WITH BD:
+                        {% if SPACEcorrects_quantity_Dictionary %}
+                            {% for session in SPACEcorrects_quantity_Dictionary %}
+                                '{{session.incorrectas}}',
+                            {% endfor%}
+                        {% endif%}
+                    ]
+                }
+            ]
+        };
+
+        var SPACE_ElementsxSession_Data = {
+            labels: [
+                    {% if SPACE_correctsxsession_Dictionary %}
+                        {% for elemento in SPACE_correctsxsession_Dictionary %}
+                            '{{elemento.fecha}}',
+                        {% endfor%}
+                    {% endif%}
+                ],
+            datasets: [
+                {
+                    label: "Elementos recolectados",
+                    backgroundColor: 'rgb(0,188,212)',
+                    borderColor: "rgb(3,155,229)",
+                    pointBorderColor: "#fff",
+                    data: [
+                        {% if SPACE_correctsxsession_Dictionary %}
+                            {% for elemento in SPACE_correctsxsession_Dictionary %}
+                                '{{elemento.quantity}}',
+                            {% endfor%}
+                        {% endif%}
+                        ],
+                    fill: false,
+                    pointRadius:7,
+                    pointHoverRadius:10,
+                    showLine:true
+                }
+            ]
+        };
+
+        var SPACE_Timer_Data = {
+            labels: [
+                //CONNECT WITH BD:
+                {% if SPACE_timer_Dictionary %}
+                    {% for touch in SPACE_timer_Dictionary %}
+                        '{{touch.nombre}}',
+                    {% endfor%}
+                {% endif%}
+                        ],
+            datasets: [
+                {
+                    label: "Tiempo promedio total de permanencia",
+                    backgroundColor: 'rgb(205,251,112)',
+                    borderColor: "rgb(186,252,53)",
+                    pointBorderColor: "#fff",
+                    data: [
+                        //CONNECT WITH BD:
+                        {% if SPACE_timer_Dictionary %}
+                            {% for touch in SPACE_timer_Dictionary %}
+                                '{{touch.promedio}}',
+                            {% endfor%}
+                        {% endif%}
+                    ]
+                }
+            ]
+        };
+
+        var SPACE_IncorrectasxSession_Data = {
+            labels: [
+                    {% if SPACE_incorrectsxsession_Dictionary %}
+                        {% for elemento in SPACE_incorrectsxsession_Dictionary %}
+                            '{{elemento.fecha}}',
+                        {% endfor%}
+                    {% endif%}
+                ],
+            datasets: [
+                {
+                    label: "Elementos colisionados",
+                    backgroundColor: 'rgb(250,195,100)',
+                    borderColor: "rgb(254,188,73)",
+                    pointBorderColor: "#fff",
+                    data: [
+                        {% if SPACE_incorrectsxsession_Dictionary %}
+                            {% for elemento in SPACE_incorrectsxsession_Dictionary %}
+                                '{{elemento.quantity}}',
+                            {% endfor%}
+                        {% endif%}
+                        ],
+                    fill: false,
+                    pointRadius:7,
+                    pointHoverRadius:10,
+                    showLine:true
+                }
+            ]
+        };
+
+        var SPACE_NumberOfJumps_Data = {
+            labels: [
+                //CONNECT WITH BD:
+                {% if SPACEdesafio_quantity_Dictionary %}
+                    {% for session in SPACEdesafio_quantity_Dictionary %}
+                        '{{session.name}}',
+                    {% endfor%}
+                {% endif%}
+            ],
+            datasets: [
+                {
+                    label: "Saltos acumulados",
+                    backgroundColor: 'rgb(146,113,240)',
+                    borderColor: "rgb(129,51,255)",
+                    pointBorderColor: "#fff",
+
+                    data: [
+                        //CONNECT WITH BD:
+                        {% if SPACEdesafio_quantity_Dictionary %}
+                            {% for session in SPACEdesafio_quantity_Dictionary %}
+                                '{{session.saltos}}',
+                            {% endfor%}
+                        {% endif%}
+                    ]
+                }
+            ]
+       };
+
+        var SPACE_SaltosxSession_Data = {
+            labels: [
+                    {% if SPACE_saltosxsession_Dictionary %}
+                        {% for elemento in SPACE_saltosxsession_Dictionary %}
+                            '{{elemento.fecha}}',
+                        {% endfor%}
+                    {% endif%}
+                ],
+            datasets: [
+                {
+                    label: "Saltos realizados por sesión",
+                    backgroundColor: 'rgb(0,188,212)',
+                    borderColor: "rgb(3,155,229)",
+                    pointBorderColor: "#fff",
+                    data: [
+                        {% if SPACE_saltosxsession_Dictionary %}
+                            {% for elemento in SPACE_saltosxsession_Dictionary %}
+                                '{{elemento.saltos}}',
+                            {% endfor%}
+                        {% endif%}
+                    ]
+                }
+            ]
+        };
+
+        var SPACE_TimerDesafio_Data = {
+            labels: [
+                //CONNECT WITH BD:
+                {% if SPACE_timerDesafio_Dictionary %}
+                    {% for touch in SPACE_timerDesafio_Dictionary %}
+                        '{{touch.nombre}}',
+                    {% endfor%}
+                {% endif%}
+                        ],
+            datasets: [
+                {
+                    label: "Tiempo promedio total de permanencia",
+                    backgroundColor: 'rgb(254,113,162)',
+                    borderColor: "rgb(253,71,135)",
+                    pointBorderColor: "#fff",
+                    data: [
+                        //CONNECT WITH BD:
+                        {% if SPACE_timerDesafio_Dictionary %}
+                            {% for touch in SPACE_timerDesafio_Dictionary %}
+                                '{{touch.promedio}}',
+                            {% endfor%}
+                        {% endif%}
+                    ]
+                }
+            ]
+        };
+
+        var SPACE_AbandonaDesafioxSession_Data = {
+            labels: [
+                    {% if SPACE_AbandonaDesafioxsession_Dictionary %}
+                        {% for elemento in SPACE_AbandonaDesafioxsession_Dictionary %}
+                            '{{elemento.fecha}}',
+                        {% endfor%}
+                    {% endif%}
+                ],
+            datasets: [
+                {
+                    label: "Abandono de actividad",
+                    backgroundColor: 'rgb(244,241,68)',
+                    borderColor: "rgb(235,232,39)",
+                    pointBorderColor: "#fff",
+                    data: [
+                        {% if SPACE_AbandonaDesafioxsession_Dictionary %}
+                            {% for elemento in SPACE_AbandonaDesafioxsession_Dictionary %}
+                                '{{elemento.abandona}}',
+                            {% endfor%}
+                        {% endif%}
+                    ]
+                }
+            ]
+        };
+
+        var SPACE_NaveIntentos_Data = {
+            labels: [
+                //CONNECT WITH BD:
+                {% if SPACENaveIntentos_quantity_Dictionary %}
+                    {% for session in SPACENaveIntentos_quantity_Dictionary %}
+                        '{{session.name}}',
+                    {% endfor%}
+                {% endif%}
+            ],
+            datasets: [
+                {
+                    label: "Intentos",
+                    backgroundColor: 'rgb(186,233,102)',
+                    borderColor: "rgb(163,213,76)",
+                    pointBorderColor: "#fff",
+
+                    data: [
+                        //CONNECT WITH BD:
+                        {% if SPACENaveIntentos_quantity_Dictionary %}
+                            {% for session in SPACENaveIntentos_quantity_Dictionary %}
+                                '{{session.nintentos}}',
+                            {% endfor%}
+                        {% endif%}
+                    ]
+                }
+            ]
+        };
+
+        var SPACE_RutasCompletasxSession_Data = {
+            labels: [
+                    {% if SPACE_RutasCompletasxsession_Dictionary %}
+                        {% for elemento in SPACE_RutasCompletasxsession_Dictionary %}
+                            '{{elemento.fecha}}',
+                        {% endfor%}
+                    {% endif%}
+                ],
+            datasets: [
+                {
+                    label: "Caminos completados",
+                    backgroundColor: 'rgb(254,113,162)',
+                    borderColor: "rgb(253,71,135)",
+                    pointBorderColor: "#fff",
+                    data: [
+                        {% if SPACE_RutasCompletasxsession_Dictionary %}
+                            {% for elemento in SPACE_RutasCompletasxsession_Dictionary %}
+                                '{{elemento.rutas}}',
+                            {% endfor%}
+                        {% endif%}
+                    ]
+                }
+            ]
+        };
+
+        var SPACE_ColisionesxSession_Data = {
+            labels: [
+                    {% if SPACE_Colisionesxsession_Dictionary %}
+                        {% for elemento in SPACE_Colisionesxsession_Dictionary %}
+                            '{{elemento.fecha}}',
+                        {% endfor%}
+                    {% endif%}
+                ],
+            datasets: [
+                {
+                    label: "Cantidad de colisiones",
+                    backgroundColor: 'rgb(100,122,250)',
+                    borderColor: "rgb(61,89,252)",
+                    pointBorderColor: "#fff",
+                    data: [
+                        {% if SPACE_Colisionesxsession_Dictionary %}
+                            {% for elemento in SPACE_Colisionesxsession_Dictionary %}
+                                '{{elemento.colisiones}}',
+                            {% endfor%}
+                        {% endif%}
+                    ]
+                }
+            ]
+        };
+
+        var SPACE_TimerNave_Data = {
+            labels: [
+                //CONNECT WITH BD:
+                {% if SPACE_timerNave_Dictionary %}
+                    {% for touch in SPACE_timerNave_Dictionary %}
+                        '{{touch.nombre}}',
+                    {% endfor%}
+                {% endif%}
+                        ],
+            datasets: [
+                {
+                    label: "Tiempo promedio total de permanencia",
+                    backgroundColor: 'rgb(146,113,240)',
+                    borderColor: "rgb(129,51,255)",
+                    pointBorderColor: "#fff",
+                    data: [
+                        //CONNECT WITH BD:
+                        {% if SPACE_timerNave_Dictionary %}
+                            {% for touch in SPACE_timerNave_Dictionary %}
+                                '{{touch.promedio}}',
+                            {% endfor%}
+                        {% endif%}
+                    ]
+                }
+            ]
+        };
+
+        var SPACE_NumberOfTouchSonido_Data = {
+            labels: [
+                //CONNECT WITH BD:
+                {% if SPACEsonido_quantity_Dictionary %}
+                    {% for session in SPACEsonido_quantity_Dictionary %}
+                        '{{session.name}}',
+                    {% endfor%}
+                {% endif%}
+            ],
+            datasets: [
+                {
+                    label: "Touch",
+                    backgroundColor: 'rgb(244,241,68)',
+                    borderColor: "rgb(235,232,39)",
+                    pointBorderColor: "#fff",
+
+                    data: [
+                        //CONNECT WITH BD:
+                        {% if SPACEsonido_quantity_Dictionary %}
+                            {% for session in SPACEsonido_quantity_Dictionary %}
+                                '{{session.touch}}',
+                            {% endfor%}
+                        {% endif%}
+                    ]
+                }
+            ]
+       };
+
+        var SPACE_SonidoIntentoxSession_Data = {
+            labels: [
+                    {% if SPACE_sonidoIntentoxsession_Dictionary %}
+                        {% for elemento in SPACE_sonidoIntentoxsession_Dictionary %}
+                            '{{elemento.fecha}}',
+                        {% endfor%}
+                    {% endif%}
+                ],
+            datasets: [
+                {
+                    label: "Intentos",
+                    backgroundColor: 'rgb(0,188,212)',
+                    borderColor: "rgb(3,155,229)",
+                    pointBorderColor: "#fff",
+                    data: [
+                        {% if SPACE_sonidoIntentoxsession_Dictionary %}
+                            {% for elemento in SPACE_sonidoIntentoxsession_Dictionary %}
+                                '{{elemento.intentos}}',
+                            {% endfor%}
+                        {% endif%}
+                        ],
+                    fill: false,
+                    pointRadius:7,
+                    pointHoverRadius:10,
+                    showLine:true
+                },
+                {
+                    label: "Patrones correctos",
+                    backgroundColor: 'rgb(186,233,102)',
+                    borderColor: "rgb(163,213,76)",
+                    pointBorderColor: "#fff",
+                    data: [
+                        {% if SPACE_sonidoIntentoxsession_Dictionary %}
+                            {% for elemento in SPACE_sonidoIntentoxsession_Dictionary %}
+                                '{{elemento.correctos}}',
+                            {% endfor%}
+                        {% endif%}
+                        ],
+                    fill: false,
+                    pointRadius:7,
+                    pointHoverRadius:10,
+                    showLine:true
+                }
+            ]
+        };
+
+        var SPACE_TimerSound_Data = {
+            labels: [
+                //CONNECT WITH BD:
+                {% if SPACE_timerSound_Dictionary %}
+                    {% for touch in SPACE_timerSound_Dictionary %}
+                        '{{touch.nombre}}',
+                    {% endfor%}
+                {% endif%}
+                        ],
+            datasets: [
+                {
+                    label: "Tiempo promedio total de permanencia",
+                    backgroundColor: 'rgb(205,251,112)',
+                    borderColor: "rgb(186,252,53)",
+                    pointBorderColor: "#fff",
+                    data: [
+                        //CONNECT WITH BD:
+                        {% if SPACE_timerSound_Dictionary %}
+                            {% for touch in SPACE_timerSound_Dictionary %}
+                                '{{touch.promedio}}',
+                            {% endfor%}
+                        {% endif%}
+                    ]
+                }
+            ]
+        };
+
+        var SPACE_TouchxSessionSound_Data = {
+            labels: [
+                    {% if SPACE_TouchxsessionSound_Dictionary %}
+                        {% for elemento in SPACE_TouchxsessionSound_Dictionary %}
+                            '{{elemento.fecha}}',
+                        {% endfor%}
+                    {% endif%}
+                ],
+            datasets: [
+                {
+                    label: "Touch realizados por sesión",
+                    backgroundColor: 'rgb(254,113,162)',
+                    borderColor: "rgb(253,71,135)",
+                    pointBorderColor: "#fff",
+                    data: [
+                        {% if SPACE_TouchxsessionSound_Dictionary %}
+                            {% for elemento in SPACE_TouchxsessionSound_Dictionary %}
+                                '{{elemento.touch}}',
+                            {% endfor%}
+                        {% endif%}
+                    ]
+                }
+            ]
+        };
+
+
+        var SPACE_Espacio_Data = {
+            labels: [
+                //CONNECT WITH BD:
+                {% if SPACEespacio_quantity_Dictionary %}
+                    {% for session in SPACEespacio_quantity_Dictionary %}
+                        '{{session.name}}',
+                    {% endfor%}
+                {% endif%}
+            ],
+            datasets: [
+                {
+                    label: "Objetos recogidos",
+                    backgroundColor: 'rgb(240,113,230)',
+                    borderColor: "rgb(236,65,222)",
+                    pointBorderColor: "#fff",
+
+                    data: [
+                        //CONNECT WITH BD:
+                        {% if SPACEespacio_quantity_Dictionary %}
+                            {% for session in SPACEespacio_quantity_Dictionary %}
+                                '{{session.recogidos}}',
+                            {% endfor%}
+                        {% endif%}
+                    ]
+                },
+                {
+                    label: "Objetos colisionados",
+                    backgroundColor: 'rgb(95,227,228)',
+                    borderColor: "rgb(33,199,200)",
+                    pointBorderColor: "#fff",
+
+                    data: [
+                        //CONNECT WITH BD:
+                        {% if SPACEespacio_quantity_Dictionary %}
+                            {% for session in SPACEespacio_quantity_Dictionary %}
+                                '{{session.colisionados}}',
+                            {% endfor%}
+                        {% endif%}
+                    ]
+                }
+
+            ]
+        };
+
+        var SPACE_CorrectoxSessionLE_Data = {
+            labels: [
+                    {% if SPACE_CorrectoxsessionLE_Dictionary %}
+                        {% for elemento in SPACE_CorrectoxsessionLE_Dictionary %}
+                            '{{elemento.fecha}}',
+                        {% endfor%}
+                    {% endif%}
+                ],
+            datasets: [
+                {
+                    label: "Elementos capturados correctos",
+                    backgroundColor: 'rgb(144,283,144)',
+                    borderColor: "rgb(50,205,50)",
+                    pointBorderColor: "#fff",
+                    data: [
+                        {% if SPACE_CorrectoxsessionLE_Dictionary %}
+                            {% for elemento in SPACE_CorrectoxsessionLE_Dictionary %}
+                                '{{elemento.quantity}}',
+                            {% endfor%}
+                        {% endif%}
+                        ],
+                    fill: false,
+                    pointRadius:7,
+                    pointHoverRadius:10,
+                    showLine:true
+                }
+            ]
+        };
+
+        var SPACE_IncorrectoxSessionLE_Data = {
+            labels: [
+                    {% if SPACE_IncorrectoxsessionLE_Dictionary %}
+                        {% for elemento in SPACE_IncorrectoxsessionLE_Dictionary %}
+                            '{{elemento.fecha}}',
+                        {% endfor%}
+                    {% endif%}
+                ],
+            datasets: [
+                {
+                    label: "Elementos colisionados",
+                    backgroundColor: 'rgb(253,244,110)',
+                    borderColor: "rgb(254,241,49)",
+                    pointBorderColor: "#fff",
+                    data: [
+                        {% if SPACE_IncorrectoxsessionLE_Dictionary %}
+                            {% for elemento in SPACE_IncorrectoxsessionLE_Dictionary %}
+                                '{{elemento.quantity}}',
+                            {% endfor%}
+                        {% endif%}
+                        ],
+                    fill: false,
+                    pointRadius:7,
+                    pointHoverRadius:10,
+                    showLine:true
+                }
+            ]
+        };
+
+        var SPACE_TimerEspacio_Data = {
+            labels: [
+                //CONNECT WITH BD:
+                {% if SPACE_timerEspacio_Dictionary %}
+                    {% for touch in SPACE_timerEspacio_Dictionary %}
+                        '{{touch.nombre}}',
+                    {% endfor%}
+                {% endif%}
+                        ],
+            datasets: [
+                {
+                    label: "Tiempo promedio total de permanencia",
+                    backgroundColor: 'rgb(100,122,250)',
+                    borderColor: "rgb(61,89,252)",
+                    pointBorderColor: "#fff",
+                    data: [
+                        //CONNECT WITH BD:
+                        {% if SPACE_timerEspacio_Dictionary %}
+                            {% for touch in SPACE_timerEspacio_Dictionary %}
+                                '{{touch.promedio}}',
+                            {% endfor%}
+                        {% endif%}
+                    ]
+                }
+            ]
+        };
+
+        var SPACE_HuertoxSession_Data = {
+            labels: [
+                    {% if SPACE_huertoxsession_Dictionary %}
+                        {% for elemento in SPACE_huertoxsession_Dictionary %}
+                            '{{elemento.fecha}}',
+                        {% endfor%}
+                    {% endif%}
+                ],
+            datasets: [
+                {
+                    label: "Riegos",
+                    backgroundColor: 'rgb(95,227,228)',
+                    borderColor: "rgb(33,199,200)",
+                    pointBorderColor: "#fff",
+                    data: [
+                        {% if SPACE_huertoxsession_Dictionary %}
+                            {% for elemento in SPACE_huertoxsession_Dictionary %}
+                                '{{elemento.riegos}}',
+                            {% endfor%}
+                        {% endif%}
+                        ],
+                    fill: false,
+                    pointRadius:7,
+                    pointHoverRadius:10,
+                    showLine:true
+                },
+                {
+                    label: "Energía solar",
+                    backgroundColor: 'rgb(253,244,110)',
+                    borderColor: "rgb(254,241,49)",
+                    pointBorderColor: "#fff",
+                    data: [
+                        {% if SPACE_huertoxsession_Dictionary %}
+                            {% for elemento in SPACE_huertoxsession_Dictionary %}
+                                '{{elemento.sol}}',
+                            {% endfor%}
+                        {% endif%}
+                        ],
+                    fill: false,
+                    pointRadius:7,
+                    pointHoverRadius:10,
+                    showLine:true
+                }
+            ]
+        };
+
+         var SPACE_CompartirxSession_Data = {
+            labels: [
+                    {% if SPACE_compartirxsession_Dictionary %}
+                        {% for elemento in SPACE_compartirxsession_Dictionary %}
+                            '{{elemento.fecha}}',
+                        {% endfor%}
+                    {% endif%}
+                ],
+            datasets: [
+                {
+                    label: "Compartir",
+                    backgroundColor: 'rgb(186,233,102)',
+                    borderColor: "rgb(163,213,76)",
+                    pointBorderColor: "#fff",
+                    data: [
+                        {% if SPACE_compartirxsession_Dictionary %}
+                            {% for elemento in SPACE_compartirxsession_Dictionary %}
+                                '{{elemento.compartir}}',
+                            {% endfor%}
+                        {% endif%}
+                    ]
+                }
+            ]
+        };
+
+         var SPACE_ElementosHuerto_Data = {
+            labels: [
+                //CONNECT WITH BD:
+                {% if SPACEelementoshuerto_quantity_Dictionary %}
+                    {% for session in SPACEelementoshuerto_quantity_Dictionary %}
+                        '{{session.name}}',
+                    {% endfor%}
+                {% endif%}
+            ],
+            datasets: [
+                {
+                    label: "Cantidad de siembras",
+                    backgroundColor: 'rgb(100,122,250)',
+                    borderColor: "rgb(61,89,252)",
+                    pointBorderColor: "#fff",
+
+                    data: [
+                        //CONNECT WITH BD:
+                        {% if SPACEelementoshuerto_quantity_Dictionary %}
+                            {% for session in SPACEelementoshuerto_quantity_Dictionary %}
+                                '{{session.sembrar}}',
+                            {% endfor%}
+                        {% endif%}
+                    ]
+                },
+                {
+                    label: "Cantidad de cosechas",
+                    backgroundColor: 'rgb(250,195,100)',
+                    borderColor: "rgb(254,188,73)",
+
+                    data: [
+                        //CONNECT WITH BD:
+                        {% if SPACEelementoshuerto_quantity_Dictionary %}
+                            {% for session in SPACEelementoshuerto_quantity_Dictionary %}
+                                '{{session.cosechar}}',
+                            {% endfor%}
+                        {% endif%}
+                    ]
+                }
+            ]
+        };
+
+        var SPACE_TimerHuerto_Data = {
+            labels: [
+                //CONNECT WITH BD:
+                {% if SPACE_timerHuerto_Dictionary %}
+                    {% for touch in SPACE_timerHuerto_Dictionary %}
+                        '{{touch.nombre}}',
+                    {% endfor%}
+                {% endif%}
+                        ],
+            datasets: [
+                {
+                    label: "Tiempo promedio total de permanencia",
+                    backgroundColor: 'rgb(240,113,230)',
+                    borderColor: "rgb(236,65,222)",
+                    pointBorderColor: "#fff",
+                    data: [
+                        //CONNECT WITH BD:
+                        {% if SPACE_timerHuerto_Dictionary %}
+                            {% for touch in SPACE_timerHuerto_Dictionary %}
+                                '{{touch.promedio}}',
+                            {% endfor%}
+                        {% endif%}
+                    ]
+                }
+            ]
+        };
+
+        var SPACE_ColaborativaxSession_Data = {
+            labels: [
+                    {% if SPACE_colaborativaxsession_Dictionary %}
+                        {% for elemento in SPACE_colaborativaxsession_Dictionary %}
+                            '{{elemento.fecha}}',
+                        {% endfor%}
+                    {% endif%}
+                ],
+            datasets: [
+                {
+                    label: "Alimentos usados",
+                    backgroundColor: 'rgb(100,122,250)',
+                    borderColor: "rgb(61,89,252)",
+                    pointBorderColor: "#fff",
+                    data: [
+                        {% if SPACE_colaborativaxsession_Dictionary %}
+                            {% for elemento in SPACE_colaborativaxsession_Dictionary %}
+                                '{{elemento.alimentos}}',
+                            {% endfor%}
+                        {% endif%}
+                        ],
+                    fill: false,
+                    pointRadius:7,
+                    pointHoverRadius:10,
+                    showLine:true
+                },
+                {
+                    label: "Menús creados",
+                    backgroundColor: 'rgb(250,195,100)',
+                    borderColor: "rgb(254,188,73)",
+                    pointBorderColor: "#fff",
+                    data: [
+                        {% if SPACE_colaborativaxsession_Dictionary %}
+                            {% for elemento in SPACE_colaborativaxsession_Dictionary %}
+                                '{{elemento.menus}}',
+                            {% endfor%}
+                        {% endif%}
+                        ],
+                    fill: false,
+                    pointRadius:7,
+                    pointHoverRadius:10,
+                    showLine:true
+                }
+            ]
+        };
+
+        var SPACE_TimerColaborativa_Data = {
+            labels: [
+                //CONNECT WITH BD:
+                {% if SPACE_timerColaborativa_Dictionary %}
+                    {% for touch in SPACE_timerColaborativa_Dictionary %}
+                        '{{touch.nombre}}',
+                    {% endfor%}
+                {% endif%}
+                        ],
+            datasets: [
+                {
+                    label: "Tiempo promedio total de permanencia",
+                    backgroundColor: 'rgb(186,233,102)',
+                    borderColor: "rgb(163,213,76)",
+                    pointBorderColor: "#fff",
+                    data: [
+                        //CONNECT WITH BD:
+                        {% if SPACE_timerColaborativa_Dictionary %}
+                            {% for touch in SPACE_timerColaborativa_Dictionary %}
+                                '{{touch.promedio}}',
+                            {% endfor%}
+                        {% endif%}
+                    ]
+                }
+            ]
+        };
+
+        var SPACE_ElementPreference_Data = {
+            labels: [
+                    //CONNECT WITH BD:
+                    {% if SPACE_elementsPlayedCounter_Dictionary %}
+                        {% for actividad in SPACE_elementsPlayedCounter_Dictionary %}
+                            '{{actividad.name}}',
+                        {% endfor%}
+                    {% endif%}
+            ],
+            datasets: [
+                {
+                    backgroundColor: ['rgb(236,112,99)','rgb(175,122,197)','rgb(93,173,226)','rgb(50,205,50)','rgb(253,216,53)','rgb(253,71,135)','rgb(163,213,76)','rgb(186,233,102)','rgb(100,122,250)','rgb(250,195,100)','rgb(95,227,228)','rgb(146,113,240)','rgb(240,113,230)','rgb(253,244,110)','rgb(254,113,162)','rgb(61,89,252)','rgb(129,51,255)','rgb(253,71,135)','rgb(33,199,200)'],
+                    pointBorderColor: "#fff",
+                    data: [
+                        //CONNECT WITH BD:
+                        {% if SPACE_elementsPlayedCounter_Dictionary %}
+                            {% for actividad in SPACE_elementsPlayedCounter_Dictionary %}
+                                '{{actividad.counter}}',
+                            {% endfor%}
+                        {% endif%}
+                    ]
+                }
+            ]
+        };
+
+        var SPACE_HorizontalBarOptions = {
+            animation: false,
+            isFixedWidth:true,
+            barWidth:50,
+            barValueSpacing: 1,
+            scales: {
+                xAxes: [{
+                    ticks: {
+                        min: 0,
+                        callback: function (value, index, values) {
+                            if (Math.floor(value) === value) {
+                                return value;
+                            }
+                        }
+                    },
+                }],
+            },
+            display: true,
+        };
+
+        var SPACE_LineOptions = {
+            animation: false,
+            scales: {
+                xAxes:[{
+                    stacked:true,
+                    ticks: {
+                        min: 0
+                    }
+                }],
+                yAxes:[{
+                    stacked:false,
+                    ticks: {
+                        min: 0,
+                        max: 500
+                    }
+                }]
+            },
+            display: true
+        };
+
+        var SPACE_PieOptions = {
+            scale: {
+                    angleLines: {
+                        display: false
+                    },
+                    ticks: {
+                        suggestedMin: 0,
+                        suggestedMax: 5
+                    }
+                }
+            };
+
+        if ($('#SPACE_NumberSessions').length){
+            var ctx = document.getElementById("SPACE_NumberSessions").getContext("2d");
+            new Chart(ctx, {type: 'horizontalBar', data: SPACE_NumberSessions_Data, options: SPACE_HorizontalBarOptions } );
+        }
+        if ($('#SPACE_PlayTime').length){
+            var ctx = document.getElementById("SPACE_PlayTime").getContext("2d");
+            new Chart(ctx, {type: 'horizontalBar', data: SPACE_PlayTime_Data, options: SPACE_HorizontalBarOptions } );
+        }
+        if ($('#SPACE_TouchCountInGame').length){
+            var ctx = document.getElementById("SPACE_TouchCountInGame").getContext("2d");
+            new Chart(ctx, {type: 'horizontalBar', data: SPACE_TouchCountInGame_Data, options: SPACE_HorizontalBarOptions } );
+        }
+        if ($('#SPACE_ActivityPreference').length){
+            var ctx = document.getElementById("SPACE_ActivityPreference").getContext("2d");
+            new Chart(ctx, {type: 'pie', data: SPACE_ActivityPreference_Data, options: SPACE_PieOptions});
+        }
+        if ($('#SPACE_NumberOfElement').length){
+            var ctx = document.getElementById("SPACE_NumberOfElement").getContext("2d");
+            new Chart(ctx, {type: 'horizontalBar', data: SPACE_NumberOfElement_Data, options: SPACE_HorizontalBarOptions});
+        }
+        if ($('#SPACE_ElementsxSession').length){
+            var ctx17 = document.getElementById("SPACE_ElementsxSession").getContext("2d");
+            new Chart(ctx17, {type: 'line', data: SPACE_ElementsxSession_Data, options: SPACE_LineOptions});
+        }
+        if ($('#SPACE_timer').length){
+            var ctx4 = document.getElementById("SPACE_timer").getContext("2d");
+            new Chart(ctx4, {type: 'horizontalBar', data: SPACE_Timer_Data, options: SPACE_HorizontalBarOptions });
+        }
+        if ($('#SPACE_IncorrectasxSession').length){
+            var ctx17 = document.getElementById("SPACE_IncorrectasxSession").getContext("2d");
+            new Chart(ctx17, {type: 'line', data: SPACE_IncorrectasxSession_Data, options: SPACE_LineOptions});
+        }
+        if ($('#SPACE_NumberOfJumps').length){
+            var ctx = document.getElementById("SPACE_NumberOfJumps").getContext("2d");
+            new Chart(ctx, {type: 'horizontalBar', data: SPACE_NumberOfJumps_Data, options: SPACE_HorizontalBarOptions});
+        }
+        if ($('#SPACE_SaltosxSession').length){
+            var ctx17 = document.getElementById("SPACE_SaltosxSession").getContext("2d");
+            new Chart(ctx17, {type: 'line', data: SPACE_SaltosxSession_Data, options: SPACE_LineOptions});
+        }
+        if ($('#SPACE_timerDesafio').length){
+            var ctx4 = document.getElementById("SPACE_timerDesafio").getContext("2d");
+            new Chart(ctx4, {type: 'horizontalBar', data: SPACE_TimerDesafio_Data, options: SPACE_HorizontalBarOptions });
+        }
+        if ($('#SPACE_AbandonaDesafioxSession').length){
+            var ctx17 = document.getElementById("SPACE_AbandonaDesafioxSession").getContext("2d");
+            new Chart(ctx17, {type: 'line', data: SPACE_AbandonaDesafioxSession_Data, options: SPACE_LineOptions});
+        }
+        if ($('#SPACE_NaveIntentos').length){
+            var ctx = document.getElementById("SPACE_NaveIntentos").getContext("2d");
+            new Chart(ctx, {type: 'horizontalBar', data: SPACE_NaveIntentos_Data, options: SPACE_HorizontalBarOptions});
+        }
+        if ($('#SPACE_RutasCompletasxSession').length){
+            var ctx17 = document.getElementById("SPACE_RutasCompletasxSession").getContext("2d");
+            new Chart(ctx17, {type: 'line', data: SPACE_RutasCompletasxSession_Data, options: SPACE_LineOptions});
+        }
+        if ($('#SPACE_ColisionesxSession').length){
+            var ctx17 = document.getElementById("SPACE_ColisionesxSession").getContext("2d");
+            new Chart(ctx17, {type: 'line', data: SPACE_ColisionesxSession_Data, options: SPACE_LineOptions});
+        }
+        if ($('#SPACE_timerNave').length){
+            var ctx4 = document.getElementById("SPACE_timerNave").getContext("2d");
+            new Chart(ctx4, {type: 'horizontalBar', data: SPACE_TimerNave_Data, options: SPACE_HorizontalBarOptions });
+        }
+        if ($('#SPACE_NumberOfTouchSonido').length){
+            var ctx = document.getElementById("SPACE_NumberOfTouchSonido").getContext("2d");
+            new Chart(ctx, {type: 'horizontalBar', data: SPACE_NumberOfTouchSonido_Data, options: SPACE_HorizontalBarOptions});
+        }
+        if ($('#SPACE_SonidoIntentoxSession').length){
+            var ctx17 = document.getElementById("SPACE_SonidoIntentoxSession").getContext("2d");
+            new Chart(ctx17, {type: 'line', data: SPACE_SonidoIntentoxSession_Data, options: SPACE_LineOptions});
+        }
+        if ($('#SPACE_timerSound').length){
+            var ctx4 = document.getElementById("SPACE_timerSound").getContext("2d");
+            new Chart(ctx4, {type: 'horizontalBar', data: SPACE_TimerSound_Data, options: SPACE_HorizontalBarOptions });
+        }
+        if ($('#SPACE_TouchxSessionSound').length){
+            var ctx17 = document.getElementById("SPACE_TouchxSessionSound").getContext("2d");
+            new Chart(ctx17, {type: 'line', data: SPACE_TouchxSessionSound_Data, options: SPACE_LineOptions});
+        }
+        if ($('#SPACE_Espacio').length){
+            var ctx = document.getElementById("SPACE_Espacio").getContext("2d");
+            new Chart(ctx, {type: 'horizontalBar', data: SPACE_Espacio_Data, options: SPACE_HorizontalBarOptions});
+        }
+        if ($('#SPACE_CorrectoxSessionLE').length){
+            var ctx17 = document.getElementById("SPACE_CorrectoxSessionLE").getContext("2d");
+            new Chart(ctx17, {type: 'line', data: SPACE_CorrectoxSessionLE_Data, options: SPACE_LineOptions});
+        }
+        if ($('#SPACE_IncorrectoxSessionLE').length){
+            var ctx17 = document.getElementById("SPACE_IncorrectoxSessionLE").getContext("2d");
+            new Chart(ctx17, {type: 'line', data: SPACE_IncorrectoxSessionLE_Data, options: SPACE_LineOptions});
+        }
+        if ($('#SPACE_timerEspacio').length){
+            var ctx4 = document.getElementById("SPACE_timerEspacio").getContext("2d");
+            new Chart(ctx4, {type: 'horizontalBar', data: SPACE_TimerEspacio_Data, options: SPACE_HorizontalBarOptions });
+        }
+        if ($('#SPACE_HuertoxSession').length){
+            var ctx17 = document.getElementById("SPACE_HuertoxSession").getContext("2d");
+            new Chart(ctx17, {type: 'line', data: SPACE_HuertoxSession_Data, options: SPACE_LineOptions});
+        }
+        if ($('#SPACE_CompartirxSession').length){
+            var ctx17 = document.getElementById("SPACE_CompartirxSession").getContext("2d");
+            new Chart(ctx17, {type: 'line', data: SPACE_CompartirxSession_Data, options: SPACE_LineOptions});
+        }
+        if ($('#SPACE_ElementosHuerto').length){
+            var ctx = document.getElementById("SPACE_ElementosHuerto").getContext("2d");
+            new Chart(ctx, {type: 'horizontalBar', data: SPACE_ElementosHuerto_Data, options: SPACE_HorizontalBarOptions});
+        }
+        if ($('#SPACE_timerHuerto').length){
+            var ctx4 = document.getElementById("SPACE_timerHuerto").getContext("2d");
+            new Chart(ctx4, {type: 'horizontalBar', data: SPACE_TimerHuerto_Data, options: SPACE_HorizontalBarOptions });
+        }
+        if ($('#SPACE_ColaborativaxSession').length){
+            var ctx17 = document.getElementById("SPACE_ColaborativaxSession").getContext("2d");
+            new Chart(ctx17, {type: 'line', data: SPACE_ColaborativaxSession_Data, options: SPACE_LineOptions});
+        }
+        if ($('#SPACE_timerColaborativa').length){
+            var ctx4 = document.getElementById("SPACE_timerColaborativa").getContext("2d");
+            new Chart(ctx4, {type: 'horizontalBar', data: SPACE_TimerColaborativa_Data, options: SPACE_HorizontalBarOptions });
+        }
+        if ($('#SPACE_ElementPreference').length){
+            var ctx = document.getElementById("SPACE_ElementPreference").getContext("2d");
+            new Chart(ctx, {type: 'pie', data: SPACE_ElementPreference_Data, options: SPACE_PieOptions});
+        }
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////FIN SPACEMATH 2//////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
                 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////PROTECT YOUR LAND////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -7479,7 +9171,7 @@
                 }
             ]
         };
-                //0.4.- ACTIVITY PREFERENCE:
+        //0.4.- ACTIVITY PREFERENCE:
         var PYL_ActivityPreference_Data = {
             labels: [
                     //CONNECT WITH BD:

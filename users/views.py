@@ -829,6 +829,7 @@ def welcome(request):
             ByC_Taxi_SuccessVsFailure_ParticularSeats_GraphSize = len(
                 Taxi_SuccessVsFailure_ParticularSeats_QueryResponse) * 50 + 20
         ######END BUILD YOUR CITY######
+
             ##### INICIO PROTECT YOUR LAND
 
         PYL_numberOfSessions_Dictionary = []
@@ -952,6 +953,7 @@ def welcome(request):
                     'name': row[1],
                     'quantity': row[2]
                 })
+            PYLcorrects_quantity_graph = len(PYLcorrects_quantity) * 40 + 20
             PYLcorrects_quantity_graph = len(PYLcorrects_quantity) * 40 + 20
 
             ##CORRECTAS CAPTURADAS FOOTPRINTS
@@ -4120,6 +4122,607 @@ def welcome(request):
                     touch_all_OA1Bien_quantity_response.append({ 'id': row[0], 'name': row[1], 'quantity': row[2] })
                 touch_all_OA1Bien_quantity_graph = len(touch_all_OA1Bien_quantity)*40+20
             ######Fin Reciclando cuido el Oceano#####
+
+        ######SPACEMATH 2#######
+        SPACE_NumberSessions_Dictionary = []
+        SPACE_NumberSessions_graph = 0
+        SPACE_playTime_Dictionary = []
+        SPACE_playTime_GraphSize = 0
+        SPACE_touchCount_Dictionary = []
+        SPACE_touchCount_GraphSize = 0
+        SPACE_activitiesPlayedCounter_Dictionary = []
+        SPACE_activitiesPlayedCounter_GraphSize = 0
+        SPACEcorrects_quantity_Dictionary = []
+        SPACEcorrects_quantity_graph = 0
+        SPACE_correctsxsession_Dictionary = []
+        SPACE_correctsxsession_GraphSize = 0
+        SPACE_timer_Dictionary = []
+        SPACE_timer_GraphSize = 0
+        SPACE_incorrectsxsession_Dictionary = []
+        SPACE_incorrectsxsession_GraphSize = 0
+        SPACEdesafio_quantity_Dictionary = []
+        SPACEdesafio_quantity_graph = 0
+        SPACE_saltosxsession_Dictionary = []
+        SPACE_saltosxsession_GraphSize = 0
+        SPACE_timerDesafio_Dictionary = []
+        SPACE_timerDesafio_GraphSize = 0
+        SPACE_AbandonaDesafioxsession_Dictionary = []
+        SPACE_AbandonaDesafioxsession_GraphSize = 0
+        SPACENaveIntentos_quantity_Dictionary = []
+        SPACENaveIntentos_quantity_graph = 0
+        SPACE_RutasCompletasxsession_Dictionary = []
+        SPACE_RutasCompletasxsession_GraphSize = 0
+        SPACE_Colisionesxsession_Dictionary = []
+        SPACE_Colisionesxsession_GraphSize = 0
+        SPACE_timerNave_Dictionary = []
+        SPACE_timerNave_GraphSize = 0
+        SPACE_sonidoIntentoxsession_Dictionary = []
+        SPACE_sonidoIntentoxsession_GraphSize = 0
+        SPACEsonido_quantity_Dictionary = []
+        SPACEsonido_quantity_graph = 0
+        SPACE_timerSound_Dictionary = []
+        SPACE_timerSound_GraphSize = 0
+        SPACE_TouchxsessionSound_Dictionary = []
+        SPACE_TouchxsessionSound_GraphSize = 0
+        SPACEespacio_quantity_Dictionary = []
+        SPACEespacio_quantity_graph = 0
+        SPACE_CorrectoxsessionLE_Dictionary = []
+        SPACE_CorrectoxsessionLE_GraphSize = 0
+        SPACE_IncorrectoxsessionLE_Dictionary = []
+        SPACE_IncorrectoxsessionLE_GraphSize = 0
+        SPACE_timerEspacio_Dictionary = []
+        SPACE_timerEspacio_GraphSize = 0
+        SPACE_huertoxsession_Dictionary = []
+        SPACE_huertoxsession_GraphSize = 0
+        SPACE_compartirxsession_Dictionary = []
+        SPACE_compartirxsession_GraphSize = 0
+        SPACEelementoshuerto_quantity_Dictionary = []
+        SPACEelementoshuerto_quantity_graph = 0
+        SPACE_timerHuerto_Dictionary = []
+        SPACE_timerHuerto_GraphSize = 0
+        SPACE_colaborativaxsession_Dictionary = []
+        SPACE_colaborativaxsession_GraphSize = 0
+        SPACE_timerColaborativa_Dictionary = []
+        SPACE_timerColaborativa_GraphSize = 0
+        SPACE_elementsPlayedCounter_Dictionary = []
+        SPACE_elementsPlayedCounter_GraphSize = 0
+
+        if reim_num == "300":
+            ###GRÁFICOS GENERALES###
+            NumberOfSessions_SPACE = get_NumberSessionsSPACE(request)
+            cursor.execute(NumberOfSessions_SPACE)
+            queries.append({
+                "name": 'SesionesREIM',
+                "query": NumberOfSessions_SPACE
+            })
+            SPACE_NumberSessions = cursor.fetchall()
+            for row in SPACE_NumberSessions:
+                SPACE_NumberSessions_Dictionary.append({
+                    'id': row[0],
+                    'name': row[1],
+                    'sesionesREIM': row[2]
+                })
+            SPACE_NumberSessions_graph = len(SPACE_NumberSessions) * 40 + 20
+
+            getPlayTimeSPACE = get_playtimeSPACE(request)
+            cursor.execute(getPlayTimeSPACE)
+            queries.append({
+                "name": 'PlayTime REIM',
+                "query": getPlayTimeSPACE
+            })
+            SPACEplayTime_QueryResponse = cursor.fetchall()
+            print("playTime_QueryResponse", SPACEplayTime_QueryResponse)
+            for row in SPACEplayTime_QueryResponse:
+                SPACE_playTime_Dictionary.append({
+                    'id': row[0],
+                    'name': row[1],
+                    'playTime': row[2]
+                })
+            SPACE_playTime_GraphSize = len(SPACEplayTime_QueryResponse) * 40 + 20
+
+            SPACEtouch_query = get_touch_countSPACE(request)
+            queries.append({"name": 'Touch Count', "query": SPACEtouch_query})
+            cursor.execute(SPACEtouch_query)
+            SPACEtouchCount_QueryResponse = cursor.fetchall()
+            for row in SPACEtouchCount_QueryResponse:
+                SPACE_touchCount_Dictionary.append({
+                    'id': row[0],
+                    'name': row[1],
+                    'touchCount': row[2]
+                })
+            SPACE_touchCount_GraphSize = len(SPACEtouchCount_QueryResponse) * 40 + 20
+
+
+            SPACEtouch_query = get_activities_played_counterSPACE(request)
+            queries.append({
+                "name": 'Activities Played',
+                "query": SPACEtouch_query
+            })
+            cursor.execute(SPACEtouch_query)
+            SPACEactivitiesPlayedCounter_QueryResponse = cursor.fetchall()
+            for row in SPACEactivitiesPlayedCounter_QueryResponse:
+                name = ''
+                if row[0] == 500005:
+                    name = 'Actividad: Recoger suministros'
+                elif row[0] == 500006:
+                    name = 'Actividad: Guía la nave'
+                elif row[0] == 500007:
+                    name = 'Actividad: Repite el sonido'
+                elif row[0] == 500008:
+                    name = 'Actividad: Limpia el espacio'
+                elif row[0] == 500011:
+                    name = 'Actividad: Contruir huerto'
+                elif row[0] == 500054:
+                    name = 'Actividad: Actividad colaborativa'
+                elif row[0] == 500000:
+                    name = 'Actividad: Desafío'
+                SPACE_activitiesPlayedCounter_Dictionary.append({
+                    'id': row[0],
+                    'name': name,
+                    'counter': row[1]
+                })
+            SPACE_activitiesPlayedCounter_GraphSize = len(SPACEactivitiesPlayedCounter_QueryResponse) * 20 + 20
+
+            ###ACTIVIDAD RECOGER SUMINISTROS###
+            correctsSPACE_query = get_corrects_SPACE(request)
+            cursor.execute(correctsSPACE_query)
+            queries.append({
+                "name": 'Suministros query',
+                "query": correctsSPACE_query
+            })
+            SPACEcorrects_quantity = cursor.fetchall()
+            for row in SPACEcorrects_quantity:
+                SPACEcorrects_quantity_Dictionary.append({
+                    'id': row[0],
+                    'name': row[1],
+                    'correctas': row[2],
+                    'incorrectas': row[3]
+
+                })
+            SPACEcorrects_quantity_graph = len(SPACEcorrects_quantity) * 40 + 20
+
+            get_correctsxsession_SPACE_query = get_correctsxsession_SPACE(request)
+            cursor.execute(get_correctsxsession_SPACE_query)
+            queries.append({
+                "name": 'CorrectasxSesionRS',
+                "query": get_correctsxsession_SPACE_query
+            })
+            get_correctsxsession_SPACEResponse = cursor.fetchall()
+            for row in get_correctsxsession_SPACEResponse:
+                SPACE_correctsxsession_Dictionary.append({
+                    'name': row[0],
+                    'fecha': row[1],
+                    'quantity': row[2]
+                })
+            SPACE_correctsxsession_GraphSize = len(get_correctsxsession_SPACEResponse) * 40 + 20
+
+            get_timer_SPACE_query = SPACE_getTimer(request)
+            cursor.execute(get_timer_SPACE_query)
+            queries.append({
+                "name": 'Timer activity',
+                "query": get_timer_SPACE_query
+            })
+            get_timer_SPACEResponse = cursor.fetchall()
+            for row in get_timer_SPACEResponse:
+                SPACE_timer_Dictionary.append({
+                    'id': row[0],
+                    'nombre': row[1],
+                    'promedio': row[2]
+                })
+            SPACE_timer_GraphSize = len(get_timer_SPACEResponse) * 40 + 10
+
+            get_incorrectsxsession_SPACE_query = get_incorrectsxsession_SPACE(request)
+            cursor.execute(get_incorrectsxsession_SPACE_query)
+            queries.append({
+                "name": 'IncorrectasxSesionRS',
+                "query": get_incorrectsxsession_SPACE_query
+            })
+            get_incorrectsxsession_SPACEResponse = cursor.fetchall()
+            for row in get_incorrectsxsession_SPACEResponse:
+                SPACE_incorrectsxsession_Dictionary.append({
+                    'name': row[0],
+                    'fecha': row[1],
+                    'quantity': row[2]
+                })
+            SPACE_incorrectsxsession_GraphSize = len(get_incorrectsxsession_SPACEResponse) * 40 + 20
+
+            ###ACTIVIDAD DESAFÍO###
+            desafioSPACE_query = get_desafio_SPACE(request)
+            cursor.execute(desafioSPACE_query)
+            queries.append({
+                "name": 'Desafio query',
+                "query": desafioSPACE_query
+            })
+            SPACEdesafio_quantity = cursor.fetchall()
+            for row in SPACEdesafio_quantity:
+                SPACEdesafio_quantity_Dictionary.append({
+                    'id': row[0],
+                    'name': row[1],
+                    'saltos': row[2]
+                })
+            SPACEdesafio_quantity_graph = len(SPACEdesafio_quantity) * 40 + 20
+
+            get_saltosxsession_SPACE_query = get_saltosxsession_SPACE(request)
+            cursor.execute(get_saltosxsession_SPACE_query)
+            queries.append({
+                "name": 'SaltosxSesionD',
+                "query": get_saltosxsession_SPACE_query
+            })
+            get_saltosxsession_SPACEResponse = cursor.fetchall()
+            for row in get_saltosxsession_SPACEResponse:
+                SPACE_saltosxsession_Dictionary.append({
+                    'name': row[0],
+                    'fecha': row[1],
+                    'saltos': row[2],
+                })
+            SPACE_saltosxsession_GraphSize = len(get_saltosxsession_SPACEResponse) * 40 + 20
+
+            get_timerDesafio_SPACE_query = SPACE_getTimerDesafio(request)
+            cursor.execute(get_timerDesafio_SPACE_query)
+            queries.append({
+                "name": 'Timer desafio',
+                "query": get_timerDesafio_SPACE_query
+            })
+            get_timerDesafio_SPACEResponse = cursor.fetchall()
+            for row in get_timerDesafio_SPACEResponse:
+                SPACE_timerDesafio_Dictionary.append({
+                    'id': row[0],
+                    'nombre': row[1],
+                    'promedio': row[2]
+                })
+            SPACE_timerDesafio_GraphSize = len(get_timerDesafio_SPACEResponse) * 40 + 10
+
+            get_AbandonaDesafioxsession_SPACE_query = get_AbandonaDesafioxsession_SPACE(request)
+            cursor.execute(get_AbandonaDesafioxsession_SPACE_query)
+            queries.append({
+                "name": 'AbandonaDesafioxSesionD',
+                "query": get_AbandonaDesafioxsession_SPACE_query
+            })
+            get_AbandonaDesafioxsession_SPACEResponse = cursor.fetchall()
+            for row in get_AbandonaDesafioxsession_SPACEResponse:
+                SPACE_AbandonaDesafioxsession_Dictionary.append({
+                    'name': row[0],
+                    'fecha': row[1],
+                    'abandona': row[2],
+                })
+            SPACE_AbandonaDesafioxsession_GraphSize = len(get_AbandonaDesafioxsession_SPACEResponse) * 40 + 20
+
+            ###ACTIVIDAD GUIA LA NAVE###
+            NaveIntentosSPACE_query = get_NaveIntentos_SPACE(request)
+            cursor.execute(NaveIntentosSPACE_query)
+            queries.append({
+                "name": 'NaveIntentos query',
+                "query": NaveIntentosSPACE_query
+            })
+            SPACENaveIntentos_quantity = cursor.fetchall()
+            for row in SPACENaveIntentos_quantity:
+                SPACENaveIntentos_quantity_Dictionary.append({
+                    'id': row[0],
+                    'name': row[1],
+                    'nintentos': row[2]
+                })
+            SPACENaveIntentos_quantity_graph = len(SPACENaveIntentos_quantity) * 40 + 20
+
+            get_RutasCompletasxsession_SPACE_query = get_RutasCompletasxsession_SPACE(request)
+            cursor.execute(get_RutasCompletasxsession_SPACE_query)
+            queries.append({
+                "name": 'RutasCompletasxSesionGN',
+                "query": get_RutasCompletasxsession_SPACE_query
+            })
+            get_RutasCompletasxsession_SPACEResponse = cursor.fetchall()
+            for row in get_RutasCompletasxsession_SPACEResponse:
+                SPACE_RutasCompletasxsession_Dictionary.append({
+                    'name': row[0],
+                    'fecha': row[1],
+                    'rutas': row[2]
+                })
+            SPACE_RutasCompletasxsession_GraphSize = len(get_RutasCompletasxsession_SPACEResponse) * 40 + 20
+
+            get_Colisionesxsession_SPACE_query = get_Colisionesxsession_SPACE(request)
+            cursor.execute(get_Colisionesxsession_SPACE_query)
+            queries.append({
+                "name": 'ColisionesxSesionGN',
+                "query": get_Colisionesxsession_SPACE_query
+            })
+            get_Colisionesxsession_SPACEResponse = cursor.fetchall()
+            for row in get_Colisionesxsession_SPACEResponse:
+                SPACE_Colisionesxsession_Dictionary.append({
+                    'name': row[0],
+                    'fecha': row[1],
+                    'colisiones': row[2]
+                })
+            SPACE_Colisionesxsession_GraphSize = len(get_Colisionesxsession_SPACEResponse) * 40 + 20
+
+            get_timerNave_SPACE_query = SPACE_getTimerNave(request)
+            cursor.execute(get_timerNave_SPACE_query)
+            queries.append({
+                "name": 'Timer Nave',
+                "query": get_timerNave_SPACE_query
+            })
+            get_timerNave_SPACEResponse = cursor.fetchall()
+            for row in get_timerNave_SPACEResponse:
+                SPACE_timerNave_Dictionary.append({
+                    'id': row[0],
+                    'nombre': row[1],
+                    'promedio': row[2]
+                })
+            SPACE_timerNave_GraphSize = len(get_timerNave_SPACEResponse) * 40 + 10
+
+            ###ACTIVIDAD REPITE EL SONIDO###
+            sonidoSPACE_query = get_sonido_SPACE(request)
+            cursor.execute(sonidoSPACE_query)
+            queries.append({
+                "name": 'Sonido query',
+                "query": sonidoSPACE_query
+            })
+            SPACEsonido_quantity = cursor.fetchall()
+            for row in SPACEsonido_quantity:
+                SPACEsonido_quantity_Dictionary.append({
+                    'id': row[0],
+                    'name': row[1],
+                    'touch': row[2]
+                })
+            SPACEsonido_quantity_graph = len(SPACEsonido_quantity) * 40 + 20
+
+            get_sonidoIntentoxsession_SPACE_query = get_sonidoIntentoxsession_SPACE(request)
+            cursor.execute(get_sonidoIntentoxsession_SPACE_query)
+            queries.append({
+                "name": 'SonidoIntentoxSesion',
+                "query": get_sonidoIntentoxsession_SPACE_query
+            })
+            get_sonidoIntentoxsession_SPACEResponse = cursor.fetchall()
+            for row in get_sonidoIntentoxsession_SPACEResponse:
+                SPACE_sonidoIntentoxsession_Dictionary.append({
+                    'name': row[0],
+                    'fecha': row[1],
+                    'intentos': row[2],
+                    'correctos': row[3]
+                })
+            SPACE_sonidoIntentoxsession_GraphSize = len(get_sonidoIntentoxsession_SPACEResponse) * 60 + 40
+
+            get_timerSound_SPACE_query = SPACE_getTimerSound(request)
+            cursor.execute(get_timerSound_SPACE_query)
+            queries.append({
+                "name": 'Timer Sonido',
+                "query": get_timerSound_SPACE_query
+            })
+            get_timerSound_SPACEResponse = cursor.fetchall()
+            for row in get_timerSound_SPACEResponse:
+                SPACE_timerSound_Dictionary.append({
+                    'id': row[0],
+                    'nombre': row[1],
+                    'promedio': row[2]
+                })
+            SPACE_timerSound_GraphSize = len(get_timerSound_SPACEResponse) * 40 + 10
+
+            get_TouchxsessionSound_SPACE_query = get_TouchxsessionSound_SPACE(request)
+            cursor.execute(get_TouchxsessionSound_SPACE_query)
+            queries.append({
+                "name": 'TouchxsessionSound',
+                "query": get_TouchxsessionSound_SPACE_query
+            })
+            get_TouchxsessionSound_SPACEResponse = cursor.fetchall()
+            for row in get_TouchxsessionSound_SPACEResponse:
+                SPACE_TouchxsessionSound_Dictionary.append({
+                    'name': row[0],
+                    'fecha': row[1],
+                    'touch': row[2]
+                })
+            SPACE_TouchxsessionSound_GraphSize = len(get_TouchxsessionSound_SPACEResponse) * 40 + 20
+
+            ###ACTIVIDAD LIMPIA EL ESPACIO###
+            espacioSPACE_query = get_espacio_SPACE(request)
+            cursor.execute(espacioSPACE_query)
+            queries.append({
+                "name": 'Espacio query',
+                "query": espacioSPACE_query
+            })
+            SPACEespacio_quantity = cursor.fetchall()
+            for row in SPACEespacio_quantity:
+                SPACEespacio_quantity_Dictionary.append({
+                    'id': row[0],
+                    'name': row[1],
+                    'recogidos': row[2],
+                    'colisionados': row[3]
+                })
+            SPACEespacio_quantity_graph = len(SPACEespacio_quantity) * 40 + 20
+
+            get_CorrectoxsessionLE_SPACE_query = get_CorrectoxsessionLE_SPACE(request)
+            cursor.execute(get_CorrectoxsessionLE_SPACE_query)
+            queries.append({
+                "name": 'CorrectoxSesionLE',
+                "query": get_CorrectoxsessionLE_SPACE_query
+            })
+            get_CorrectoxsessionLE_SPACEResponse = cursor.fetchall()
+            for row in get_CorrectoxsessionLE_SPACEResponse:
+                SPACE_CorrectoxsessionLE_Dictionary.append({
+                    'name': row[0],
+                    'fecha': row[1],
+                    'quantity': row[2]
+                })
+            SPACE_CorrectoxsessionLE_GraphSize = len(get_CorrectoxsessionLE_SPACEResponse) * 40 + 20
+
+            get_IncorrectoxsessionLE_SPACE_query = get_IncorrectoxsessionLE_SPACE(request)
+            cursor.execute(get_IncorrectoxsessionLE_SPACE_query)
+            queries.append({
+                "name": 'IncorrectoxSesionLE',
+                "query": get_IncorrectoxsessionLE_SPACE_query
+            })
+            get_IncorrectoxsessionLE_SPACEResponse = cursor.fetchall()
+            for row in get_IncorrectoxsessionLE_SPACEResponse:
+                SPACE_IncorrectoxsessionLE_Dictionary.append({
+                    'name': row[0],
+                    'fecha': row[1],
+                    'quantity': row[2]
+                })
+            SPACE_IncorrectoxsessionLE_GraphSize = len(get_IncorrectoxsessionLE_SPACEResponse) * 40 + 20
+
+            get_timerEspacio_SPACE_query = SPACE_getTimerEspacio(request)
+            cursor.execute(get_timerEspacio_SPACE_query)
+            queries.append({
+                "name": 'Timer Espacio',
+                "query": get_timerEspacio_SPACE_query
+            })
+            get_timerEspacio_SPACEResponse = cursor.fetchall()
+            for row in get_timerEspacio_SPACEResponse:
+                SPACE_timerEspacio_Dictionary.append({
+                    'id': row[0],
+                    'nombre': row[1],
+                    'promedio': row[2]
+                })
+            SPACE_timerEspacio_GraphSize = len(get_timerEspacio_SPACEResponse) * 40 + 10
+
+            ###ACTIVIDAD CONSTRUIR HUERTO###
+            get_huertoxsession_SPACE_query = get_huertoxsession_SPACE(request)
+            cursor.execute(get_huertoxsession_SPACE_query)
+            queries.append({
+                "name": 'HuertoxSesion',
+                "query": get_huertoxsession_SPACE_query
+            })
+            get_huertoxsession_SPACEResponse = cursor.fetchall()
+            for row in get_huertoxsession_SPACEResponse:
+                SPACE_huertoxsession_Dictionary.append({
+                    'name': row[0],
+                    'fecha': row[1],
+                    'riegos': row[2],
+                    'sol': row[3]
+                })
+            SPACE_huertoxsession_GraphSize = len(get_huertoxsession_SPACEResponse) * 60 + 40
+
+            get_compartirxsession_SPACE_query = get_compartirxsession_SPACE(request)
+            cursor.execute(get_compartirxsession_SPACE_query)
+            queries.append({
+                "name": 'CompartirxSesion',
+                "query": get_compartirxsession_SPACE_query
+            })
+            get_compartirxsession_SPACEResponse = cursor.fetchall()
+            for row in get_compartirxsession_SPACEResponse:
+                SPACE_compartirxsession_Dictionary.append({
+                    'name': row[0],
+                    'fecha': row[1],
+                    'compartir': row[2]
+                })
+            SPACE_compartirxsession_GraphSize = len(get_compartirxsession_SPACEResponse) * 40 + 20
+
+            elementoshuertoSPACE_query = get_elementoshuerto_SPACE(request)
+            cursor.execute(elementoshuertoSPACE_query)
+            queries.append({
+                "name": 'ElementosHuerto query',
+                "query": elementoshuertoSPACE_query
+            })
+            SPACEelementoshuerto_quantity = cursor.fetchall()
+            for row in SPACEelementoshuerto_quantity:
+                SPACEelementoshuerto_quantity_Dictionary.append({
+                    'id': row[0],
+                    'name': row[1],
+                    'sembrar': row[2],
+                    'cosechar': row[3]
+                })
+            SPACEelementoshuerto_quantity_graph = len(SPACEelementoshuerto_quantity) * 40 + 20
+
+            get_timerHuerto_SPACE_query = SPACE_getTimerHuerto(request)
+            cursor.execute(get_timerHuerto_SPACE_query)
+            queries.append({
+                "name": 'Timer Huerto',
+                "query": get_timerHuerto_SPACE_query
+            })
+            get_timerHuerto_SPACEResponse = cursor.fetchall()
+            for row in get_timerHuerto_SPACEResponse:
+                SPACE_timerHuerto_Dictionary.append({
+                    'id': row[0],
+                    'nombre': row[1],
+                    'promedio': row[2]
+                })
+            SPACE_timerHuerto_GraphSize = len(get_timerHuerto_SPACEResponse) * 40 + 10
+
+            ###ACTIVIDAD COLABORATIVA###
+            get_colaborativaxsession_SPACE_query = get_colaborativaxsession_SPACE(request)
+            cursor.execute(get_colaborativaxsession_SPACE_query)
+            queries.append({
+                "name": 'ColaborativaxSesion',
+                "query": get_colaborativaxsession_SPACE_query
+            })
+            get_colaborativaxsession_SPACEResponse = cursor.fetchall()
+            for row in get_colaborativaxsession_SPACEResponse:
+                SPACE_colaborativaxsession_Dictionary.append({
+                    'name': row[0],
+                    'fecha': row[1],
+                    'alimentos': row[2],
+                    'menus': row[3]
+                })
+            SPACE_colaborativaxsession_GraphSize = len(get_colaborativaxsession_SPACEResponse) * 60 + 40
+
+            get_timerColaborativa_SPACE_query = SPACE_getTimerColaborativa(request)
+            cursor.execute(get_timerColaborativa_SPACE_query)
+            queries.append({
+                "name": 'Timer ActColab',
+                "query": get_timerColaborativa_SPACE_query
+            })
+            get_timerColaborativa_SPACEResponse = cursor.fetchall()
+            for row in get_timerColaborativa_SPACEResponse:
+                SPACE_timerColaborativa_Dictionary.append({
+                    'id': row[0],
+                    'nombre': row[1],
+                    'promedio': row[2]
+                })
+            SPACE_timerColaborativa_GraphSize = len(get_timerColaborativa_SPACEResponse) * 40 + 10
+
+            SPACEtouchelements_query = get_elements_played_counterSPACE(request)
+            queries.append({
+                "name": 'Elements Played',
+                "query": SPACEtouchelements_query
+            })
+            cursor.execute(SPACEtouchelements_query)
+            SPACEelementsPlayedCounter_QueryResponse = cursor.fetchall()
+            for row in SPACEelementsPlayedCounter_QueryResponse:
+                name = ''
+                if row[0] == 500070:
+                    name = 'Filete'
+                elif row[0] == 500071:
+                    name = 'Pollo'
+                elif row[0] == 500072:
+                    name = 'Pescado'
+                elif row[0] == 500073:
+                    name = 'Jamón'
+                elif row[0] == 500074:
+                    name = 'Huevos'
+                elif row[0] == 500075:
+                    name = 'Champiñon'
+                elif row[0] == 500076:
+                    name = 'Agua'
+                elif row[0] == 500077:
+                    name = 'Leche'
+                elif row[0] == 500078:
+                    name = 'Maíz'
+                elif row[0] == 500079:
+                    name = 'Durazno'
+                elif row[0] == 500080:
+                    name = 'Pera'
+                elif row[0] == 500081:
+                    name = 'Fresa'
+                elif row[0] == 500082:
+                    name = 'Tomate'
+                elif row[0] == 500083:
+                    name = 'Papa'
+                elif row[0] == 500084:
+                    name = 'Naranja'
+                elif row[0] == 500085:
+                    name = 'Zanahoria'
+                elif row[0] == 500086:
+                    name = 'Manzana'
+                elif row[0] == 500087:
+                    name = 'Arándano'
+                elif row[0] == 500088:
+                    name = 'Sandía'
+                elif row[0] == 500089:
+                    name = 'Lechuga'
+                SPACE_elementsPlayedCounter_Dictionary.append({
+                    'id': row[0],
+                    'name': name,
+                    'counter': row[1]
+                })
+            SPACE_elementsPlayedCounter_GraphSize = len(SPACEelementsPlayedCounter_QueryResponse) * 10 + 10
+
 #Cantidad de Sesiones
         session_query = get_session_query(request)
         cursor.execute(session_query)
@@ -4621,6 +5224,134 @@ def welcome(request):
                 'ByC_Taxi_SuccessPercentageInTime_Dictionary':
                 ByC_Taxi_SuccessPercentageInTime_Dictionary,
                 ######END BUILD YOUR CITY#####
+
+                ##INICIO SPACEMATH
+                'SPACE_NumberSessions_graph':
+                    SPACE_NumberSessions_graph,
+                'SPACE_NumberSessions_Dictionary':
+                    SPACE_NumberSessions_Dictionary,
+                'SPACE_playTime_GraphSize':
+                    SPACE_playTime_GraphSize,
+                'SPACE_playTime_Dictionary':
+                    SPACE_playTime_Dictionary,
+                'SPACE_touchCount_GraphSize':
+                    SPACE_touchCount_GraphSize,
+                'SPACE_touchCount_Dictionary':
+                    SPACE_touchCount_Dictionary,
+                'SPACE_activitiesPlayedCounter_GraphSize':
+                    SPACE_activitiesPlayedCounter_GraphSize,
+                'SPACE_activitiesPlayedCounter_Dictionary':
+                    SPACE_activitiesPlayedCounter_Dictionary,
+                'SPACEcorrects_quantity_graph':
+                    SPACEcorrects_quantity_graph,
+                'SPACEcorrects_quantity_Dictionary':
+                    SPACEcorrects_quantity_Dictionary,
+                'SPACE_correctsxsession_GraphSize':
+                    SPACE_correctsxsession_GraphSize,
+                'SPACE_correctsxsession_Dictionary':
+                    SPACE_correctsxsession_Dictionary,
+                'SPACE_timer_GraphSize':
+                    SPACE_timer_GraphSize,
+                'SPACE_timer_Dictionary':
+                    SPACE_timer_Dictionary,
+                'SPACE_incorrectsxsession_GraphSize':
+                    SPACE_incorrectsxsession_GraphSize,
+                'SPACE_incorrectsxsession_Dictionary':
+                    SPACE_incorrectsxsession_Dictionary,
+                'SPACEdesafio_quantity_graph':
+                    SPACEdesafio_quantity_graph,
+                'SPACEdesafio_quantity_Dictionary':
+                    SPACEdesafio_quantity_Dictionary,
+                'SPACE_saltosxsession_GraphSize':
+                    SPACE_saltosxsession_GraphSize,
+                'SPACE_saltosxsession_Dictionary':
+                    SPACE_saltosxsession_Dictionary,
+                'SPACE_timerDesafio_GraphSize':
+                    SPACE_timerDesafio_GraphSize,
+                'SPACE_timerDesafio_Dictionary':
+                    SPACE_timerDesafio_Dictionary,
+                'SPACE_AbandonaDesafioxsession_GraphSize':
+                    SPACE_AbandonaDesafioxsession_GraphSize,
+                'SPACE_AbandonaDesafioxsession_Dictionary':
+                    SPACE_AbandonaDesafioxsession_Dictionary,
+                'SPACENaveIntentos_quantity_graph':
+                    SPACENaveIntentos_quantity_graph,
+                'SPACENaveIntentos_quantity_Dictionary':
+                    SPACENaveIntentos_quantity_Dictionary,
+                'SPACE_RutasCompletasxsession_GraphSize':
+                    SPACE_RutasCompletasxsession_GraphSize,
+                'SPACE_RutasCompletasxsession_Dictionary':
+                    SPACE_RutasCompletasxsession_Dictionary,
+                'SPACE_Colisionesxsession_GraphSize':
+                    SPACE_Colisionesxsession_GraphSize,
+                'SPACE_Colisionesxsession_Dictionary':
+                    SPACE_Colisionesxsession_Dictionary,
+                'SPACE_timerNave_GraphSize':
+                    SPACE_timerNave_GraphSize,
+                'SPACE_timerNave_Dictionary':
+                    SPACE_timerNave_Dictionary,
+                'SPACEsonido_quantity_graph':
+                    SPACEsonido_quantity_graph,
+                'SPACEsonido_quantity_Dictionary':
+                    SPACEsonido_quantity_Dictionary,
+                'SPACE_sonidoIntentoxsession_GraphSize':
+                    SPACE_sonidoIntentoxsession_GraphSize,
+                'SPACE_sonidoIntentoxsession_Dictionary':
+                    SPACE_sonidoIntentoxsession_Dictionary,
+                'SPACE_timerSound_GraphSize':
+                    SPACE_timerSound_GraphSize,
+                'SPACE_timerSound_Dictionary':
+                    SPACE_timerSound_Dictionary,
+                'SPACE_TouchxsessionSound_GraphSize':
+                    SPACE_TouchxsessionSound_GraphSize,
+                'SPACE_TouchxsessionSound_Dictionary':
+                    SPACE_TouchxsessionSound_Dictionary,
+                'SPACEespacio_quantity_graph':
+                    SPACEespacio_quantity_graph,
+                'SPACEespacio_quantity_Dictionary':
+                    SPACEespacio_quantity_Dictionary,
+                'SPACE_CorrectoxsessionLE_GraphSize':
+                    SPACE_CorrectoxsessionLE_GraphSize,
+                'SPACE_CorrectoxsessionLE_Dictionary':
+                    SPACE_CorrectoxsessionLE_Dictionary,
+                'SPACE_IncorrectoxsessionLE_GraphSize':
+                    SPACE_IncorrectoxsessionLE_GraphSize,
+                'SPACE_IncorrectoxsessionLE_Dictionary':
+                    SPACE_IncorrectoxsessionLE_Dictionary,
+                'SPACE_timerEspacio_GraphSize':
+                    SPACE_timerEspacio_GraphSize,
+                'SPACE_timerEspacio_Dictionary':
+                    SPACE_timerEspacio_Dictionary,
+                'SPACE_huertoxsession_GraphSize':
+                    SPACE_huertoxsession_GraphSize,
+                'SPACE_huertoxsession_Dictionary':
+                    SPACE_huertoxsession_Dictionary,
+                'SPACE_compartirxsession_GraphSize':
+                    SPACE_compartirxsession_GraphSize,
+                'SPACE_compartirxsession_Dictionary':
+                    SPACE_compartirxsession_Dictionary,
+                'SPACEelementoshuerto_quantity_graph':
+                    SPACEelementoshuerto_quantity_graph,
+                'SPACEelementoshuerto_quantity_Dictionary':
+                    SPACEelementoshuerto_quantity_Dictionary,
+                'SPACE_timerHuerto_GraphSize':
+                    SPACE_timerHuerto_GraphSize,
+                'SPACE_timerHuerto_Dictionary':
+                    SPACE_timerHuerto_Dictionary,
+                'SPACE_colaborativaxsession_GraphSize':
+                    SPACE_colaborativaxsession_GraphSize,
+                'SPACE_colaborativaxsession_Dictionary':
+                    SPACE_colaborativaxsession_Dictionary,
+                'SPACE_timerColaborativa_GraphSize':
+                    SPACE_timerColaborativa_GraphSize,
+                'SPACE_timerColaborativa_Dictionary':
+                    SPACE_timerColaborativa_Dictionary,
+                'SPACE_elementsPlayedCounter_GraphSize':
+                    SPACE_elementsPlayedCounter_GraphSize,
+                'SPACE_elementsPlayedCounter_Dictionary':
+                    SPACE_elementsPlayedCounter_Dictionary,
+                ##FIN SPACEMATH 2
+
                 ##### INICIO PROTECT YOUR LAND
                 ####### GRAPHS SIZE
                 'PYL_playTime_GraphSize':
@@ -4686,6 +5417,7 @@ def welcome(request):
                     PYL_ElemVisualTimer_Dictionary,
 
                 ##FIN PROTECT YOUR LAND
+
 				######INICIO TOYS COLECTION
                 'sesion_quantity1': sesion_quantity1_response,
                 'tiempo_total_quantity1': tiempo_total_quantity1_response,
